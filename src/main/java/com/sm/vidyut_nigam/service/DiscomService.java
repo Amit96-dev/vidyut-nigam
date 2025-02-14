@@ -9,7 +9,8 @@ public interface DiscomService {
     DiscomDTO createDiscom(DiscomDTO discomDTO);
     List<DiscomDTO> getAllDiscom();
     DiscomDTO getDiscomById(int discomId);
-    DiscomDTO getByDiscomCode(String discomCode);
+    DiscomDTO getDiscomByCode(String discomCode);
     DiscomDTO updateDiscom(int discomId, DiscomUpdateDTO discomDTO);
     void deleteDiscom(int discomId);
+    DiscomDTO updateDiscomByCode(String discomCode, DiscomUpdateDTO discomDTO);
 }

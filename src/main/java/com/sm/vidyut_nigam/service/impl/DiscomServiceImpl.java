@@ -44,7 +44,7 @@ public class DiscomServiceImpl implements DiscomService {
     }
 
     @Override
-    public DiscomDTO getByDiscomCode(String discomCode) {
+    public DiscomDTO getDiscomByCode(String discomCode) {
         Discom byDiscomCode = discomRepository.findByDiscomCode(discomCode);
         return mapper.map(byDiscomCode, DiscomDTO.class);
     }
@@ -64,6 +64,14 @@ public class DiscomServiceImpl implements DiscomService {
     public void deleteDiscom(int discomId) {
         Discom discom = discomRepository.findById(discomId).orElseThrow(()->new RuntimeException("discom not found by given ID."));
         discomRepository.delete(discom);
+    }
+
+    @Override
+    public DiscomDTO updateDiscomByCode(String discomCode, DiscomUpdateDTO discomDTO) {
+        Discom existingDiscomByDiscomCode = discomRepository.findByDiscomCode(discomCode);
+        BeanUtils.copyProperties(discomDTO, existingDiscomByDiscomCode);
+        discomRepository.save(existingDiscomByDiscomCode);
+        return mapper.map(existingDiscomByDiscomCode, DiscomDTO.class);
     }
 
 }

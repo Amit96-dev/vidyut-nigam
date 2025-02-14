@@ -20,6 +20,7 @@ import com.sm.vidyut_nigam.dto.DiscomDTO;
 import com.sm.vidyut_nigam.dto.DiscomUpdateDTO;
 import com.sm.vidyut_nigam.service.DiscomService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class DiscomController {
     Logger logger = LoggerFactory.getLogger(DiscomController.class);
 
     @PostMapping
-    public ResponseEntity<DiscomDTO> createDiscom(@RequestBody DiscomDTO discomDTO) {
+    public ResponseEntity<DiscomDTO> createDiscom(@Valid @RequestBody DiscomDTO discomDTO) {
         try {
             LocalDateTime currentTime = LocalDateTime.now();
             discomDTO.setCreatedAt(currentTime);
@@ -62,7 +63,7 @@ public class DiscomController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DiscomDTO> updateDiscom(@RequestBody DiscomUpdateDTO discomDTO, @PathVariable int id) {
+    public ResponseEntity<DiscomDTO> updateDiscom(@Valid @RequestBody DiscomUpdateDTO discomDTO, @PathVariable int id) {
         try {
             DiscomDTO discom = discomService.updateDiscom(id, discomDTO);
             return ResponseEntity.ok(discom);
@@ -78,4 +79,26 @@ public class DiscomController {
         return new ResponseEntity<>("discom deleted successfully by the given id", HttpStatus.OK);
     }
 
+    @GetMapping("/code/{code}")
+    public ResponseEntity<DiscomDTO> getDiscomByCode(@PathVariable String code) {
+        try {
+            DiscomDTO discom = discomService.getDiscomByCode(code);
+            return ResponseEntity.ok(discom);
+        } catch (Exception e) {
+            logger.error("Error while getting Discom by code", e);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/update-by-code/{discomCode}")
+    public ResponseEntity<DiscomDTO> updateDiscomByDiscomCode(@PathVariable String discomCode,
+            @Valid @RequestBody DiscomUpdateDTO discomDTO) {
+        try {
+            DiscomDTO discom = discomService.updateDiscomByCode(discomCode, discomDTO);
+            return ResponseEntity.ok(discom);
+        } catch (Exception e) {
+            logger.error("Error while updating Discom by code", e);
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

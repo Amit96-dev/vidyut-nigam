@@ -13,6 +13,7 @@ import lombok.Data;
 
 @Data
 public class DiscomUpdateDTO {
+    
     private String discomCode;
 
     @NotNull(message = "Discom name is required.")
