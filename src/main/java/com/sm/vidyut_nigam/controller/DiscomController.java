@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sm.vidyut_nigam.dto.DiscomDTO;
@@ -32,11 +33,14 @@ public class DiscomController {
 
     Logger logger = LoggerFactory.getLogger(DiscomController.class);
 
+    // Create Discom
+
     @PostMapping
     public ResponseEntity<DiscomDTO> createDiscom(@Valid @RequestBody DiscomDTO discomDTO) {
         try {
-            LocalDateTime currentTime = LocalDateTime.now();
-            discomDTO.setCreatedAt(currentTime);
+            // LocalDateTime currentTime = LocalDateTime.now();
+            // discomDTO.setCreatedAt(currentTime);
+
             DiscomDTO discom = discomService.createDiscom(discomDTO);
             return ResponseEntity.ok(discom);
         } catch (Exception e) {
@@ -45,11 +49,15 @@ public class DiscomController {
         }
     }
 
-    @GetMapping("getSingle/{id}")
-    public ResponseEntity<DiscomDTO> getDiscomById(@PathVariable int id) {
-        DiscomDTO discomById = discomService.getDiscomById(id);
+    // Get Discom By discomCode
+
+    @GetMapping("getSingle/{discomCode}")
+    public ResponseEntity<DiscomDTO> getDiscomByDiscomCode(@PathVariable int discomCode) {
+        DiscomDTO discomById = discomService.getDiscomByCode(discomCode);
         return ResponseEntity.ok(discomById);
     }
+
+    // Get all Discom
 
     @GetMapping
     public ResponseEntity<List<DiscomDTO>> getAllDiscom() {
@@ -62,10 +70,12 @@ public class DiscomController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<DiscomDTO> updateDiscom(@Valid @RequestBody DiscomUpdateDTO discomDTO, @PathVariable int id) {
+    // Update Discom
+
+    @PutMapping("/{discomCode}")
+    public ResponseEntity<DiscomDTO> updateDiscom(@Valid @RequestBody DiscomUpdateDTO discomUpdateDTO, @PathVariable int discomCode) {
         try {
-            DiscomDTO discom = discomService.updateDiscom(id, discomDTO);
+            DiscomDTO discom = discomService.updateDiscom(discomCode, discomUpdateDTO);
             return ResponseEntity.ok(discom);
         } catch (Exception e) {
             logger.error("Error while updating Discom", e);
@@ -73,31 +83,22 @@ public class DiscomController {
         }
     }
 
+    // Delete Discom
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDiscom(@PathVariable int id) {
         discomService.deleteDiscom(id);
         return new ResponseEntity<>("discom deleted successfully by the given id", HttpStatus.OK);
     }
 
-    @GetMapping("/code/{code}")
-    public ResponseEntity<DiscomDTO> getDiscomByCode(@PathVariable String code) {
-        try {
-            DiscomDTO discom = discomService.getDiscomByCode(code);
-            return ResponseEntity.ok(discom);
-        } catch (Exception e) {
-            logger.error("Error while getting Discom by code", e);
-            return ResponseEntity.badRequest().build();
-        }
-    }
+    // Get Discom by Active
 
-    @PutMapping("/update-by-code/{discomCode}")
-    public ResponseEntity<DiscomDTO> updateDiscomByDiscomCode(@PathVariable String discomCode,
-            @Valid @RequestBody DiscomUpdateDTO discomDTO) {
+    @GetMapping("/active")
+    public ResponseEntity<List<DiscomDTO>> getDiscomByActive(@RequestParam boolean active) {
         try {
-            DiscomDTO discom = discomService.updateDiscomByCode(discomCode, discomDTO);
-            return ResponseEntity.ok(discom);
+            List<DiscomDTO> discoms = discomService.getDiscomByActive(active);
+            return ResponseEntity.ok(discoms);
         } catch (Exception e) {
-            logger.error("Error while updating Discom by code", e);
+            logger.error("Error while getting Discom by active", e);
             return ResponseEntity.badRequest().build();
         }
     }

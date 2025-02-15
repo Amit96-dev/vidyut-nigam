@@ -1,8 +1,11 @@
 package com.sm.vidyut_nigam.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +25,20 @@ public class DiscomServiceImpl implements DiscomService {
 
     private final ModelMapper mapper;
 
+    private Logger logger = LoggerFactory.getLogger(DiscomServiceImpl.class);
+
+    // Create Discom
+
     @Override
     public DiscomDTO createDiscom(DiscomDTO discomDTO) {
+
+        discomDTO.setUpdatedAt(null);
         Discom discom = discomRepository.save(mapper.map(discomDTO, Discom.class));
+        
         return mapper.map(discom, DiscomDTO.class);
     }
+
+    // Get all Discom
 
     @Override
     public List<DiscomDTO> getAllDiscom() {
@@ -36,42 +48,48 @@ public class DiscomServiceImpl implements DiscomService {
         return discomDTOslist;
     }
 
+    // Get discom by Code
+
     @Override
-    public DiscomDTO getDiscomById(int discomId) {
+    public DiscomDTO getDiscomByCode(int discomId) {
         Discom discom = discomRepository.findById(discomId)
                 .orElseThrow(() -> new RuntimeException("discom not found with given ID."));
         return mapper.map(discom, DiscomDTO.class);
     }
 
-    @Override
-    public DiscomDTO getDiscomByCode(String discomCode) {
-        Discom byDiscomCode = discomRepository.findByDiscomCode(discomCode);
-        return mapper.map(byDiscomCode, DiscomDTO.class);
-    }
+    // Update Discom
 
     @Override
-    public DiscomDTO updateDiscom(int discomId, DiscomUpdateDTO discomDTO) {
-        Discom existingDiscom = discomRepository.findById(discomId)
+    public DiscomDTO updateDiscom(int discomCode, DiscomUpdateDTO discomDTO) {
+        Discom existingDiscom = discomRepository.findById(discomCode)
                 .orElseThrow(() -> new RuntimeException("Discom not found with given ID."));
-        
+
+                
+                logger.info("existing Discom:{}", existingDiscom);
         BeanUtils.copyProperties(discomDTO, existingDiscom);
 
+        existingDiscom.setUpdatedAt(LocalDateTime.now());
         Discom discom1 = discomRepository.save(existingDiscom);
+       
         return mapper.map(discom1, DiscomDTO.class);
     }
 
+    // Delete Discom
+
     @Override
     public void deleteDiscom(int discomId) {
-        Discom discom = discomRepository.findById(discomId).orElseThrow(()->new RuntimeException("discom not found by given ID."));
+        Discom discom = discomRepository.findById(discomId)
+                .orElseThrow(() -> new RuntimeException("discom not found by given ID."));
         discomRepository.delete(discom);
     }
 
+    // Get Discom By Active
+
     @Override
-    public DiscomDTO updateDiscomByCode(String discomCode, DiscomUpdateDTO discomDTO) {
-        Discom existingDiscomByDiscomCode = discomRepository.findByDiscomCode(discomCode);
-        BeanUtils.copyProperties(discomDTO, existingDiscomByDiscomCode);
-        discomRepository.save(existingDiscomByDiscomCode);
-        return mapper.map(existingDiscomByDiscomCode, DiscomDTO.class);
+    public List<DiscomDTO> getDiscomByActive(boolean active) {
+        List<Discom> byActive = discomRepository.findByActive(active);
+        List<DiscomDTO> discomDTOList = byActive.stream().map(a -> mapper.map(a, DiscomDTO.class)).toList();
+        return discomDTOList;
     }
 
 }

@@ -1,11 +1,12 @@
 package com.sm.vidyut_nigam.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.sm.vidyut_nigam.entity.Discom;
 
 @Repository
 public interface DiscomRepository extends JpaRepository<Discom, Integer>{
-    Discom findByDiscomCode(String code);
-    Discom findByActive(boolean active);
+    List<Discom> findByActive(boolean active);
 }
