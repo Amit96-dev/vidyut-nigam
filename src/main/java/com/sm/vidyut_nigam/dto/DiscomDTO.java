@@ -14,11 +14,8 @@ import lombok.Data;
 @Data
 public class DiscomDTO {
 
-    private int id;
-
     @NotNull(message = "Discom code is required")
-    @Size(min = 1, max = 1, message = "Discom code must be exactly 1 character")
-    private String discomCode;
+    private int discomCode;
 
     @NotNull(message = "Discom name is required.")
     @Size(min = 3, max = 100, message = "Discom name must be between 3 and 100 characters")

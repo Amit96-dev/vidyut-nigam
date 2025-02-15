@@ -8,9 +8,8 @@ import com.sm.vidyut_nigam.dto.DiscomUpdateDTO;
 public interface DiscomService {
     DiscomDTO createDiscom(DiscomDTO discomDTO);
     List<DiscomDTO> getAllDiscom();
-    DiscomDTO getDiscomById(int discomId);
-    DiscomDTO getDiscomByCode(String discomCode);
-    DiscomDTO updateDiscom(int discomId, DiscomUpdateDTO discomDTO);
-    void deleteDiscom(int discomId);
-    DiscomDTO updateDiscomByCode(String discomCode, DiscomUpdateDTO discomDTO);
+    DiscomDTO getDiscomByCode(int discomCode);
+    DiscomDTO updateDiscom(int discomCode, DiscomUpdateDTO discomDTO);
+    void deleteDiscom(int discomCode);
+    List<DiscomDTO> getDiscomByActive(boolean active);
 }

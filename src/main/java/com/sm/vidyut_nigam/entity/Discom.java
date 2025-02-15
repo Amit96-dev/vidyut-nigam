@@ -3,8 +3,6 @@ package com.sm.vidyut_nigam.entity;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,22 +15,28 @@ import lombok.Data;
 @Entity
 @Table(name = "discoms")
 public class Discom {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int discomCode;         // Discom code 1 character
+
     @Column(length = 100, nullable = false)
-    private String discomName;
-    @Column(length = 1, nullable = false, unique = true)
-    private String discomCode; // Discom code 1 character
-    private String inChargeName; // Distribution company name
+    private String discomName;      // Distribution company name
+
+    @Column(length = 100, nullable = false)
+    private String inChargeName; 
     @Column(length = 50)
     private String designation;
+
     @Column(name = "discom_address", length = 300)
     private String address;
+
     @Column(length = 15)
     private String contactPhone;
+
     @Column(length = 100)
     private String contactEmail;
+
     private float longitude;
     private float latitude;
     private String discomPicture;
@@ -41,7 +45,6 @@ public class Discom {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
     private LocalDateTime applicableFrom;
     private LocalDateTime applicableTo;

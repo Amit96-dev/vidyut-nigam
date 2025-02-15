@@ -13,9 +13,6 @@ import lombok.Data;
 
 @Data
 public class DiscomUpdateDTO {
-    
-    private String discomCode;
-
     @NotNull(message = "Discom name is required.")
     @Size(min = 3, max = 100, message = "Discom name must be between 3 and 100 characters")
     private String discomName;
@@ -50,6 +47,7 @@ public class DiscomUpdateDTO {
     @DecimalMax(value = "90.0", message = "Latitude must be between -90 and 90")
     private float latitude;
     
+    private String discomPicture;
     private String updatedBy;
     private LocalDateTime updatedAt;
     private LocalDateTime applicableFrom;
