@@ -3,8 +3,6 @@ package com.sm.vidyut_nigam.entity;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,14 +15,16 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "circle")
+@Table(name = "circles")
 public class Circle {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 1, nullable = false, unique = true)
     private int circleCode; // Discom code 1 character
+
     @Column(length = 100, nullable = false)
     private String circleName;
+    @Column(length=100)
     private String inChargeName; // Distribution company name
     @Column(length = 50)
     private String designation;
@@ -37,15 +37,16 @@ public class Circle {
     private float longitude;
     private float latitude;
     private String circlePicture;
-     @ManyToOne
+
+    @ManyToOne
     @JoinColumn(name = "parentOrganizationId", referencedColumnName = "discomCode", nullable = false)
     private Discom discom;
+
     private String createdBy;
     private String updatedBy;
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
     private LocalDateTime applicableFrom;
     private LocalDateTime applicableTo;

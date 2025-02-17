@@ -1,6 +1,6 @@
 package com.sm.vidyut_nigam.controller;
 
-import java.time.LocalDateTime;
+// import java.time.LocalDateTime;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -30,8 +30,9 @@ public class CircleConroller {
     @PostMapping
     public ResponseEntity<CircleDTO> createDiscom(@Valid @RequestBody CircleDTO circleDTO) {
         try {
-            LocalDateTime currentTime = LocalDateTime.now();
-            circleDTO.setCreatedAt(currentTime);
+            // LocalDateTime currentTime = LocalDateTime.now();
+            // circleDTO.setCreatedAt(currentTime);
+            logger.info("********Controller************* {}", circleDTO);
             CircleDTO circle = circleService.createCircle(circleDTO);
             return ResponseEntity.ok(circle);
         } catch (Exception e) {

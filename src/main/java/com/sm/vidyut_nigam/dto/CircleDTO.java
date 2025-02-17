@@ -14,8 +14,8 @@ import lombok.Data;
 
 @Data
 public class CircleDTO {
+    
     @NotNull(message = "Circle code is required")
-    @Size(min = 1, max = 1, message = "Circle code must be exactly 1 character")
     private int circleCode;
 
     @NotNull(message = "Circle name is required.")
@@ -53,12 +53,15 @@ public class CircleDTO {
     private float latitude;
 
     private String circlePicture;
+
+    @NotNull(message = "Discom ID is required")
+    private int discomCode;
+
     private String createdBy;
-    private String updatedBy;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private LocalDateTime applicableFrom;
     private LocalDateTime applicableTo;
+
     @NotNull(message = "Active status is required")
     private boolean active;
 }
