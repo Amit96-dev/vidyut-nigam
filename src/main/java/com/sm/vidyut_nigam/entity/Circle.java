@@ -17,14 +17,16 @@ import lombok.Data;
 @Entity
 @Table(name = "circles")
 public class Circle {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int circleCode; // Discom code 1 character
+    private int circleId;
+
+    private int circleCode; // Circle code 1 character
 
     @Column(length = 100, nullable = false)
     private String circleName;
-    @Column(length=100)
+    @Column(length = 100)
     private String inChargeName; // Distribution company name
     @Column(length = 50)
     private String designation;

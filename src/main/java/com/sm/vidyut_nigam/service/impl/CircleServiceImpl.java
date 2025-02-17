@@ -29,7 +29,11 @@ public class CircleServiceImpl implements CircleService {
 
     @Override
     public CircleDTO createCircle(CircleDTO circleDTO) {
-        logger.info("*********************** {}", circleDTO);
+        // logger.info("*********************** {}", circleDTO);
+        int code = circleRepository.countByDiscom_DiscomCode(circleDTO.getDiscomCode());
+        logger.info("*******code:{}", code);
+        circleDTO.setCircleCode(code + 1);
+        logger.info("*******circleDTO:{}", circleDTO);
         Circle circle = circleRepository.save(mapper.map(circleDTO, Circle.class));
 
         return mapper.map(circle, CircleDTO.class);

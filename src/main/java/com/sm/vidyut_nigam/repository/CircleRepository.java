@@ -10,4 +10,6 @@ import com.sm.vidyut_nigam.entity.Circle;
 @Repository
 public interface CircleRepository extends JpaRepository<Circle, Integer> {
     List<Circle> findByActive(boolean active);
+
+    int countByDiscom_DiscomCode(int discomCode);
 }
