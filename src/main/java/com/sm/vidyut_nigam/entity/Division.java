@@ -19,8 +19,11 @@ import lombok.Data;
 @Table(name = "divisions")
 public class Division {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    
     private int divisionCode;
 
     @Column(length = 100, nullable = false)

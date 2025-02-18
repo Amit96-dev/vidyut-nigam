@@ -2,6 +2,7 @@ package com.sm.vidyut_nigam.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -17,13 +18,15 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class DivisionServiceImpl implements DivisionService{
+public class DivisionServiceImpl implements DivisionService {
 
     private final DivisionRepository divisionRepository;
     private ModelMapper mapper;
 
     @Override
     public DivisionDTO createDivision(DivisionDTO divisionDTO) {
+        int countByCircle_CircleCode = divisionRepository.countByCircle_CircleCode(divisionDTO.getCircleCode());
+        divisionDTO.setCircleCode(countByCircle_CircleCode + 1);
         Division division = divisionRepository.save(mapper.map(divisionDTO, Division.class));
         return mapper.map(division, DivisionDTO.class);
     }
@@ -36,13 +39,15 @@ public class DivisionServiceImpl implements DivisionService{
 
     @Override
     public DivisionDTO getDivisionByDivisionCode(int divisionCode) {
-        Division division = divisionRepository.findById(divisionCode).orElseThrow(()-> new RuntimeException("Division not found with given division code"));
+        Division division = divisionRepository.findById(divisionCode)
+                .orElseThrow(() -> new RuntimeException("Division not found with given division code"));
         return mapper.map(division, DivisionDTO.class);
     }
 
     @Override
     public DivisionDTO updateDivision(DivisionUpdateDTO divisionUpdateDTO, int divisionCode) {
-        Division division = divisionRepository.findById(divisionCode).orElseThrow(()-> new RuntimeException("Division not found by given division code"));
+        Division division = divisionRepository.findById(divisionCode)
+                .orElseThrow(() -> new RuntimeException("Division not found by given division code"));
         BeanUtils.copyProperties(divisionUpdateDTO, division);
         division.setUpdatedAt(LocalDateTime.now());
         return mapper.map(divisionRepository.save(division), DivisionDTO.class);
@@ -56,8 +61,10 @@ public class DivisionServiceImpl implements DivisionService{
 
     @Override
     public String deleteDivision(int divisionCode) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteDivision'");
+        Division division = divisionRepository.findById(divisionCode).orElseThrow(()->new RuntimeException("Division not found with given discomCode"));
+        division.setActive(false);
+        divisionRepository.save(division);
+        return "Division de-activated successfully";
     }
-    
+
 }

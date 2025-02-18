@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -58,10 +59,21 @@ public class DivisionController {
     }
 
     @PutMapping("/{divisionCode}")
-    public ResponseEntity<DivisionDTO> updateDivision(@Valid @RequestBody DivisionDTO divisionDTO, @PathVariable int divisionCode) {
+    public ResponseEntity<DivisionDTO> updateDivision(@Valid @RequestBody DivisionDTO divisionDTO,
+            @PathVariable int divisionCode) {
         try {
             DivisionDTO divisionDto2 = divisionService.updateDivision(null, divisionCode);
             return ResponseEntity.ok(divisionDto2);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PatchMapping("/{code}")
+    public ResponseEntity<String> disconnectDivision(@PathVariable int code) {
+        try {
+            String result = divisionService.deleteDivision(code);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

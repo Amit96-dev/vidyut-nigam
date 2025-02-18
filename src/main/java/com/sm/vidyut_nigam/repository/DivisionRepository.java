@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import com.sm.vidyut_nigam.entity.Division;
 
+
 @Repository
 public interface DivisionRepository extends JpaRepository<Division, Integer>{
     List<Division> findByActive(boolean active);
+    int countByCircle_CircleCode(int circleCode);
 }
