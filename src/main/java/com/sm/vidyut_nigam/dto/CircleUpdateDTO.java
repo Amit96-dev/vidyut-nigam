@@ -48,7 +48,12 @@ public class CircleUpdateDTO {
     @DecimalMin(value = "-90.0", message = "Latitude must be between -90 and 90")
     @DecimalMax(value = "90.0", message = "Latitude must be between -90 and 90")
     private float latitude;
-    
+
+    private String circlePicture;
+
+    @NotNull(message = "Discom ID is required")
+    private int discomCode;
+
     private String updatedBy;
     private LocalDateTime updatedAt;
     private LocalDateTime applicableFrom;

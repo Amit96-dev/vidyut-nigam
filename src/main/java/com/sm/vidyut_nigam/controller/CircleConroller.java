@@ -48,31 +48,43 @@ public class CircleConroller {
     }
 
     // Get all circle
-    @GetMapping
-    public ResponseEntity<List<CircleDTO>> getAllCircle() {
+    // @GetMapping
+    // public ResponseEntity<List<CircleDTO>> getAllCircle() {
+    // try {
+    // List<CircleDTO> circle = circleService.getAllCircles();
+    // return ResponseEntity.ok(circle);
+    // } catch (Exception e) {
+    // logger.error("Error while getting all Circle", e);
+    // return ResponseEntity.badRequest().build();
+    // }
+    // }
+
+    // Get all circle by discomCode
+    @GetMapping("allCircle/{discomCode}")
+    public ResponseEntity<List<CircleDTO>> getAllCircleByDiscomCode(@PathVariable int discomCode) {
         try {
-            List<CircleDTO> circle = circleService.getAllCircles();
-            return ResponseEntity.ok(circle);
+            List<CircleDTO> circles = circleService.getAllCircles(discomCode);
+            return ResponseEntity.ok(circles);
         } catch (Exception e) {
             logger.error("Error while getting all Circle", e);
             return ResponseEntity.badRequest().build();
         }
     }
 
-    // Get circle by circle code
-    @GetMapping("getSingle/{circleCode}")
-    public ResponseEntity<CircleDTO> getCircleByCircleCode(@PathVariable int circleCode) {
-        CircleDTO circleById = circleService.getCircleByCode(circleCode);
+    // Get circle by circle code and discom code
+    @GetMapping("getSingle/{circleCode}/{discomCode}")
+    public ResponseEntity<CircleDTO> getCircleByCircleCode(@PathVariable int circleCode, @PathVariable int discomCode) {
+        CircleDTO circleById = circleService.getCircleByCode(circleCode, discomCode);
         return ResponseEntity.ok(circleById);
     }
 
     // update circle
 
-    @PutMapping("/{circleCode}")
+    @PutMapping("/{circleCode}/{discomCode}")
     public ResponseEntity<CircleDTO> updateCircle(@Valid @RequestBody CircleUpdateDTO circleUpdateDTO,
-            @PathVariable int circleCode) {
+            @PathVariable int circleCode, @PathVariable int discomCode) {
         try {
-            CircleDTO circle = circleService.updateCircle(circleCode, circleUpdateDTO);
+            CircleDTO circle = circleService.updateCircle(circleCode, discomCode, circleUpdateDTO);
             return ResponseEntity.ok(circle);
         } catch (Exception e) {
             logger.error("Error while updating circle", e);
@@ -82,10 +94,24 @@ public class CircleConroller {
 
     // Get Circle by Active
 
-    @GetMapping("/active")
-    public ResponseEntity<List<CircleDTO>> getCircleByActive(@RequestParam boolean active) {
+    // @GetMapping("/active")
+    // public ResponseEntity<List<CircleDTO>> getCircleByActive(@RequestParam
+    // boolean active) {
+    // try {
+    // List<CircleDTO> circles = circleService.getCircleByActive(active);
+    // return ResponseEntity.ok(circles);
+    // } catch (Exception e) {
+    // logger.error("Error while getting Discom by active", e);
+    // return ResponseEntity.badRequest().build();
+    // }
+    // }
+
+    // Get all active circle by discom code
+    @GetMapping("/active/{discomCode}")
+    public ResponseEntity<List<CircleDTO>> getCircleByDiscomCode(@PathVariable int discomCode,
+            @RequestParam boolean active) {
         try {
-            List<CircleDTO> circles = circleService.getCircleByActive(active);
+            List<CircleDTO> circles = circleService.getActiveCircleByDiscomCode(discomCode, active);
             return ResponseEntity.ok(circles);
         } catch (Exception e) {
             logger.error("Error while getting Discom by active", e);
@@ -95,10 +121,10 @@ public class CircleConroller {
 
     // Delete Circle (Soft delete)
 
-    @PatchMapping("/{circleCode}")
-    public ResponseEntity<String> deleteCircle(@PathVariable int circleCode) {
+    @PatchMapping("/{circleCode}/{discomCode}")
+    public ResponseEntity<String> deleteCircle(@PathVariable int circleCode, @PathVariable int discomCode) {
         try {
-            circleService.deleteCircle(circleCode);
+            circleService.deleteCircle(circleCode, discomCode);
             return ResponseEntity.ok("circle deleted successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
