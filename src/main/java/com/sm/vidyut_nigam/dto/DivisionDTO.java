@@ -12,17 +12,16 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class DiscomDTO {
+public class DivisionDTO {
+    @NotNull(message = "Division code is required")
+    private int divisionCode;
 
-    @NotNull(message = "Discom code is required")
-    private int discomCode;
+    @NotNull(message = "Division name is required")
+    @Size(min = 3, max = 100, message = "Division name must be between 3 to 100")
+    private String divisionName;
 
-    @NotNull(message = "Discom name is required")
-    @Size(min = 3, max = 100, message = "Discom name must be between 3 and 100 characters")
-    private String discomName;
-
-    @NotBlank(message = "Discom name is requied")
-    @Size(max = 100, message = "Discom in-charge name must not exceed 100 characters")
+    @NotBlank(message = "Division name is requied")
+    @Size(max = 100, message = "Division in-charge name must not exceed 100 characters")
     private String inChargeName;
 
     @NotBlank(message = "In-charge name is required")
@@ -51,13 +50,16 @@ public class DiscomDTO {
     @DecimalMax(value = "90.0", message = "Latitude must be between -90 and 90")
     private float latitude;
 
-    private String discomPicture;
-    private String createdBy;
-    private String updatedBy;
+    private String divisionPicture;
+
+    @NotNull(message = "Circle Code is required")
+    private int circleCode;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
+    private String createdBy;
     private LocalDateTime applicableFrom;
     private LocalDateTime applicableTo;
+
     @NotNull(message = "Active status is required")
     private boolean active;
 }
