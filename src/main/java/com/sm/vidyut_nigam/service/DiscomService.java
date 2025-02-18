@@ -10,6 +10,6 @@ public interface DiscomService {
     List<DiscomDTO> getAllDiscom();
     DiscomDTO getDiscomByCode(int discomCode);
     DiscomDTO updateDiscom(int discomCode, DiscomUpdateDTO discomDTO);
-    void deleteDiscom(int discomCode);
+    String deleteDiscom(int discomCode);
     List<DiscomDTO> getDiscomByActive(boolean active);
 }

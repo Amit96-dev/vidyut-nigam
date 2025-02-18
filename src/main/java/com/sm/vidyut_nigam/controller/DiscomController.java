@@ -4,10 +4,9 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -72,7 +71,8 @@ public class DiscomController {
     // Update Discom
 
     @PutMapping("/{discomCode}")
-    public ResponseEntity<DiscomDTO> updateDiscom(@Valid @RequestBody DiscomUpdateDTO discomUpdateDTO, @PathVariable int discomCode) {
+    public ResponseEntity<DiscomDTO> updateDiscom(@Valid @RequestBody DiscomUpdateDTO discomUpdateDTO,
+            @PathVariable int discomCode) {
         try {
             DiscomDTO discom = discomService.updateDiscom(discomCode, discomUpdateDTO);
             return ResponseEntity.ok(discom);
@@ -83,11 +83,17 @@ public class DiscomController {
     }
 
     // Delete Discom
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteDiscom(@PathVariable int id) {
-        discomService.deleteDiscom(id);
-        return new ResponseEntity<>("discom deleted successfully by the given id", HttpStatus.OK);
-    }
+
+    // @PatchMapping("/{id}")
+    // public ResponseEntity<String> setActive(@PathVariable int id) {
+    //     try {
+    //         discomService.deleteDiscom(id);
+    //         return ResponseEntity.ok("Discom deleted");
+    //     } catch (Exception e) {
+    //         logger.error("Error while deleting Discom", e);
+    //         return ResponseEntity.badRequest().build();
+    //     }
+    // }
 
     // Get Discom by Active
 
@@ -98,6 +104,17 @@ public class DiscomController {
             return ResponseEntity.ok(discoms);
         } catch (Exception e) {
             logger.error("Error while getting Discom by active", e);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PatchMapping("/delete/{id}")
+    public ResponseEntity<String> updateDiscomStatus(@PathVariable int id) {
+        try {
+            discomService.deleteDiscom(id);
+            return ResponseEntity.ok("Discom deleted");
+        } catch(Exception e){
+            logger.error("Error while deleting Discom", e);
             return ResponseEntity.badRequest().build();
         }
     }
