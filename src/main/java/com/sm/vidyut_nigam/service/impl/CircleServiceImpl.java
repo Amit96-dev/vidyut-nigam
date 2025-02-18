@@ -40,17 +40,17 @@ public class CircleServiceImpl implements CircleService {
     }
 
     @Override
-    public List<CircleDTO> getAllCircles() {
-        List<Circle> circleList = circleRepository.findAll();
+    public List<CircleDTO> getAllCircles(int discomCode) {
+        List<Circle> circleList = circleRepository.findByDiscom_DiscomCode(discomCode);
         List<CircleDTO> circleDTOslist = circleList.stream().map(circle -> mapper.map(circle, CircleDTO.class))
                 .toList();
         return circleDTOslist;
     }
 
     @Override
-    public CircleDTO getCircleByCode(int circleCode) {
-        Circle circle = circleRepository.findById(circleCode)
-                .orElseThrow(() -> new RuntimeException("circle not found with given ID."));
+    public CircleDTO getCircleByCode(int circleCode, int discomCode) {
+        Circle circle = circleRepository.findByCircleCodeAndDiscom_DiscomCode(circleCode, discomCode)
+                .orElseThrow(() -> new RuntimeException("Circle not found with given ID."));
         return mapper.map(circle, CircleDTO.class);
     }
 
@@ -62,8 +62,15 @@ public class CircleServiceImpl implements CircleService {
     }
 
     @Override
-    public CircleDTO updateCircle(int circleCode, CircleUpdateDTO circleDTO) {
-        Circle existingCircle = circleRepository.findById(circleCode)
+    public List<CircleDTO> getActiveCircleByDiscomCode(int discomCode, boolean active) {
+        List<Circle> byActive = circleRepository.findByDiscom_DiscomCodeAndActive(discomCode, active);
+        List<CircleDTO> circleDTOList = byActive.stream().map(a -> mapper.map(a, CircleDTO.class)).toList();
+        return circleDTOList;
+    }
+
+    @Override
+    public CircleDTO updateCircle(int circleCode, int discomeCode, CircleUpdateDTO circleDTO) {
+        Circle existingCircle = circleRepository.findByCircleCodeAndDiscom_DiscomCode(circleCode, discomeCode)
                 .orElseThrow(() -> new RuntimeException("Circle not found with given ID."));
 
         logger.info("existing Circle:{}", existingCircle);
@@ -76,9 +83,9 @@ public class CircleServiceImpl implements CircleService {
     }
 
     @Override
-    public String deleteCircle(int circleCode) {
+    public String deleteCircle(int circleCode, int discomCode) {
         try {
-            Circle existingCircle = circleRepository.findById(circleCode)
+            Circle existingCircle = circleRepository.findByCircleCodeAndDiscom_DiscomCode(circleCode, discomCode)
                     .orElseThrow(() -> new RuntimeException("Circle not found with given ID."));
             existingCircle.setActive(false);
             circleRepository.save(existingCircle);
