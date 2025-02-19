@@ -32,8 +32,11 @@ public class CircleServiceImpl implements CircleService {
         // logger.info("*********************** {}", circleDTO);
         int code = circleRepository.countByDiscom_DiscomCode(circleDTO.getDiscomCode());
         logger.info("*******code:{}", code);
-        circleDTO.setCircleCode(code + 1);
-        logger.info("*******circleDTO:{}", circleDTO);
+        String circleCode = Integer.toString(circleDTO.getDiscomCode()) + Integer.toString(code + 1);
+        logger.info("circleCode************** {}", circleCode);
+
+        circleDTO.setCircleCode(Integer.parseInt(circleCode));
+        // logger.info("*******circleDTO:{}", circleDTO);
         Circle circle = circleRepository.save(mapper.map(circleDTO, Circle.class));
 
         return mapper.map(circle, CircleDTO.class);
