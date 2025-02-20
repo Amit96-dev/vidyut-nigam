@@ -9,10 +9,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "sub_divisions")
 public class SubDivision {
     @Id
     private int subDivisionCode;
@@ -34,6 +36,7 @@ public class SubDivision {
 
     @Column(length = 100)
     private String subDivisionContactEmail;
+
     private float subDivisionLongitude;
     private float subDivisionLatitude;
     private String subDivisionPicture;
@@ -51,6 +54,6 @@ public class SubDivision {
     private boolean active;
 
     @ManyToOne
-    @JoinColumn(name = "subDivisionParentCode", referencedColumnName = "divisionCode", nullable = false)
-    private Division subDivisionParentCode;
+    @JoinColumn(name = "divisionCode", referencedColumnName = "divisionCode", nullable = false)
+    private Division division;
 }
