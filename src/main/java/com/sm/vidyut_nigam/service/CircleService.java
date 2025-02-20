@@ -10,13 +10,13 @@ public interface CircleService {
 
     List<CircleDTO> getAllCircles(int discomCode);
 
-    CircleDTO getCircleByCode(int circleCode, int discomCode);
+    CircleDTO getCircleByCode(int circleCode);
 
-    CircleDTO updateCircle(int circleCode, int discomeCode, CircleUpdateDTO circleDTO);
+    CircleDTO updateCircle(int circleCode, CircleUpdateDTO circleDTO);
 
     List<CircleDTO> getCircleByActive(boolean active);
 
     List<CircleDTO> getActiveCircleByDiscomCode(int discomCode, boolean active);
 
-    String deleteCircle(int circleCode, int discomCode);
+    String deleteCircle(int circleCode);
 }

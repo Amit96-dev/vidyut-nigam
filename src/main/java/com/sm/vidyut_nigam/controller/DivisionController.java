@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sm.vidyut_nigam.dto.DivisionDTO;
+import com.sm.vidyut_nigam.dto.DivisionUpdateDTO;
 import com.sm.vidyut_nigam.service.DivisionService;
 
 import jakarta.validation.Valid;
@@ -29,53 +31,84 @@ public class DivisionController {
     // Create Division
 
     @PostMapping
-    public ResponseEntity<DivisionDTO> createDivision(@Valid @RequestBody DivisionDTO divisionDTO) {
+    public ResponseEntity<?> createDivision(@Valid @RequestBody DivisionDTO divisionDTO) {
         try {
             DivisionDTO divisionDto2 = divisionService.createDivision(divisionDTO);
             return ResponseEntity.ok(divisionDto2);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    @GetMapping("/{divisionCode}")
-    public ResponseEntity<DivisionDTO> getDivisionByCode(@PathVariable int divisionCode) {
+    // Get Division by Division Code
+
+    @GetMapping("singleDivision/{divisionCode}")
+    public ResponseEntity<?> getDivisionByCode(@PathVariable int divisionCode) {
         try {
             DivisionDTO divisionDto = divisionService.getDivisionByDivisionCode(divisionCode);
             return ResponseEntity.ok(divisionDto);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<DivisionDTO>> getAllDivision() {
+    // @GetMapping
+    // public ResponseEntity<List<DivisionDTO>> getAllDivision() {
+    // try {
+    // List<DivisionDTO> divisionDtos = divisionService.getAllDivisions();
+    // return ResponseEntity.ok(divisionDtos);
+    // } catch (Exception e) {
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    // }
+    // }
+
+    // Get all active division
+    @GetMapping("/active")
+    public ResponseEntity<List<DivisionDTO>> getCircleByActive(@RequestParam boolean active) {
         try {
-            List<DivisionDTO> divisionDtos = divisionService.getAllDivisions();
-            return ResponseEntity.ok(divisionDtos);
+            List<DivisionDTO> division = divisionService.findDivisionByActive(active);
+            return ResponseEntity.ok(division);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.badRequest().build();
         }
     }
 
-    @PutMapping("/{divisionCode}")
-    public ResponseEntity<DivisionDTO> updateDivision(@Valid @RequestBody DivisionDTO divisionDTO,
+    // Get all active division by circle code
+
+    @GetMapping("/active/{circleCode}")
+    public ResponseEntity<List<DivisionDTO>> getDivisionByCircleCode(@PathVariable int circleCode,
+            @RequestParam boolean active) {
+        try {
+            List<DivisionDTO> divisions = divisionService.findActiveDivisionByCircleCode(circleCode, active);
+            return ResponseEntity.ok(divisions);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    // Update Division
+
+    @PutMapping("updateDivision/{divisionCode}")
+    public ResponseEntity<DivisionDTO> updateDivision(@Valid @RequestBody DivisionUpdateDTO divisionUpdateDTO,
             @PathVariable int divisionCode) {
         try {
-            DivisionDTO divisionDto2 = divisionService.updateDivision(null, divisionCode);
+            DivisionDTO divisionDto2 = divisionService.updateDivision(divisionUpdateDTO,
+                    divisionCode);
             return ResponseEntity.ok(divisionDto2);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @PatchMapping("/{code}")
-    public ResponseEntity<String> disconnectDivision(@PathVariable int code) {
+    // Delete Division
+
+    @PatchMapping("deleteDivision/{code}")
+    public ResponseEntity<String> deleteDivision(@PathVariable int code) {
         try {
             String result = divisionService.deleteDivision(code);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + code);
         }
     }
 }

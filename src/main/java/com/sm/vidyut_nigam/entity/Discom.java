@@ -18,37 +18,37 @@ import lombok.Data;
 public class Discom {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int discomCode;         // Discom code 1 character
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int discomCode; // Discom code 1 character
 
     @Column(length = 100, nullable = false)
-    private String discomName;      // Distribution company name
+    private String discomName; // Distribution company name
 
     @Column(length = 100, nullable = false)
-    private String inChargeName; 
+    private String discomInChargeName;
     @Column(length = 50)
-    private String designation;
+    private String discomDesignation;
 
     @Column(name = "discom_address", length = 300)
-    private String address;
+    private String discomAddress;
 
     @Column(length = 15)
-    private String contactPhone;
+    private String discomContactPhone;
 
     @Column(length = 100)
-    private String contactEmail;
+    private String discomContactEmail;
 
-    private float longitude;
-    private float latitude;
+    private float discomLongitude;
+    private float discomLatitude;
     private String discomPicture;
-    private String createdBy;
-    private String updatedBy;
+    private String discomCreatedBy;
+    private String discomUpdatedBy;
     @CreationTimestamp
     @Column(updatable = false)
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime applicableFrom;
-    private LocalDateTime applicableTo;
+    private LocalDateTime discomCreatedAt;
+    private LocalDateTime discomUpdatedAt;
+    private LocalDateTime discomApplicableFrom;
+    private LocalDateTime discomApplicableTo;
     @Column(nullable = false)
-    private boolean active;
+    private boolean discomActive;
 }

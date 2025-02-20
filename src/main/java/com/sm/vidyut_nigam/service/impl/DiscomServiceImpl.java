@@ -31,29 +31,27 @@ public class DiscomServiceImpl implements DiscomService {
 
     @Override
     public DiscomDTO createDiscom(DiscomDTO discomDTO) {
-
-        discomDTO.setUpdatedAt(null);
         Discom discom = discomRepository.save(mapper.map(discomDTO, Discom.class));
-
         return mapper.map(discom, DiscomDTO.class);
     }
 
     // Get all Discom
 
-    @Override
-    public List<DiscomDTO> getAllDiscom() {
-        List<Discom> discomList = discomRepository.findAll();
-        List<DiscomDTO> discomDTOslist = discomList.stream().map(discom -> mapper.map(discomList, DiscomDTO.class))
-                .toList();
-        return discomDTOslist;
-    }
+    // @Override
+    // public List<DiscomDTO> getAllDiscom() {
+    // List<Discom> discomList = discomRepository.findAll();
+    // List<DiscomDTO> discomDTOslist = discomList.stream().map(discom ->
+    // mapper.map(discomList, DiscomDTO.class))
+    // .toList();
+    // return discomDTOslist;
+    // }
 
     // Get discom by Code
 
     @Override
     public DiscomDTO getDiscomByCode(int discomId) {
         Discom discom = discomRepository.findById(discomId)
-                .orElseThrow(() -> new RuntimeException("discom not found with given ID."));
+                .orElseThrow(() -> new RuntimeException("discom not found with given ID="));
         return mapper.map(discom, DiscomDTO.class);
     }
 
@@ -67,7 +65,7 @@ public class DiscomServiceImpl implements DiscomService {
         logger.info("existing Discom:{}", existingDiscom);
         BeanUtils.copyProperties(discomDTO, existingDiscom);
 
-        existingDiscom.setUpdatedAt(LocalDateTime.now());
+        existingDiscom.setDiscomUpdatedAt(LocalDateTime.now());
         Discom discom1 = discomRepository.save(existingDiscom);
 
         return mapper.map(discom1, DiscomDTO.class);
@@ -80,7 +78,7 @@ public class DiscomServiceImpl implements DiscomService {
         try {
             Discom discom = discomRepository.findById(discomId)
                     .orElseThrow(() -> new RuntimeException("discom not found by given ID."));
-            discom.setActive(false);
+            discom.setDiscomActive(false);
             discomRepository.save(discom);
             return "Discom deleted successfully";
         } catch (Exception e) {
@@ -92,8 +90,9 @@ public class DiscomServiceImpl implements DiscomService {
 
     @Override
     public List<DiscomDTO> getDiscomByActive(boolean active) {
-        List<Discom> byActive = discomRepository.findByActive(active);
-        List<DiscomDTO> discomDTOList = byActive.stream().map(a -> mapper.map(a, DiscomDTO.class)).toList();
+        List<Discom> byActive = discomRepository.findByDiscomActive(active);
+        List<DiscomDTO> discomDTOList = byActive.stream().map(a -> mapper.map(a,
+                DiscomDTO.class)).toList();
         return discomDTOList;
     }
 

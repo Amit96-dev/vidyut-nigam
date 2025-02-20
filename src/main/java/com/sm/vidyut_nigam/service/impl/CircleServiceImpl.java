@@ -27,12 +27,15 @@ public class CircleServiceImpl implements CircleService {
 
     Logger logger = LoggerFactory.getLogger(CircleServiceImpl.class);
 
+    // create circle
+
     @Override
     public CircleDTO createCircle(CircleDTO circleDTO) {
         // logger.info("*********************** {}", circleDTO);
         int code = circleRepository.countByDiscom_DiscomCode(circleDTO.getDiscomCode());
         logger.info("*******code:{}", code);
-        String circleCode = Integer.toString(circleDTO.getDiscomCode()) + Integer.toString(code + 1);
+        String circleCode = Integer.toString(circleDTO.getDiscomCode()) +
+                Integer.toString(code + 1);
         logger.info("circleCode************** {}", circleCode);
 
         circleDTO.setCircleCode(Integer.parseInt(circleCode));
@@ -41,6 +44,8 @@ public class CircleServiceImpl implements CircleService {
 
         return mapper.map(circle, CircleDTO.class);
     }
+
+    // Get all circles by discom code
 
     @Override
     public List<CircleDTO> getAllCircles(int discomCode) {
@@ -51,46 +56,49 @@ public class CircleServiceImpl implements CircleService {
     }
 
     @Override
-    public CircleDTO getCircleByCode(int circleCode, int discomCode) {
-        Circle circle = circleRepository.findByCircleCodeAndDiscom_DiscomCode(circleCode, discomCode)
-                .orElseThrow(() -> new RuntimeException("Circle not found with given ID."));
+    public CircleDTO getCircleByCode(int circleCode) {
+        Circle circle = circleRepository.findById(circleCode)
+                .orElseThrow(() -> new RuntimeException("Circle not found with given ID="));
         return mapper.map(circle, CircleDTO.class);
     }
 
     @Override
     public List<CircleDTO> getCircleByActive(boolean active) {
-        List<Circle> byActive = circleRepository.findByActive(active);
-        List<CircleDTO> circleDTOList = byActive.stream().map(a -> mapper.map(a, CircleDTO.class)).toList();
+        List<Circle> byActive = circleRepository.findByCircleActive(active);
+        List<CircleDTO> circleDTOList = byActive.stream().map(a -> mapper.map(a,
+                CircleDTO.class)).toList();
         return circleDTOList;
     }
 
     @Override
     public List<CircleDTO> getActiveCircleByDiscomCode(int discomCode, boolean active) {
-        List<Circle> byActive = circleRepository.findByDiscom_DiscomCodeAndActive(discomCode, active);
-        List<CircleDTO> circleDTOList = byActive.stream().map(a -> mapper.map(a, CircleDTO.class)).toList();
+        List<Circle> byActive = circleRepository.findByDiscom_DiscomCodeAndCircleActive(discomCode, active);
+        List<CircleDTO> circleDTOList = byActive.stream().map(a -> mapper.map(a,
+                CircleDTO.class)).toList();
         return circleDTOList;
     }
 
     @Override
-    public CircleDTO updateCircle(int circleCode, int discomeCode, CircleUpdateDTO circleDTO) {
-        Circle existingCircle = circleRepository.findByCircleCodeAndDiscom_DiscomCode(circleCode, discomeCode)
+    public CircleDTO updateCircle(int circleCode, CircleUpdateDTO circleDTO) {
+
+        Circle existingCircle = circleRepository.findById(circleCode)
                 .orElseThrow(() -> new RuntimeException("Circle not found with given ID."));
 
         logger.info("existing Circle:{}", existingCircle);
         BeanUtils.copyProperties(circleDTO, existingCircle);
 
-        existingCircle.setUpdatedAt(LocalDateTime.now());
+        existingCircle.setCircleUpdatedAt(LocalDateTime.now());
         Circle circle1 = circleRepository.save(existingCircle);
 
         return mapper.map(circle1, CircleDTO.class);
     }
 
     @Override
-    public String deleteCircle(int circleCode, int discomCode) {
+    public String deleteCircle(int circleCode) {
         try {
-            Circle existingCircle = circleRepository.findByCircleCodeAndDiscom_DiscomCode(circleCode, discomCode)
+            Circle existingCircle = circleRepository.findById(circleCode)
                     .orElseThrow(() -> new RuntimeException("Circle not found with given ID."));
-            existingCircle.setActive(false);
+            existingCircle.setCircleActive(false);
             circleRepository.save(existingCircle);
             return "Circle Deleted Successfully";
         } catch (Exception e) {

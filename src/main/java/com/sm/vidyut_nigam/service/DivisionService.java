@@ -7,9 +7,16 @@ import com.sm.vidyut_nigam.dto.DivisionUpdateDTO;
 
 public interface DivisionService {
     DivisionDTO createDivision(DivisionDTO divisionDTO);
-    List<DivisionDTO> getAllDivisions();
+
+    // List<DivisionDTO> getAllDivisions();
+
     DivisionDTO getDivisionByDivisionCode(int divisionCode);
+
     DivisionDTO updateDivision(DivisionUpdateDTO divisionUpdateDTO, int divisionCode);
+
     List<DivisionDTO> findDivisionByActive(boolean active);
+
+    List<DivisionDTO> findActiveDivisionByCircleCode(int circleCode, boolean active);
+
     String deleteDivision(int divisionCode);
 }

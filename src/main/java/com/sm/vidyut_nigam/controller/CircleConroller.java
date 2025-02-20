@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -47,18 +48,6 @@ public class CircleConroller {
         }
     }
 
-    // Get all circle
-    // @GetMapping
-    // public ResponseEntity<List<CircleDTO>> getAllCircle() {
-    // try {
-    // List<CircleDTO> circle = circleService.getAllCircles();
-    // return ResponseEntity.ok(circle);
-    // } catch (Exception e) {
-    // logger.error("Error while getting all Circle", e);
-    // return ResponseEntity.badRequest().build();
-    // }
-    // }
-
     // Get all circle by discomCode
     @GetMapping("allCircle/{discomCode}")
     public ResponseEntity<List<CircleDTO>> getAllCircleByDiscomCode(@PathVariable int discomCode) {
@@ -72,19 +61,24 @@ public class CircleConroller {
     }
 
     // Get circle by circle code and discom code
-    @GetMapping("getSingle/{circleCode}/{discomCode}")
-    public ResponseEntity<CircleDTO> getCircleByCircleCode(@PathVariable int circleCode, @PathVariable int discomCode) {
-        CircleDTO circleById = circleService.getCircleByCode(circleCode, discomCode);
-        return ResponseEntity.ok(circleById);
+    @GetMapping("getSingle/{circleCode}")
+    public ResponseEntity<?> getCircleByCircleCode(@PathVariable int circleCode) {
+        try {
+            CircleDTO circleById = circleService.getCircleByCode(circleCode);
+            return ResponseEntity.ok(circleById);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + circleCode);
+        }
     }
 
     // update circle
 
-    @PutMapping("/{circleCode}/{discomCode}")
+    @PutMapping("/{circleCode}")
     public ResponseEntity<CircleDTO> updateCircle(@Valid @RequestBody CircleUpdateDTO circleUpdateDTO,
-            @PathVariable int circleCode, @PathVariable int discomCode) {
+            @PathVariable int circleCode) {
         try {
-            CircleDTO circle = circleService.updateCircle(circleCode, discomCode, circleUpdateDTO);
+            CircleDTO circle = circleService.updateCircle(circleCode,
+                    circleUpdateDTO);
             return ResponseEntity.ok(circle);
         } catch (Exception e) {
             logger.error("Error while updating circle", e);
@@ -94,17 +88,16 @@ public class CircleConroller {
 
     // Get Circle by Active
 
-    // @GetMapping("/active")
-    // public ResponseEntity<List<CircleDTO>> getCircleByActive(@RequestParam
-    // boolean active) {
-    // try {
-    // List<CircleDTO> circles = circleService.getCircleByActive(active);
-    // return ResponseEntity.ok(circles);
-    // } catch (Exception e) {
-    // logger.error("Error while getting Discom by active", e);
-    // return ResponseEntity.badRequest().build();
-    // }
-    // }
+    @GetMapping("/active")
+    public ResponseEntity<List<CircleDTO>> getCircleByActive(@RequestParam boolean active) {
+        try {
+            List<CircleDTO> circles = circleService.getCircleByActive(active);
+            return ResponseEntity.ok(circles);
+        } catch (Exception e) {
+            logger.error("Error while getting Discom by active", e);
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
     // Get all active circle by discom code
     @GetMapping("/active/{discomCode}")
@@ -121,13 +114,13 @@ public class CircleConroller {
 
     // Delete Circle (Soft delete)
 
-    @PatchMapping("/{circleCode}/{discomCode}")
-    public ResponseEntity<String> deleteCircle(@PathVariable int circleCode, @PathVariable int discomCode) {
+    @PatchMapping("/{circleCode}")
+    public ResponseEntity<String> deleteCircle(@PathVariable int circleCode) {
         try {
-            circleService.deleteCircle(circleCode, discomCode);
+            circleService.deleteCircle(circleCode);
             return ResponseEntity.ok("circle deleted successfully");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
     }

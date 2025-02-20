@@ -10,9 +10,9 @@ import com.sm.vidyut_nigam.entity.Circle;
 
 @Repository
 public interface CircleRepository extends JpaRepository<Circle, Integer> {
-    List<Circle> findByActive(boolean active);
+    List<Circle> findByCircleActive(boolean active);
 
-    List<Circle> findByDiscom_DiscomCodeAndActive(int discomCode, boolean active);
+    List<Circle> findByDiscom_DiscomCodeAndCircleActive(int discomCode, boolean active);
 
     List<Circle> findByDiscom_DiscomCode(int discomCode);
 
