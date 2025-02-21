@@ -21,7 +21,7 @@ public class SubDivisionUpdateDTO {
     private String subDivisionInChargeName;
 
     @NotBlank(message = "Sub-division in-charge name is requied")
-    @Size(min =3,max = 100, message = "Sub-division in-charge name must not exceed 100 characters")
+    @Size(min = 3, max = 100, message = "Sub-division in-charge name must not exceed 100 characters")
     private String subDivisionDesignation;
 
     @NotBlank(message = "Address is required")
@@ -54,7 +54,7 @@ public class SubDivisionUpdateDTO {
     private LocalDateTime subDivisionApplicableTo;
 
     @NotNull(message = "Active status is required")
-    private boolean active;
+    private boolean subDivisionActive;
 
-    private int subDivisionParentCode;
+    private int divisionCode;
 }

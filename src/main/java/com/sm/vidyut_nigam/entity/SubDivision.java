@@ -51,9 +51,9 @@ public class SubDivision {
     private LocalDateTime subDivisionApplicableTo;
 
     @Column(nullable = false)
-    private boolean active;
+    private boolean subDivisionActive;
 
     @ManyToOne
-    @JoinColumn(name = "divisionCode", referencedColumnName = "divisionCode", nullable = false)
+    @JoinColumn(name = "subDivisionCodeParentCode", referencedColumnName = "divisionCode", nullable = false)
     private Division division;
 }

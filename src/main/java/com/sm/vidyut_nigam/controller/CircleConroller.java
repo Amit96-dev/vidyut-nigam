@@ -52,7 +52,7 @@ public class CircleConroller {
     @GetMapping("allCircle/{discomCode}")
     public ResponseEntity<List<CircleDTO>> getAllCircleByDiscomCode(@PathVariable int discomCode) {
         try {
-            List<CircleDTO> circles = circleService.getAllCircles(discomCode);
+            List<CircleDTO> circles = circleService.getAllCirclesByDiscomCode(discomCode);
             return ResponseEntity.ok(circles);
         } catch (Exception e) {
             logger.error("Error while getting all Circle", e);

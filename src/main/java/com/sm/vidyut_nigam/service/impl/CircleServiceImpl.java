@@ -48,7 +48,7 @@ public class CircleServiceImpl implements CircleService {
     // Get all circles by discom code
 
     @Override
-    public List<CircleDTO> getAllCircles(int discomCode) {
+    public List<CircleDTO> getAllCirclesByDiscomCode(int discomCode) {
         List<Circle> circleList = circleRepository.findByDiscom_DiscomCode(discomCode);
         List<CircleDTO> circleDTOslist = circleList.stream().map(circle -> mapper.map(circle, CircleDTO.class))
                 .toList();

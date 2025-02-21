@@ -12,9 +12,9 @@ import com.sm.vidyut_nigam.entity.SubDivision;
 public interface SubDivisionRepository extends JpaRepository<SubDivision, Integer> {
     int countByDivision_DivisionCode(int divisionCode);
 
-    List<SubDivision> findByActive(boolean active);
+    List<SubDivision> findBySubDivisionActive(boolean active);
 
-    List<SubDivision> findByDivision_DivisionCodeAndActive(int divisionCode, boolean active);
+    List<SubDivision> findByDivision_DivisionCodeAndSubDivisionActive(int divisionCode, boolean active);
 
     Optional<SubDivision> findBySubDivisionCodeAndDivision_DivisionCode(int subDivisionCode, int divisionCode);
 }

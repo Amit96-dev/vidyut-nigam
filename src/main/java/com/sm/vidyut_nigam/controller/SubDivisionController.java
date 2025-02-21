@@ -2,6 +2,7 @@ package com.sm.vidyut_nigam.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,12 +30,13 @@ public class SubDivisionController {
 
     // Create SubDivision
     @PostMapping
-    public ResponseEntity<SubDivisionDTO> createSubDivision(@Valid @RequestBody SubDivisionDTO subdivisionDTO) {
+    public ResponseEntity<?> createSubDivision(@Valid @RequestBody SubDivisionDTO subdivisionDTO) {
         try {
             SubDivisionDTO subDivision = subdivisionService.createSubDivision(subdivisionDTO);
             return ResponseEntity.ok(subDivision);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred: " + e.getMessage());
         }
     }
 
@@ -74,12 +76,12 @@ public class SubDivisionController {
 
     // Get Sub-division by sub-division code
     @GetMapping("/getSingleSubDivision/{subDivisionCode}")
-    public ResponseEntity<SubDivisionDTO> getSubDivisionByCode(@PathVariable int subDivisionCode) {
+    public ResponseEntity<?> getSubDivisionByCode(@PathVariable int subDivisionCode) {
         try {
             SubDivisionDTO subDivision = subdivisionService.getSubDivisionBySubDivisionCode(subDivisionCode);
             return ResponseEntity.ok(subDivision);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + subDivisionCode);
         }
     }
 
@@ -100,7 +102,7 @@ public class SubDivisionController {
             @RequestParam boolean active) {
         try {
             List<SubDivisionDTO> subDivisions = subdivisionService.getActiveSubDivisionByDivisionCode(divisionCode,
-                    false);
+                    active);
             return ResponseEntity.ok(subDivisions);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

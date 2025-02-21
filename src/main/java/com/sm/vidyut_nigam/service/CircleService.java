@@ -8,7 +8,7 @@ import com.sm.vidyut_nigam.dto.CircleUpdateDTO;
 public interface CircleService {
     CircleDTO createCircle(CircleDTO circleDTO);
 
-    List<CircleDTO> getAllCircles(int discomCode);
+    List<CircleDTO> getAllCirclesByDiscomCode(int discomCode);
 
     CircleDTO getCircleByCode(int circleCode);
 
