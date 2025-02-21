@@ -25,8 +25,8 @@ public class DiscomDTO {
     @Size(max = 100, message = "Discom in-charge name must not exceed 100 characters")
     private String discomInChargeName;
 
-    @NotBlank(message = "In-charge name is required")
-    @Size(max = 50, message = "In-charge name must not exceed 50")
+    @NotBlank(message = "designation name is required")
+    @Size(max = 50, message = "Designation name must not exceed 50")
     private String discomDesignation;
 
     @NotBlank(message = "Address is required")

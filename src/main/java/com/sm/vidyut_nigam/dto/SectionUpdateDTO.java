@@ -16,15 +16,15 @@ public class SectionUpdateDTO {
     private int sectionCode;
 
     @NotNull(message = "Section name is required")
-    @Size(min = 3, max = 100, message = "Discom name must be between 3 and 100 characters")
+    @Size(min = 3, max = 100, message = "Section name must be between 3 and 100 characters")
     private String sectionName;
 
     @NotBlank(message = "Section Incharge-name is requied")
     @Size(max = 100, message = "Section in-charge name must not exceed 100 characters")
     private String sectionInChargeName;
 
-    @NotBlank(message = "In-charge name is required")
-    @Size(max = 50, message = "In-charge name must not exceed 50")
+    @NotBlank(message = "Designation name is required")
+    @Size(max = 50, message = "Designation name must not exceed 50")
     private String sectionDesignation;
 
     @NotBlank(message = "Address is required")
@@ -51,14 +51,13 @@ public class SectionUpdateDTO {
 
     private String sectionPicture;
 
-    private LocalDateTime SectionCreatedAt;
-
-    private String sectionCreatedBy;
     private LocalDateTime sectionUpdatedAt;
     private String sectionUpdatedBy;
     private LocalDateTime sectionApplicableFrom;
     private LocalDateTime sectionApplicableTo;
     
     @NotNull(message = "Active status is required")
-    private boolean active;
+    private boolean sectionActive;
+
+    private int sectionParentCode;
 }

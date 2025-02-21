@@ -52,7 +52,7 @@ public class Section {
     private LocalDateTime sectionApplicableTo;
 
     @Column(nullable = false)
-    private boolean active;
+    private boolean sectionActive;
 
     @ManyToOne
     @JoinColumn(name = "subDivisionCode", referencedColumnName = "subDivisionCode", nullable = false)
