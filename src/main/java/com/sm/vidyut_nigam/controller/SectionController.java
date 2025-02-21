@@ -2,6 +2,7 @@ package com.sm.vidyut_nigam.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,12 +29,13 @@ public class SectionController {
     private final SectionService sectionService;
 
     @PostMapping
-    public ResponseEntity<SectionDTO> createSection(@Valid @RequestBody SectionDTO sectionDTO) {
+    public ResponseEntity<?> createSection(@Valid @RequestBody SectionDTO sectionDTO) {
         try {
             SectionDTO section = sectionService.createSection(sectionDTO);
             return ResponseEntity.ok(section);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

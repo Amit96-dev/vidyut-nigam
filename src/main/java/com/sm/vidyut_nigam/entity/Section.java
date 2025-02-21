@@ -55,6 +55,6 @@ public class Section {
     private boolean sectionActive;
 
     @ManyToOne
-    @JoinColumn(name = "subDivisionCode", referencedColumnName = "subDivisionCode", nullable = false)
-    private SubDivision sectionParentCode;
+    @JoinColumn(name = "sectionParentCode", referencedColumnName = "subDivisionCode", nullable = false)
+    private SubDivision subDivision;
 }

@@ -7,10 +7,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.sm.vidyut_nigam.config.SectionMapper;
 import com.sm.vidyut_nigam.dto.SectionDTO;
 import com.sm.vidyut_nigam.dto.SectionUpdateDTO;
 import com.sm.vidyut_nigam.entity.Section;
+import com.sm.vidyut_nigam.entity.SubDivision;
 import com.sm.vidyut_nigam.repository.SectionRepository;
+import com.sm.vidyut_nigam.repository.SubDivisionRepository;
 import com.sm.vidyut_nigam.service.SectionService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,17 +24,41 @@ public class SectionServiceImpl implements SectionService {
 
     private final SectionRepository sectionRepository;
 
+    private final SubDivisionRepository subDivisionRepository;;
+
+    private final SectionMapper sectionMapper;
+
     private final ModelMapper mapper;
 
     @Override
     public SectionDTO createSection(SectionDTO sectionDTO) {
-        int sectionParentCode = sectionRepository
-                .countBySectionParentCode_subDivisionCode(sectionDTO.getSectionParentCode());
-        String sectionCode = Integer.toString(sectionDTO.getSectionParentCode())
-                + Integer.toString(sectionParentCode + 1);
-        sectionDTO.setSectionCode(Integer.parseInt(sectionCode));
-        Section section = sectionRepository.save(mapper.map(sectionDTO, Section.class));
-        return mapper.map(section, SectionDTO.class);
+        SubDivision subDivision = subDivisionRepository.findById(sectionDTO.getSubDivisionCode())
+                .orElseThrow(() -> new RuntimeException("SubDivision not found"));
+
+        try {
+            int sectionParentCode = sectionRepository
+                    .countBySubDivision_subDivisionCode(sectionDTO.getSubDivisionCode());
+
+            String sectionCode = Integer.toString(sectionDTO.getSubDivisionCode()) + (sectionParentCode + 1);
+            sectionDTO.setSectionCode(Integer.parseInt(sectionCode));
+
+            // Convert DTO to Entity
+            Section section = sectionMapper.toEntity(sectionDTO);
+            section.setSubDivision(subDivision);
+
+            // Save Section
+            section = sectionRepository.save(section);
+
+            // Convert Entity back to DTO
+            SectionDTO responseDTO = sectionMapper.toDTO(section);
+
+            System.out.println("************ResponseDTO**********" + responseDTO);
+
+            return responseDTO;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error creating section", e);
+        }
     }
 
     @Override
@@ -75,7 +102,7 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public List<SectionDTO> getActiveSectionBySubDivisionCode(int subDivisionCode, boolean active) {
         List<Section> sections = sectionRepository
-                .findBySectionParentCode_subDivisionCodeAndSectionActive(subDivisionCode, active);
+                .findBySubDivision_subDivisionCodeAndSectionActive(subDivisionCode, active);
         return sections.stream().map(section -> mapper.map(section, SectionDTO.class)).toList();
     }
 
