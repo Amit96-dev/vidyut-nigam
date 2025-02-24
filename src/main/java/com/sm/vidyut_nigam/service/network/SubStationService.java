@@ -2,14 +2,22 @@ package com.sm.vidyut_nigam.service.network;
 
 import java.util.List;
 
-import com.sm.vidyut_nigam.dto.network.SubStationDTO;
+import com.sm.vidyut_nigam.dto.network.SubStationRequestDTO;
+import com.sm.vidyut_nigam.dto.network.SubStationResponseDTO;
+import com.sm.vidyut_nigam.dto.network.SubStationUpdateDTO;
 
 public interface SubStationService {
-    SubStationDTO createSubStation(SubStationDTO subStationDTO);
-    SubStationDTO updateSubStation(SubStationDTO subStationDTO, int subStationCode);
-    List<SubStationDTO> getAllSubStations();
-    SubStationDTO getSingleSubStationByCode(int subStationCode);
+    SubStationRequestDTO createSubStation(SubStationRequestDTO subStationDTO);
+
+    SubStationUpdateDTO updateSubStation(SubStationUpdateDTO subStationUpdateDTO, int subStationCode);
+
+    List<SubStationResponseDTO> getAllSubStations();
+
+    SubStationRequestDTO getSingleSubStationByCode(int subStationCode);
+
     String deleteSubStation(int subStationCode);
-    List<SubStationDTO> getSubStationByActive(boolean active);
-    List<SubStationDTO> searchBySubStationName(String name);
+
+    List<SubStationRequestDTO> getSubStationByActive(boolean active);
+
+    List<SubStationRequestDTO> searchBySubStationName(String name);
 }

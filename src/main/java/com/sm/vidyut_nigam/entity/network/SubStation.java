@@ -13,7 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 public class SubStation {
 
     @Id
-    @Column(name = "substation_code", nullable = false, unique = true, length = 50)
+    @Column(name = "substation_code", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int subStationCode;
 
@@ -39,7 +39,7 @@ public class SubStation {
     private String subStationPicture;
 
     @Column(name = "capacity", nullable = false)
-    private Integer subStationCapacity; // in MW or MVA
+    private int subStationCapacity; // in MW or MVA
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
@@ -61,5 +61,5 @@ public class SubStation {
     private LocalDate subStationApplicableTo;
 
     @Column(name = "active", nullable = false)
-    private Boolean subStationActive = true;
+    private boolean subStationActive;
 }

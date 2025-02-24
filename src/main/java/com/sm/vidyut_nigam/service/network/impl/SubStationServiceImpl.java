@@ -7,7 +7,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.sm.vidyut_nigam.dto.network.SubStationDTO;
+import com.sm.vidyut_nigam.dto.network.SubStationRequestDTO;
+import com.sm.vidyut_nigam.dto.network.SubStationResponseDTO;
+import com.sm.vidyut_nigam.dto.network.SubStationUpdateDTO;
 import com.sm.vidyut_nigam.entity.network.SubStation;
 import com.sm.vidyut_nigam.repository.network.SubStationRepository;
 import com.sm.vidyut_nigam.service.network.SubStationService;
@@ -23,33 +25,33 @@ public class SubStationServiceImpl implements SubStationService{
 
     // Create Sub-Station
     @Override
-    public SubStationDTO createSubStation(SubStationDTO subStationDTO) {
+    public SubStationRequestDTO createSubStation(SubStationRequestDTO subStationDTO) {
         SubStation subStation = subStationRepository.save(mapper.map(subStationDTO, SubStation.class));
-        return mapper.map(subStation, SubStationDTO.class);
+        return mapper.map(subStation, SubStationRequestDTO.class);
     }
 
     // Update Sub-Station
     @Override
-    public SubStationDTO updateSubStation(SubStationDTO subStationDTO, int subStationCode) {
+    public SubStationUpdateDTO updateSubStation(SubStationUpdateDTO subStationUpdateDTO, int subStationCode) {
         SubStation subStation = subStationRepository.findById(subStationCode).orElseThrow(()-> new RuntimeException("Substation not found with given code"));
-        BeanUtils.copyProperties(subStationDTO, subStation);
+        BeanUtils.copyProperties(subStationUpdateDTO, subStation);
         subStation.setSubStationUpdatedDt(LocalDateTime.now());
         subStation = subStationRepository.save(subStation);
-        return mapper.map(subStation, SubStationDTO.class);
+        return mapper.map(subStation, SubStationUpdateDTO.class);
     }
 
     // Get All SubStations
     @Override
-    public List<SubStationDTO> getAllSubStations() {
+    public List<SubStationResponseDTO> getAllSubStations() {
         List<SubStation> subStationList = subStationRepository.findAll();
-        return subStationList.stream().map(subStation -> mapper.map(subStation, SubStationDTO.class)).toList();
+        return subStationList.stream().map(subStation -> mapper.map(subStation, SubStationResponseDTO.class)).toList();
     }
 
     // Get Single Sub-Station
     @Override
-    public SubStationDTO getSingleSubStationByCode(int subStationCode) {
+    public SubStationRequestDTO getSingleSubStationByCode(int subStationCode) {
         SubStation subStation = subStationRepository.findById(subStationCode).orElseThrow(()-> new RuntimeException("Substation not found with given code"));
-        return mapper.map(subStation, SubStationDTO.class);
+        return mapper.map(subStation, SubStationRequestDTO.class);
     }
 
     // Delete Sub-Station
@@ -63,17 +65,17 @@ public class SubStationServiceImpl implements SubStationService{
 
     // Get all active substations
     @Override
-    public List<SubStationDTO> getSubStationByActive(boolean active) {
+    public List<SubStationRequestDTO> getSubStationByActive(boolean active) {
         List<SubStation> bySubStationActive = subStationRepository.findBySubStationActive(active);
-        List<SubStationDTO> subStationDTOList = bySubStationActive.stream().map(subStation -> mapper.map(subStation, SubStationDTO.class)).toList();
+        List<SubStationRequestDTO> subStationDTOList = bySubStationActive.stream().map(subStation -> mapper.map(subStation, SubStationRequestDTO.class)).toList();
         return subStationDTOList;
     }
 
     // Search SubStation by name
     @Override
-    public List<SubStationDTO> searchBySubStationName(String name) {
-        List<SubStation> subStationList = subStationRepository.findBySubStationNameContaining(name);
-        return subStationList.stream().map(subStation -> mapper.map(subStation, SubStationDTO.class)).toList();
+    public List<SubStationRequestDTO> searchBySubStationName(String name) {
+        List<SubStation> subStationList = subStationRepository.findBySubStationNameContainingIgnoreCase(name);
+        return subStationList.stream().map(subStation -> mapper.map(subStation, SubStationRequestDTO.class)).toList();
     }
     
 }

@@ -8,5 +8,5 @@ import com.sm.vidyut_nigam.entity.network.SubStation;
 
 public interface SubStationRepository extends JpaRepository<SubStation, Integer> {
     List<SubStation> findBySubStationActive(Boolean subStationActive);
-    List<SubStation> findBySubStationNameContaining(String subStationName);
+    List<SubStation> findBySubStationNameContainingIgnoreCase(String subStationName);
 }

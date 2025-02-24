@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sm.vidyut_nigam.dto.network.SubStationDTO;
+import com.sm.vidyut_nigam.dto.network.SubStationRequestDTO;
+import com.sm.vidyut_nigam.dto.network.SubStationResponseDTO;
+import com.sm.vidyut_nigam.dto.network.SubStationUpdateDTO;
 import com.sm.vidyut_nigam.service.network.SubStationService;
 
 import jakarta.validation.Valid;
@@ -27,9 +29,9 @@ public class SubStationController {
     private final SubStationService subStationService;
 
     @PostMapping
-    public ResponseEntity<?> createSubStation(@Valid @RequestBody SubStationDTO subStationDTO) {
+    public ResponseEntity<?> createSubStation(@Valid @RequestBody SubStationRequestDTO subStationDTO) {
         try {
-            SubStationDTO subStation = subStationService.createSubStation(subStationDTO);
+            SubStationRequestDTO subStation = subStationService.createSubStation(subStationDTO);
             return ResponseEntity.ok(subStation);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -39,33 +41,35 @@ public class SubStationController {
     @GetMapping
     public ResponseEntity<?> getAllSubStation() {
         try {
-            List<SubStationDTO> subStation = subStationService.getAllSubStations();
+            List<SubStationResponseDTO> subStation = subStationService.getAllSubStations();
             return ResponseEntity.ok(subStation);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @GetMapping("/sub-station")
+    @GetMapping("/by-code/{code}")
     public ResponseEntity<?> getSubStationById(@PathVariable int code) {
         try {
-            SubStationDTO subStation = subStationService.getSingleSubStationByCode(code);
+            SubStationRequestDTO subStation = subStationService.getSingleSubStationByCode(code);
             return ResponseEntity.ok(subStation);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
+    // Update
     @PutMapping("/update/{code}")
-    public ResponseEntity<?> updateSubStation(@Valid @RequestBody SubStationDTO subStationDTO, @PathVariable int code) {
+    public ResponseEntity<?> updateSubStation(@Valid @RequestBody SubStationUpdateDTO subStationUpdateDTO, @PathVariable int code) {
         try {
-            SubStationDTO subStation = subStationService.updateSubStation(subStationDTO, code);
+            SubStationUpdateDTO subStation = subStationService.updateSubStation(subStationUpdateDTO, code);
             return ResponseEntity.ok(subStation);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
+    // Delete sub-station
     @PatchMapping("/delete/{code}")
     public ResponseEntity<?> deleteSubStation(@PathVariable int code) {
         try {
@@ -76,20 +80,22 @@ public class SubStationController {
         }
     }
 
+    // Get all active 
     @GetMapping("/active")
     public ResponseEntity<?> getSubStationByActive(@RequestParam boolean active) {
         try {
-            List<SubStationDTO> subStation = subStationService.getSubStationByActive(active);
+            List<SubStationRequestDTO> subStation = subStationService.getSubStationByActive(active);
             return ResponseEntity.ok(subStation);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
+    // Search Sub-Station by name
     @GetMapping("/search/{keyword}")
     public ResponseEntity<?> searchSubStation(@PathVariable String keyword) {
         try {
-            List<SubStationDTO> subStation = subStationService.searchBySubStationName(keyword);
+            List<SubStationRequestDTO> subStation = subStationService.searchBySubStationName(keyword);
             return ResponseEntity.ok(subStation);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

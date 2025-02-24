@@ -5,19 +5,14 @@ import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class SubStationUpdateDTO {
-    @NotBlank(message = "Substation code cannot be empty")
-    @Size(max = 50, message = "Substation code must not exceed 50 characters")
     private int subStationCode;
 
     @NotBlank(message = "Substation name cannot be empty")
@@ -47,20 +42,20 @@ public class SubStationUpdateDTO {
 
     @NotNull(message = "Capacity cannot be null")
     @Min(value = 1, message = "Capacity must be at least 1 MW or MVA")
-    private Integer subStationCapacity;
+    private int subStationCapacity;
 
     @Size(max = 100, message = "Updated by must not exceed 100 characters")
     private String subStationUpdatedBy;
 
-    @PastOrPresent(message = "Updated date must be in the past or present")
+    // @PastOrPresent(message = "Updated date must be in the past or present")
     private LocalDateTime subStationUpdatedDt;
 
-    @FutureOrPresent(message = "Applicable from date must be today or in the future")
+    // @FutureOrPresent(message = "Applicable from date must be today or in the future")
     private LocalDate subStationApplicableFrom;
 
-    @Future(message = "Applicable to date must be in the future")
+    // @Future(message = "Applicable to date must be in the future")
     private LocalDate subStationApplicableTo;
 
     @NotNull(message = "Active status must be specified")
-    private Boolean subStationActive = true;
+    private boolean subStationActive;
 }
