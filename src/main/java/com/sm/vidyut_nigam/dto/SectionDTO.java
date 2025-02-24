@@ -51,14 +51,15 @@ public class SectionDTO {
 
     private String sectionPicture;
 
-    private LocalDateTime SectionCreatedAt;
+    private LocalDateTime sectionCreatedAt;
 
     private String sectionCreatedBy;
     private LocalDateTime sectionApplicableFrom;
     private LocalDateTime sectionApplicableTo;
-    
+
     @NotNull(message = "Active status is required")
     private boolean sectionActive;
 
-    private int sectionParentCode;
+    @NotNull(message = "Sub-division code is required")
+    private int subDivisionCode;
 }

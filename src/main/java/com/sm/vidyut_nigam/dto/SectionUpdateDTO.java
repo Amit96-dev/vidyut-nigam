@@ -55,9 +55,9 @@ public class SectionUpdateDTO {
     private String sectionUpdatedBy;
     private LocalDateTime sectionApplicableFrom;
     private LocalDateTime sectionApplicableTo;
-    
+
     @NotNull(message = "Active status is required")
     private boolean sectionActive;
 
-    private int sectionParentCode;
+    private int subDivisionCode;
 }
