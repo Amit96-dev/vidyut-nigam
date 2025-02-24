@@ -52,8 +52,6 @@ public class SectionServiceImpl implements SectionService {
             // Convert Entity back to DTO
             SectionDTO responseDTO = sectionMapper.toDTO(section);
 
-            System.out.println("************ResponseDTO**********" + responseDTO);
-
             return responseDTO;
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,7 +62,7 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public SectionDTO getSectionBySectionCode(int sectionCode) {
         Section section = sectionRepository.findById(sectionCode)
-                .orElseThrow(() -> new RuntimeException("Section not found with given section code"));
+                .orElseThrow(() -> new RuntimeException("Section not found with given section code = "));
         return mapper.map(section, SectionDTO.class);
     }
 
@@ -87,7 +85,7 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public String deactivateSection(int sectionCode) {
         Section section = sectionRepository.findById(sectionCode)
-                .orElseThrow(() -> new RuntimeException("Section not found with given section code"));
+                .orElseThrow(() -> new RuntimeException("Section not found with given section code = "));
         section.setSectionActive(false);
         sectionRepository.save(section);
         return "Section deactivated successfully";
