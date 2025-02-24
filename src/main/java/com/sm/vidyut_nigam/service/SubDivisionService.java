@@ -4,11 +4,14 @@ import java.util.List;
 
 import com.sm.vidyut_nigam.dto.SubDivisionDTO;
 import com.sm.vidyut_nigam.dto.SubDivisionUpdateDTO;
+import com.sm.vidyut_nigam.dto.CardStuructureResponse.SubDivisionCardDTO;
+import com.sm.vidyut_nigam.dto.ResponseDTO.SubDivisionResponse;
+import com.sm.vidyut_nigam.dto.TreeStructureResponse.SubDivisionTreeDTO;
 
 public interface SubDivisionService {
     SubDivisionDTO createSubDivision(SubDivisionDTO subDivisionDTO);
 
-    SubDivisionDTO getSubDivisionBySubDivisionCode(int subDivisionCode);
+    SubDivisionResponse getSubDivisionBySubDivisionCode(int subDivisionCode);
 
     List<SubDivisionDTO> getAllSubDivisions();
 
@@ -19,4 +22,8 @@ public interface SubDivisionService {
     List<SubDivisionDTO> getSubDivisionByActive(boolean active);
 
     List<SubDivisionDTO> getActiveSubDivisionByDivisionCode(int divisionCode, boolean active);
+
+    List<SubDivisionCardDTO> getActiveSubDivisionCardByDivisionCode(int divisionCode, boolean active);
+
+    List<SubDivisionTreeDTO> getActiveSubDivisionTreeByDivisionCode(int divisionCode, boolean active);
 }

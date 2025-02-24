@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sm.vidyut_nigam.dto.CircleDTO;
 import com.sm.vidyut_nigam.dto.CircleUpdateDTO;
+import com.sm.vidyut_nigam.dto.CardStuructureResponse.CircleCardDTO;
+import com.sm.vidyut_nigam.dto.ResponseDTO.CircleResponse;
+import com.sm.vidyut_nigam.dto.TreeStructureResponse.CircleTreeDTO;
 import com.sm.vidyut_nigam.service.CircleService;
 
 import jakarta.validation.Valid;
@@ -53,9 +56,9 @@ public class CircleConroller {
 
     // Get all circle by discomCode
     @GetMapping("allCircle/{discomCode}")
-    public ResponseEntity<List<CircleDTO>> getAllCircleByDiscomCode(@PathVariable int discomCode) {
+    public ResponseEntity<List<CircleResponse>> getAllCircleByDiscomCode(@PathVariable int discomCode) {
         try {
-            List<CircleDTO> circles = circleService.getAllCirclesByDiscomCode(discomCode);
+            List<CircleResponse> circles = circleService.getAllCirclesByDiscomCode(discomCode);
             return ResponseEntity.ok(circles);
         } catch (Exception e) {
             logger.error("Error while getting all Circle", e);
@@ -67,7 +70,7 @@ public class CircleConroller {
     @GetMapping("getSingle/{circleCode}")
     public ResponseEntity<?> getCircleByCircleCode(@PathVariable int circleCode) {
         try {
-            CircleDTO circleById = circleService.getCircleByCode(circleCode);
+            CircleResponse circleById = circleService.getCircleByCode(circleCode);
             return ResponseEntity.ok(circleById);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + circleCode);
@@ -111,6 +114,30 @@ public class CircleConroller {
             return ResponseEntity.ok(circles);
         } catch (Exception e) {
             logger.error("Error while getting Discom by active", e);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/card/active/{discomCode}")
+    public ResponseEntity<List<CircleCardDTO>> getCircleCardByDiscomCode(@PathVariable int discomCode,
+            @RequestParam boolean active) {
+        try {
+            List<CircleCardDTO> circles = circleService.getActiveCircleCardByDiscomCode(discomCode, active);
+            return ResponseEntity.ok(circles);
+        } catch (Exception e) {
+            logger.error("Error while getting Discom by active", e);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/tree/active/{discomCode}")
+    public ResponseEntity<List<CircleTreeDTO>> getCircleTreeByDiscomCode(@PathVariable int discomCode,
+            @RequestParam boolean active) {
+        try {
+            List<CircleTreeDTO> circles = circleService.getActiveCircleTreeByDiscomCode(discomCode, active);
+            return ResponseEntity.ok(circles);
+        } catch (Exception e) {
+            logger.error("Error while getting Circle by active", e);
             return ResponseEntity.badRequest().build();
         }
     }

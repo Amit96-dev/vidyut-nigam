@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.sm.vidyut_nigam.dto.CircleDTO;
 import com.sm.vidyut_nigam.dto.CircleUpdateDTO;
+import com.sm.vidyut_nigam.dto.CardStuructureResponse.CircleCardDTO;
+import com.sm.vidyut_nigam.dto.ResponseDTO.CircleResponse;
+import com.sm.vidyut_nigam.dto.TreeStructureResponse.CircleTreeDTO;
 import com.sm.vidyut_nigam.entity.Circle;
 import com.sm.vidyut_nigam.repository.CircleRepository;
 import com.sm.vidyut_nigam.service.CircleService;
@@ -48,18 +51,19 @@ public class CircleServiceImpl implements CircleService {
     // Get all circles by discom code
 
     @Override
-    public List<CircleDTO> getAllCirclesByDiscomCode(int discomCode) {
+    public List<CircleResponse> getAllCirclesByDiscomCode(int discomCode) {
         List<Circle> circleList = circleRepository.findByDiscom_DiscomCode(discomCode);
-        List<CircleDTO> circleDTOslist = circleList.stream().map(circle -> mapper.map(circle, CircleDTO.class))
+        List<CircleResponse> circleDTOslist = circleList.stream()
+                .map(circle -> mapper.map(circle, CircleResponse.class))
                 .toList();
         return circleDTOslist;
     }
 
     @Override
-    public CircleDTO getCircleByCode(int circleCode) {
+    public CircleResponse getCircleByCode(int circleCode) {
         Circle circle = circleRepository.findById(circleCode)
                 .orElseThrow(() -> new RuntimeException("Circle not found with given ID="));
-        return mapper.map(circle, CircleDTO.class);
+        return mapper.map(circle, CircleResponse.class);
     }
 
     @Override
@@ -76,6 +80,22 @@ public class CircleServiceImpl implements CircleService {
         List<CircleDTO> circleDTOList = byActive.stream().map(a -> mapper.map(a,
                 CircleDTO.class)).toList();
         return circleDTOList;
+    }
+
+    @Override
+    public List<CircleCardDTO> getActiveCircleCardByDiscomCode(int discomCode, boolean active) {
+        List<Circle> byActive = circleRepository.findByDiscom_DiscomCodeAndCircleActive(discomCode, active);
+        List<CircleCardDTO> circleCardDTOList = byActive.stream().map(a -> mapper.map(a,
+                CircleCardDTO.class)).toList();
+        return circleCardDTOList;
+    }
+
+    @Override
+    public List<CircleTreeDTO> getActiveCircleTreeByDiscomCode(int discomCode, boolean active) {
+        List<Circle> byActive = circleRepository.findByDiscom_DiscomCodeAndCircleActive(discomCode, active);
+        List<CircleTreeDTO> circleTreeDTOList = byActive.stream().map(a -> mapper.map(a,
+                CircleTreeDTO.class)).toList();
+        return circleTreeDTOList;
     }
 
     @Override

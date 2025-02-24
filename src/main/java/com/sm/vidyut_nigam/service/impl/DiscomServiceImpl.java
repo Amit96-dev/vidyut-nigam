@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.sm.vidyut_nigam.dto.DiscomDTO;
 import com.sm.vidyut_nigam.dto.DiscomUpdateDTO;
+import com.sm.vidyut_nigam.dto.CardStuructureResponse.DiscomCardDTO;
+import com.sm.vidyut_nigam.dto.ResponseDTO.DiscomResponse;
+import com.sm.vidyut_nigam.dto.TreeStructureResponse.DiscomTreeDTO;
 import com.sm.vidyut_nigam.entity.Discom;
 import com.sm.vidyut_nigam.repository.DiscomRepository;
 import com.sm.vidyut_nigam.service.DiscomService;
@@ -49,10 +52,10 @@ public class DiscomServiceImpl implements DiscomService {
     // Get discom by Code
 
     @Override
-    public DiscomDTO getDiscomByCode(int discomId) {
+    public DiscomResponse getDiscomByCode(int discomId) {
         Discom discom = discomRepository.findById(discomId)
                 .orElseThrow(() -> new RuntimeException("discom not found with given ID="));
-        return mapper.map(discom, DiscomDTO.class);
+        return mapper.map(discom, DiscomResponse.class);
     }
 
     // Update Discom
@@ -89,11 +92,24 @@ public class DiscomServiceImpl implements DiscomService {
     // Get Discom By Active
 
     @Override
-    public List<DiscomDTO> getDiscomByActive(boolean active) {
+    public List<DiscomResponse> getDiscomByActive(boolean active) {
         List<Discom> byActive = discomRepository.findByDiscomActive(active);
-        List<DiscomDTO> discomDTOList = byActive.stream().map(a -> mapper.map(a,
-                DiscomDTO.class)).toList();
+        List<DiscomResponse> discomDTOList = byActive.stream().map(a -> mapper.map(a, DiscomResponse.class)).toList();
         return discomDTOList;
+    }
+
+    @Override
+    public List<DiscomCardDTO> getDiscomCardByActive(boolean active) {
+        List<Discom> byActive = discomRepository.findByDiscomActive(active);
+        List<DiscomCardDTO> discomCardDTOList = byActive.stream().map(a -> mapper.map(a, DiscomCardDTO.class)).toList();
+        return discomCardDTOList;
+    }
+
+    @Override
+    public List<DiscomTreeDTO> getDiscomTreeByActive(boolean active) {
+        List<Discom> byActive = discomRepository.findByDiscomActive(active);
+        List<DiscomTreeDTO> discomTreeDTOList = byActive.stream().map(a -> mapper.map(a, DiscomTreeDTO.class)).toList();
+        return discomTreeDTOList;
     }
 
 }

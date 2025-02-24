@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.sm.vidyut_nigam.dto.SubDivisionDTO;
 import com.sm.vidyut_nigam.dto.SubDivisionUpdateDTO;
+import com.sm.vidyut_nigam.dto.CardStuructureResponse.SubDivisionCardDTO;
+import com.sm.vidyut_nigam.dto.ResponseDTO.SubDivisionResponse;
+import com.sm.vidyut_nigam.dto.TreeStructureResponse.SubDivisionTreeDTO;
 import com.sm.vidyut_nigam.entity.Division;
 import com.sm.vidyut_nigam.entity.SubDivision;
 import com.sm.vidyut_nigam.repository.DivisionRepository;
@@ -55,10 +58,10 @@ public class SubDivisionServiceImpl implements SubDivisionService {
 
     // Get SubDivision By SubDivisionCode
     @Override
-    public SubDivisionDTO getSubDivisionBySubDivisionCode(int subDivisionCode) {
+    public SubDivisionResponse getSubDivisionBySubDivisionCode(int subDivisionCode) {
         SubDivision subDivision = subDivisionRepository.findById(subDivisionCode)
                 .orElseThrow(() -> new RuntimeException("Sub-division not found with given sub-division code = "));
-        return mapper.map(subDivision, SubDivisionDTO.class);
+        return mapper.map(subDivision, SubDivisionResponse.class);
     }
 
     // Get all SubDivisions
@@ -101,11 +104,30 @@ public class SubDivisionServiceImpl implements SubDivisionService {
     public List<SubDivisionDTO> getActiveSubDivisionByDivisionCode(int divisionCode, boolean active) {
         List<SubDivision> subDivisionList = subDivisionRepository
                 .findByDivision_DivisionCodeAndSubDivisionActive(divisionCode, active);
-        System.out.println(subDivisionList);
         List<SubDivisionDTO> subDivisionDTOList = subDivisionList.stream()
-                .map(subdivision -> mapper.map(subdivision, SubDivisionDTO.class)) // Corrected this line
+                .map(subdivision -> mapper.map(subdivision, SubDivisionDTO.class))
                 .toList();
         return subDivisionDTOList;
+    }
+
+    @Override
+    public List<SubDivisionCardDTO> getActiveSubDivisionCardByDivisionCode(int divisionCode, boolean active) {
+        List<SubDivision> subDivisionList = subDivisionRepository
+                .findByDivision_DivisionCodeAndSubDivisionActive(divisionCode, active);
+        List<SubDivisionCardDTO> subDivisionCardDTOList = subDivisionList.stream()
+                .map(subdivision -> mapper.map(subdivision, SubDivisionCardDTO.class))
+                .toList();
+        return subDivisionCardDTOList;
+    }
+
+    @Override
+    public List<SubDivisionTreeDTO> getActiveSubDivisionTreeByDivisionCode(int divisionCode, boolean active) {
+        List<SubDivision> subDivisionList = subDivisionRepository
+                .findByDivision_DivisionCodeAndSubDivisionActive(divisionCode, active);
+        List<SubDivisionTreeDTO> subDivisionTreeDTOList = subDivisionList.stream()
+                .map(subdivision -> mapper.map(subdivision, SubDivisionTreeDTO.class))
+                .toList();
+        return subDivisionTreeDTOList;
     }
 
 }

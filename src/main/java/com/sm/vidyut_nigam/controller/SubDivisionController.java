@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sm.vidyut_nigam.dto.SubDivisionDTO;
 import com.sm.vidyut_nigam.dto.SubDivisionUpdateDTO;
+import com.sm.vidyut_nigam.dto.CardStuructureResponse.SubDivisionCardDTO;
+import com.sm.vidyut_nigam.dto.ResponseDTO.SubDivisionResponse;
+import com.sm.vidyut_nigam.dto.TreeStructureResponse.SubDivisionTreeDTO;
 import com.sm.vidyut_nigam.service.SubDivisionService;
 
 import jakarta.validation.Valid;
@@ -81,7 +84,7 @@ public class SubDivisionController {
     @GetMapping("/getSingleSubDivision/{subDivisionCode}")
     public ResponseEntity<?> getSubDivisionByCode(@PathVariable int subDivisionCode) {
         try {
-            SubDivisionDTO subDivision = subdivisionService.getSubDivisionBySubDivisionCode(subDivisionCode);
+            SubDivisionResponse subDivision = subdivisionService.getSubDivisionBySubDivisionCode(subDivisionCode);
             return ResponseEntity.ok(subDivision);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + subDivisionCode);
@@ -100,12 +103,39 @@ public class SubDivisionController {
     }
 
     // Get SubDivision by Division code
-    @GetMapping("/{divisionCode}/active")
+    @GetMapping("/active/{divisionCode}")
     public ResponseEntity<List<SubDivisionDTO>> getActiveSubDivisionByDivisionCode(@PathVariable int divisionCode,
             @RequestParam boolean active) {
         try {
             List<SubDivisionDTO> subDivisions = subdivisionService.getActiveSubDivisionByDivisionCode(divisionCode,
                     active);
+            return ResponseEntity.ok(subDivisions);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/card/active/{divisionCode}")
+    public ResponseEntity<List<SubDivisionCardDTO>> getActiveSubDivisionCardByDivisionCode(
+            @PathVariable int divisionCode,
+            @RequestParam boolean active) {
+        try {
+            List<SubDivisionCardDTO> subDivisions = subdivisionService.getActiveSubDivisionCardByDivisionCode(
+                    divisionCode,
+                    active);
+            return ResponseEntity.ok(subDivisions);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/tree/active/{divisionCode}")
+    public ResponseEntity<List<SubDivisionTreeDTO>> getActiveSubDivisionTreeByDivisionCode(
+            @PathVariable int divisionCode,
+            @RequestParam boolean active) {
+        try {
+            List<SubDivisionTreeDTO> subDivisions = subdivisionService
+                    .getActiveSubDivisionTreeByDivisionCode(divisionCode, active);
             return ResponseEntity.ok(subDivisions);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

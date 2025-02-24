@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sm.vidyut_nigam.dto.DiscomDTO;
 import com.sm.vidyut_nigam.dto.DiscomUpdateDTO;
+import com.sm.vidyut_nigam.dto.CardStuructureResponse.DiscomCardDTO;
+import com.sm.vidyut_nigam.dto.ResponseDTO.DiscomResponse;
+import com.sm.vidyut_nigam.dto.TreeStructureResponse.DiscomTreeDTO;
 import com.sm.vidyut_nigam.service.DiscomService;
 
 import jakarta.validation.Valid;
@@ -56,7 +59,7 @@ public class DiscomController {
     @GetMapping("getSingle/{discomCode}")
     public ResponseEntity<?> getDiscomByDiscomCode(@PathVariable int discomCode) {
         try {
-            DiscomDTO discomById = discomService.getDiscomByCode(discomCode);
+            DiscomResponse discomById = discomService.getDiscomByCode(discomCode);
             return ResponseEntity.ok(discomById);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + discomCode);
@@ -106,10 +109,32 @@ public class DiscomController {
     // Get Discom by Active
 
     @GetMapping("/active")
-    public ResponseEntity<List<DiscomDTO>> getDiscomByActive(@RequestParam boolean active) {
+    public ResponseEntity<List<DiscomResponse>> getDiscomByActive(@RequestParam boolean active) {
         try {
-            List<DiscomDTO> discoms = discomService.getDiscomByActive(active);
+            List<DiscomResponse> discoms = discomService.getDiscomByActive(active);
             return ResponseEntity.ok(discoms);
+        } catch (Exception e) {
+            logger.error("Error while getting Discom by active", e);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/card/active")
+    public ResponseEntity<List<DiscomCardDTO>> getDiscomCardByActive(@RequestParam boolean active) {
+        try {
+            List<DiscomCardDTO> discomscard = discomService.getDiscomCardByActive(active);
+            return ResponseEntity.ok(discomscard);
+        } catch (Exception e) {
+            logger.error("Error while getting Discom by active", e);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/tree/active")
+    public ResponseEntity<List<DiscomTreeDTO>> getDiscomTreeByActive(@RequestParam boolean active) {
+        try {
+            List<DiscomTreeDTO> discomstree = discomService.getDiscomTreeByActive(active);
+            return ResponseEntity.ok(discomstree);
         } catch (Exception e) {
             logger.error("Error while getting Discom by active", e);
             return ResponseEntity.badRequest().build();

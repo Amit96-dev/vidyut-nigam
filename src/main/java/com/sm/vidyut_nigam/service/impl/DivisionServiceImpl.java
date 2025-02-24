@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.sm.vidyut_nigam.dto.DivisionDTO;
 import com.sm.vidyut_nigam.dto.DivisionUpdateDTO;
+import com.sm.vidyut_nigam.dto.CardStuructureResponse.DivisionCardDTO;
+import com.sm.vidyut_nigam.dto.ResponseDTO.DivisionResponse;
+import com.sm.vidyut_nigam.dto.TreeStructureResponse.DivisionTreeDTO;
 import com.sm.vidyut_nigam.entity.Division;
 import com.sm.vidyut_nigam.repository.DivisionRepository;
 import com.sm.vidyut_nigam.service.DivisionService;
@@ -43,10 +46,10 @@ public class DivisionServiceImpl implements DivisionService {
     // }
 
     @Override
-    public DivisionDTO getDivisionByDivisionCode(int divisionCode) {
+    public DivisionResponse getDivisionByDivisionCode(int divisionCode) {
         Division division = divisionRepository.findById(divisionCode)
                 .orElseThrow(() -> new RuntimeException("Division not found with given division code"));
-        return mapper.map(division, DivisionDTO.class);
+        return mapper.map(division, DivisionResponse.class);
     }
 
     @Override
@@ -77,9 +80,25 @@ public class DivisionServiceImpl implements DivisionService {
     @Override
     public List<DivisionDTO> findActiveDivisionByCircleCode(int circleCode, boolean active) {
         List<Division> byActive = divisionRepository.findByCircle_CircleCodeAndDivisionActive(circleCode, active);
-        List<DivisionDTO> divisioneDTOList = byActive.stream().map(a -> mapper.map(a,
+        List<DivisionDTO> divisionDTOList = byActive.stream().map(a -> mapper.map(a,
                 DivisionDTO.class)).toList();
-        return divisioneDTOList;
+        return divisionDTOList;
+    }
+
+    @Override
+    public List<DivisionCardDTO> findActiveDivisionCardByCircleCode(int circleCode, boolean active) {
+        List<Division> byActive = divisionRepository.findByCircle_CircleCodeAndDivisionActive(circleCode, active);
+        List<DivisionCardDTO> divisionCardDTOList = byActive.stream().map(a -> mapper.map(a,
+                DivisionCardDTO.class)).toList();
+        return divisionCardDTOList;
+    }
+
+    @Override
+    public List<DivisionTreeDTO> findActiveDivisionTreeByCircleCode(int circleCode, boolean active) {
+        List<Division> byActive = divisionRepository.findByCircle_CircleCodeAndDivisionActive(circleCode, active);
+        List<DivisionTreeDTO> divisionTreeDTOList = byActive.stream().map(a -> mapper.map(a,
+                DivisionTreeDTO.class)).toList();
+        return divisionTreeDTOList;
     }
 
 }

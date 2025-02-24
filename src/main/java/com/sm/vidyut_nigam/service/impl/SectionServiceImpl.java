@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import com.sm.vidyut_nigam.config.SectionMapper;
 import com.sm.vidyut_nigam.dto.SectionDTO;
 import com.sm.vidyut_nigam.dto.SectionUpdateDTO;
+import com.sm.vidyut_nigam.dto.CardStuructureResponse.SectionCardDTO;
+import com.sm.vidyut_nigam.dto.ResponseDTO.SectionResponse;
+import com.sm.vidyut_nigam.dto.TreeStructureResponse.SectionTreeDTO;
 import com.sm.vidyut_nigam.entity.Section;
 import com.sm.vidyut_nigam.entity.SubDivision;
 import com.sm.vidyut_nigam.repository.SectionRepository;
@@ -60,10 +63,10 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public SectionDTO getSectionBySectionCode(int sectionCode) {
+    public SectionResponse getSectionBySectionCode(int sectionCode) {
         Section section = sectionRepository.findById(sectionCode)
                 .orElseThrow(() -> new RuntimeException("Section not found with given section code = "));
-        return mapper.map(section, SectionDTO.class);
+        return mapper.map(section, SectionResponse.class);
     }
 
     @Override
@@ -102,6 +105,20 @@ public class SectionServiceImpl implements SectionService {
         List<Section> sections = sectionRepository
                 .findBySubDivision_subDivisionCodeAndSectionActive(subDivisionCode, active);
         return sections.stream().map(section -> mapper.map(section, SectionDTO.class)).toList();
+    }
+
+    @Override
+    public List<SectionCardDTO> getActiveSectionCardBySubDivisionCode(int subDivisionCode, boolean active) {
+        List<Section> sections = sectionRepository
+                .findBySubDivision_subDivisionCodeAndSectionActive(subDivisionCode, active);
+        return sections.stream().map(section -> mapper.map(section, SectionCardDTO.class)).toList();
+    }
+
+    @Override
+    public List<SectionTreeDTO> getActiveSectionTreeBySubDivisionCode(int subDivisionCode, boolean active) {
+        List<Section> sections = sectionRepository
+                .findBySubDivision_subDivisionCodeAndSectionActive(subDivisionCode, active);
+        return sections.stream().map(section -> mapper.map(section, SectionTreeDTO.class)).toList();
     }
 
 }

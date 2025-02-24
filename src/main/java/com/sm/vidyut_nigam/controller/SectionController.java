@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sm.vidyut_nigam.dto.SectionDTO;
 import com.sm.vidyut_nigam.dto.SectionUpdateDTO;
+import com.sm.vidyut_nigam.dto.CardStuructureResponse.SectionCardDTO;
+import com.sm.vidyut_nigam.dto.ResponseDTO.SectionResponse;
+import com.sm.vidyut_nigam.dto.TreeStructureResponse.SectionTreeDTO;
 import com.sm.vidyut_nigam.service.SectionService;
 
 import jakarta.validation.Valid;
@@ -55,7 +58,7 @@ public class SectionController {
     @GetMapping("/getSingleSection/{sectionCode}")
     public ResponseEntity<?> getSectionByCode(@PathVariable int sectionCode) {
         try {
-            SectionDTO section = sectionService.getSectionBySectionCode(sectionCode);
+            SectionResponse section = sectionService.getSectionBySectionCode(sectionCode);
             return ResponseEntity.ok(section);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + sectionCode);
@@ -95,11 +98,35 @@ public class SectionController {
         }
     }
 
-    @GetMapping("/{subDivisionCode}/active")
+    @GetMapping("/active/{subDivisionCode}")
     public ResponseEntity<List<?>> getActiveSectionBySubDivisionCode(@PathVariable int subDivisionCode,
             @RequestParam boolean active) {
         try {
             List<SectionDTO> sections = sectionService.getActiveSectionBySubDivisionCode(subDivisionCode, active);
+            return ResponseEntity.ok(sections);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/card/active/{subDivisionCode}")
+    public ResponseEntity<List<?>> getActiveSectionCardBySubDivisionCode(@PathVariable int subDivisionCode,
+            @RequestParam boolean active) {
+        try {
+            List<SectionCardDTO> sections = sectionService.getActiveSectionCardBySubDivisionCode(subDivisionCode,
+                    active);
+            return ResponseEntity.ok(sections);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/tree/active/{subDivisionCode}")
+    public ResponseEntity<List<?>> getActiveSectionTreeBySubDivisionCode(@PathVariable int subDivisionCode,
+            @RequestParam boolean active) {
+        try {
+            List<SectionTreeDTO> sections = sectionService.getActiveSectionTreeBySubDivisionCode(subDivisionCode,
+                    active);
             return ResponseEntity.ok(sections);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

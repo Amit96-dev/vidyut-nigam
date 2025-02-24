@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sm.vidyut_nigam.dto.DivisionDTO;
 import com.sm.vidyut_nigam.dto.DivisionUpdateDTO;
+import com.sm.vidyut_nigam.dto.CardStuructureResponse.DivisionCardDTO;
+import com.sm.vidyut_nigam.dto.ResponseDTO.DivisionResponse;
+import com.sm.vidyut_nigam.dto.TreeStructureResponse.DivisionTreeDTO;
 import com.sm.vidyut_nigam.service.DivisionService;
 
 import jakarta.validation.Valid;
@@ -48,7 +51,7 @@ public class DivisionController {
     @GetMapping("singleDivision/{divisionCode}")
     public ResponseEntity<?> getDivisionByCode(@PathVariable int divisionCode) {
         try {
-            DivisionDTO divisionDto = divisionService.getDivisionByDivisionCode(divisionCode);
+            DivisionResponse divisionDto = divisionService.getDivisionByDivisionCode(divisionCode);
             return ResponseEntity.ok(divisionDto);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -83,6 +86,28 @@ public class DivisionController {
             @RequestParam boolean active) {
         try {
             List<DivisionDTO> divisions = divisionService.findActiveDivisionByCircleCode(circleCode, active);
+            return ResponseEntity.ok(divisions);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/card/active/{circleCode}")
+    public ResponseEntity<List<DivisionCardDTO>> getDivisionCardByCircleCode(@PathVariable int circleCode,
+            @RequestParam boolean active) {
+        try {
+            List<DivisionCardDTO> divisions = divisionService.findActiveDivisionCardByCircleCode(circleCode, active);
+            return ResponseEntity.ok(divisions);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/tree/active/{circleCode}")
+    public ResponseEntity<List<DivisionTreeDTO>> getDivisionTreeByCircleCode(@PathVariable int circleCode,
+            @RequestParam boolean active) {
+        try {
+            List<DivisionTreeDTO> divisions = divisionService.findActiveDivisionTreeByCircleCode(circleCode, active);
             return ResponseEntity.ok(divisions);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
