@@ -1,19 +1,8 @@
-package com.sm.vidyut_nigam.entity.network;
+package com.sm.vidyut_nigam.dto.network;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Future;
@@ -25,73 +14,52 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name = "feeder")
-public class Feeder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "feeder_code", nullable = false, unique = true)
+public class FeederResponseDTO {
     private int feederCode;
 
     @NotBlank(message = "Feeder name cannot be empty")
     @Size(max = 100, message = "Feeder name must not exceed 100 characters")
-    @Column(name = "feeder_name", nullable = false, length = 100)
     private String feederName;
 
     @NotBlank(message = "Feeder address cannot be empty")
     @Size(max = 255, message = "Feeder address must not exceed 255 characters")
-    @Column(name = "feeder_address", nullable = false, length = 255)
     private String feederAddress;
 
     @DecimalMin(value = "-180.0", message = "Longitude must be between -180 and 180")
     @DecimalMax(value = "180.0", message = "Longitude must be between -180 and 180")
-    @Column(name = "feeder_longitude")
     private Float feederLongitude;
 
     @DecimalMin(value = "-90.0", message = "Latitude must be between -90 and 90")
     @DecimalMax(value = "90.0", message = "Latitude must be between -90 and 90")
-    @Column(name = "feeder_latitude")
     private Float feederLatitude;
 
     @Size(max = 255, message = "Picture URL must not exceed 255 characters")
-    @Column(name = "feeder_picture", length = 255)
     private String feederPicture;
 
     @NotNull(message = "Feeder capacity cannot be null")
     @Min(value = 1, message = "Feeder capacity must be at least 1 MW or MVA")
-    @Column(name = "feeder_capacity", nullable = false)
     private int feederCapacity;
 
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime feederCreatedAt;
 
     @NotBlank(message = "Created by cannot be empty")
     @Size(max = 100, message = "Created by must not exceed 100 characters")
-    @Column(name = "created_by", nullable = false, length = 100, updatable = false)
     private String createdBy;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime feederUpdatedAt;
-
     @Size(max = 100, message = "Updated by must not exceed 100 characters")
-    @Column(name = "updated_by", length = 100)
     private String updatedBy;
 
+    private LocalDateTime feederUpdatedAt;
+
     @FutureOrPresent(message = "Applicable from date must be today or in the future")
-    @Column(name = "applicable_from")
     private LocalDate feederApplicableFrom;
 
     @Future(message = "Applicable to date must be in the future")
-    @Column(name = "applicable_to")
     private LocalDate feederApplicableTo;
 
     @NotNull(message = "Feeder active status must be specified")
-    @Column(name = "feeder_active", nullable = false)
     private boolean feederActive;
 
-    @ManyToOne
-    @JoinColumn(name = "sub_station_code", referencedColumnName = "subStationCode", nullable = false)
-    private SubStation subStation;
+    @NotNull(message = "Substation code cannot be null")
+    private int subStationCode;  // Instead of SubStation entity, use its ID
 }
