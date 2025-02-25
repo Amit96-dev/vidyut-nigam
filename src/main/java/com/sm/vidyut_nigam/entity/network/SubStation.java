@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import org.hibernate.annotations.CreationTimestamp;
 
 @Data
@@ -13,8 +12,8 @@ import org.hibernate.annotations.CreationTimestamp;
 public class SubStation {
 
     @Id
-    @Column(name = "substation_code", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "substation_code", nullable = false, unique = true)
     private int subStationCode;
 
     @Column(name = "substation_name", nullable = false, length = 100)
@@ -30,10 +29,10 @@ public class SubStation {
     private String subStationAddress;
 
     @Column(name = "longitude")
-    private Double subStationLongitude;
+    private float subStationLongitude;
 
     @Column(name = "latitude")
-    private Double subStationLatitude;
+    private float subStationLatitude;
 
     @Column(name = "picture", length = 255)
     private String subStationPicture;
@@ -41,8 +40,8 @@ public class SubStation {
     @Column(name = "capacity", nullable = false)
     private int subStationCapacity; // in MW or MVA
 
-    @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime subStationCreatedAt;
 
     @Column(name = "created_by", nullable = false, length = 100)

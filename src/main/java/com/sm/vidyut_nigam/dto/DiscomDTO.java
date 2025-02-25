@@ -53,9 +53,7 @@ public class DiscomDTO {
 
     private String discomPicture;
     private String discomCreatedBy;
-    private String discomUpdatedBy;
     private LocalDateTime discomCreatedAt;
-    private LocalDateTime discomUpdatedAt;
     private LocalDateTime discomApplicableFrom;
     private LocalDateTime discomApplicableTo;
     @NotNull(message = "Active status is required")
