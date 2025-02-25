@@ -14,7 +14,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class FeederRequestDTO {
+public class FeederResponseDTO {
     private int feederCode;
 
     @NotBlank(message = "Feeder name cannot be empty")
@@ -46,6 +46,11 @@ public class FeederRequestDTO {
     @Size(max = 100, message = "Created by must not exceed 100 characters")
     private String createdBy;
 
+    @Size(max = 100, message = "Updated by must not exceed 100 characters")
+    private String updatedBy;
+
+    private LocalDateTime feederUpdatedAt;
+
     @FutureOrPresent(message = "Applicable from date must be today or in the future")
     private LocalDate feederApplicableFrom;
 
@@ -56,5 +61,5 @@ public class FeederRequestDTO {
     private boolean feederActive;
 
     @NotNull(message = "Substation code cannot be null")
-    private int subStationCode;
+    private int subStationCode;  // Instead of SubStation entity, use its ID
 }

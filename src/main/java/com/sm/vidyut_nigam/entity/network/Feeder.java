@@ -8,12 +8,10 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "feeders")
+@Table(name = "feeder")
 public class Feeder {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "feeder_code", nullable = false, unique = true)
     private int feederCode;
 
     @Column(name = "feeder_name", nullable = false, length = 100)
