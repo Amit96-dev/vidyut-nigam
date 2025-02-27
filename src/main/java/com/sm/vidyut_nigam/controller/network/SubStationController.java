@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sm.vidyut_nigam.dto.network.SubStationRequestDTO;
 import com.sm.vidyut_nigam.dto.network.SubStationResponseDTO;
 import com.sm.vidyut_nigam.dto.network.SubStationUpdateDTO;
+import com.sm.vidyut_nigam.dto.network.CardStructureResponse.SubStationCardDTO;
 import com.sm.vidyut_nigam.service.network.SubStationService;
 
 import jakarta.validation.Valid;
@@ -60,7 +61,8 @@ public class SubStationController {
 
     // Update
     @PutMapping("/update/{code}")
-    public ResponseEntity<?> updateSubStation(@Valid @RequestBody SubStationUpdateDTO subStationUpdateDTO, @PathVariable int code) {
+    public ResponseEntity<?> updateSubStation(@Valid @RequestBody SubStationUpdateDTO subStationUpdateDTO,
+            @PathVariable int code) {
         try {
             SubStationUpdateDTO subStation = subStationService.updateSubStation(subStationUpdateDTO, code);
             return ResponseEntity.ok(subStation);
@@ -80,11 +82,22 @@ public class SubStationController {
         }
     }
 
-    // Get all active 
+    // Get all active
     @GetMapping("/active")
     public ResponseEntity<?> getSubStationByActive(@RequestParam boolean active) {
         try {
             List<SubStationRequestDTO> subStation = subStationService.getSubStationByActive(active);
+            return ResponseEntity.ok(subStation);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Get all active in card format
+    @GetMapping("/card/active")
+    public ResponseEntity<?> getSubStationCardByActive(@RequestParam boolean active) {
+        try {
+            List<SubStationCardDTO> subStation = subStationService.getSubStationCardByActive(active);
             return ResponseEntity.ok(subStation);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

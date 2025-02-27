@@ -14,4 +14,8 @@ public class DivisionCardDTO {
     private String divisionDesignation;
 
     private String divisionAddress;
+
+    private String divisionContactPhone;
+
+    private String divisionContactEmail;
 }

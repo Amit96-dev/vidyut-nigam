@@ -14,4 +14,8 @@ public class SubDivisionCardDTO {
     private String subDivisionDesignation;
 
     private String subDivisionAddress;
+
+    private String subDivisionContactPhone;
+
+    private String subDivisionContactEmail;
 }

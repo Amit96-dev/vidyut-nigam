@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.sm.vidyut_nigam.dto.network.FeederRequestDTO;
 import com.sm.vidyut_nigam.dto.network.FeederResponseDTO;
 import com.sm.vidyut_nigam.dto.network.FeederUpdateDTO;
+import com.sm.vidyut_nigam.dto.network.CardStructureResponse.FeederCardDTO;
 import com.sm.vidyut_nigam.entity.network.Feeder;
 import com.sm.vidyut_nigam.repository.network.FeederRepository;
 import com.sm.vidyut_nigam.service.network.FeederService;
@@ -41,7 +42,8 @@ public class FeederServiceImpl implements FeederService {
     @Override
     public List<FeederResponseDTO> getFeederByActive(boolean active) {
         List<Feeder> feederByActive = feederRepository.findByFeederActive(active);
-        List<FeederResponseDTO> feederResponseDTOList = feederByActive.stream().map(feeder -> mapper.map(feeder, FeederResponseDTO.class)).toList();
+        List<FeederResponseDTO> feederResponseDTOList = feederByActive.stream()
+                .map(feeder -> mapper.map(feeder, FeederResponseDTO.class)).toList();
         return feederResponseDTOList;
     }
 
@@ -52,8 +54,15 @@ public class FeederServiceImpl implements FeederService {
     }
 
     @Override
+    public List<FeederCardDTO> getActiveFeederCardBySubStationCode(int subStationCode) {
+        List<Feeder> FeederList = feederRepository.findBySubStation_SubStationCode(subStationCode);
+        return FeederList.stream().map(feeder -> mapper.map(feeder, FeederCardDTO.class)).toList();
+    }
+
+    @Override
     public String updateFeeder(FeederUpdateDTO feederUpdateDTO, int feederCode) {
-        Feeder feeder = feederRepository.findById(feederCode).orElseThrow(()-> new RuntimeException("Feeder not found with given code"));
+        Feeder feeder = feederRepository.findById(feederCode)
+                .orElseThrow(() -> new RuntimeException("Feeder not found with given code"));
         BeanUtils.copyProperties(feederUpdateDTO, feeder);
         feeder.setFeederUpdatedAt(LocalDateTime.now());
         feederRepository.save(feeder);
@@ -62,14 +71,16 @@ public class FeederServiceImpl implements FeederService {
 
     @Override
     public String deleteFeeder(int feederCode) {
-        Feeder feeder = feederRepository.findById(feederCode).orElseThrow(()-> new RuntimeException("Feeder not found with given code"));
+        Feeder feeder = feederRepository.findById(feederCode)
+                .orElseThrow(() -> new RuntimeException("Feeder not found with given code"));
         feeder.setFeederActive(false);
         return "Feeder Deleted Successfully";
     }
 
     @Override
     public FeederResponseDTO getSingleFeederByCode(int feederCode) {
-        Feeder feeder = feederRepository.findById(feederCode).orElseThrow(()-> new RuntimeException("Feeder not found with given code"));
+        Feeder feeder = feederRepository.findById(feederCode)
+                .orElseThrow(() -> new RuntimeException("Feeder not found with given code"));
         return mapper.map(feeder, FeederResponseDTO.class);
     }
 

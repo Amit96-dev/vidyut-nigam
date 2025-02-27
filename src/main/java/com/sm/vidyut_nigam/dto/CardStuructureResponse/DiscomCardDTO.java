@@ -13,4 +13,8 @@ public class DiscomCardDTO {
     private String discomDesignation;
 
     private String discomAddress;
+
+    private String discomContactPhone;
+
+    private String discomContactEmail;
 }

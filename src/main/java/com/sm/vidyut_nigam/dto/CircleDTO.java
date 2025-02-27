@@ -57,9 +57,7 @@ public class CircleDTO {
     private int discomCode;
 
     private String circleCreatedBy;
-    private String circleUpdatedBy;
     private LocalDateTime circleCreatedAt;
-    private LocalDateTime circleUpdatedAt;
     private LocalDateTime circleApplicableFrom;
     private LocalDateTime circleApplicableTo;
 

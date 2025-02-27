@@ -5,6 +5,7 @@ import java.util.List;
 import com.sm.vidyut_nigam.dto.network.FeederRequestDTO;
 import com.sm.vidyut_nigam.dto.network.FeederResponseDTO;
 import com.sm.vidyut_nigam.dto.network.FeederUpdateDTO;
+import com.sm.vidyut_nigam.dto.network.CardStructureResponse.FeederCardDTO;
 
 public interface FeederService {
     FeederRequestDTO createFeeder(FeederRequestDTO feederRequestDTO);
@@ -14,6 +15,8 @@ public interface FeederService {
     List<FeederResponseDTO> getFeederByActive(boolean active);
 
     List<FeederResponseDTO> getActiveFeederBySubStationCode(int subStationCode);
+
+    List<FeederCardDTO> getActiveFeederCardBySubStationCode(int subStationCode);
 
     String updateFeeder(FeederUpdateDTO feederUpdateDTO, int feederCode);
 

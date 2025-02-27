@@ -14,4 +14,8 @@ public class CircleCardDTO {
     private String circleDesignation;
 
     private String circleAddress;
+
+    private String circleContactPhone;
+
+    private String circleContactEmail;
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sm.vidyut_nigam.dto.network.FeederRequestDTO;
 import com.sm.vidyut_nigam.dto.network.FeederResponseDTO;
 import com.sm.vidyut_nigam.dto.network.FeederUpdateDTO;
+import com.sm.vidyut_nigam.dto.network.CardStructureResponse.FeederCardDTO;
 import com.sm.vidyut_nigam.service.network.FeederService;
 
 import jakarta.validation.Valid;
@@ -92,6 +93,16 @@ public class FeederController {
     public ResponseEntity<?> getFeederBySubStationCode(@PathVariable int subStationCode) {
         try {
             List<FeederResponseDTO> allFeeders = feederService.getActiveFeederBySubStationCode(subStationCode);
+            return ResponseEntity.ok(allFeeders);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error fetching feeders by sub station code");
+        }
+    }
+
+    @GetMapping("/card/get-active/{subStationCode}")
+    public ResponseEntity<?> getFeederCardBySubStationCode(@PathVariable int subStationCode) {
+        try {
+            List<FeederCardDTO> allFeeders = feederService.getActiveFeederCardBySubStationCode(subStationCode);
             return ResponseEntity.ok(allFeeders);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error fetching feeders by sub station code");

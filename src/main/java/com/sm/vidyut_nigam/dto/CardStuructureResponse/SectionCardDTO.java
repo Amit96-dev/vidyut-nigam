@@ -13,4 +13,8 @@ public class SectionCardDTO {
     private String sectionDesignation;
 
     private String sectionAddress;
+
+    private String sectionContactPhone;
+
+    private String sectionContactEmail;
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.sm.vidyut_nigam.dto.network.SubStationRequestDTO;
 import com.sm.vidyut_nigam.dto.network.SubStationResponseDTO;
 import com.sm.vidyut_nigam.dto.network.SubStationUpdateDTO;
+import com.sm.vidyut_nigam.dto.network.CardStructureResponse.SubStationCardDTO;
 
 public interface SubStationService {
     SubStationRequestDTO createSubStation(SubStationRequestDTO subStationDTO);
@@ -18,6 +19,8 @@ public interface SubStationService {
     String deleteSubStation(int subStationCode);
 
     List<SubStationRequestDTO> getSubStationByActive(boolean active);
+
+    List<SubStationCardDTO> getSubStationCardByActive(boolean active);
 
     List<SubStationRequestDTO> searchBySubStationName(String name);
 }
