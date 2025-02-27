@@ -32,28 +32,27 @@ public class SubDivisionServiceImpl implements SubDivisionService {
 
     // Create SubDivision
     @Override
-    public SubDivisionDTO createSubDivision(SubDivisionDTO subDivisionDTO) {
-
+    public String createSubDivision(SubDivisionDTO subDivisionDTO) {
+        try{
         Division division = divisionRepository.findById(subDivisionDTO.getDivisionCode())
-                .orElseThrow(() -> new RuntimeException("Division not found with code: "
-                        + subDivisionDTO.getDivisionCode()));
+            .orElseThrow(() -> new RuntimeException("Division not found with code: "
+                 + subDivisionDTO.getDivisionCode()));
 
         int count = subDivisionRepository.countByDivision_DivisionCode(division.getDivisionCode());
-
         String subDivisionCode = division.getDivisionCode() + "" + (count + 1);
         subDivisionDTO.setSubDivisionCode(Integer.parseInt(subDivisionCode));
 
         SubDivision subDivision = mapper.map(subDivisionDTO, SubDivision.class);
-
         subDivision.setDivision(division);
-
         subDivision = subDivisionRepository.save(subDivision);
 
         SubDivisionDTO savedDTO = mapper.map(subDivision, SubDivisionDTO.class);
-
         savedDTO.setDivisionCode(division.getDivisionCode());
+        return "Sub Division Created Successfully";
 
-        return savedDTO;
+        }catch(Exception e) {
+            return "Error while creating Sub Division\n"+ e.getMessage();
+        }
     }
 
     // Get SubDivision By SubDivisionCode
@@ -66,9 +65,9 @@ public class SubDivisionServiceImpl implements SubDivisionService {
 
     // Get all SubDivisions
     @Override
-    public List<SubDivisionDTO> getAllSubDivisions() {
+    public List<SubDivisionResponse> getAllSubDivisions() {
         List<SubDivision> subDivisionList = subDivisionRepository.findAll();
-        return subDivisionList.stream().map(subDivision -> mapper.map(subDivision, SubDivisionDTO.class)).toList();
+        return subDivisionList.stream().map(subDivision -> mapper.map(subDivision, SubDivisionResponse.class)).toList();
     }
 
     // Deactivate SubDivision
@@ -83,29 +82,33 @@ public class SubDivisionServiceImpl implements SubDivisionService {
 
     // Update SubDivision
     @Override
-    public SubDivisionDTO updateSubDivision(SubDivisionUpdateDTO subDivisionUpdateDTO, int subDivisionCode) {
-        SubDivision subDivision = subDivisionRepository.findById(subDivisionCode)
+    public String updateSubDivision(SubDivisionUpdateDTO subDivisionUpdateDTO, int subDivisionCode) {
+        try{
+            SubDivision subDivision = subDivisionRepository.findById(subDivisionCode)
                 .orElseThrow(() -> new RuntimeException("Sub-division not found with given sub-division code"));
         BeanUtils.copyProperties(subDivisionUpdateDTO, subDivision);
         subDivision.setSubDivisionUpdatedAt(LocalDateTime.now());
         subDivisionRepository.save(subDivision);
-        return mapper.map(subDivision, SubDivisionDTO.class);
+        return "Sub Division Updated Successfully";
+        }catch(Exception e){
+            return "Error while updating Sub Division\n"+ e.getMessage();
+        }
     }
 
     // Get SubDivision By active
     @Override
-    public List<SubDivisionDTO> getSubDivisionByActive(boolean active) {
+    public List<SubDivisionResponse> getSubDivisionByActive(boolean active) {
         List<SubDivision> subDivisionList = subDivisionRepository.findBySubDivisionActive(active);
-        return subDivisionList.stream().map(subDivision -> mapper.map(subDivision, SubDivisionDTO.class)).toList();
+        return subDivisionList.stream().map(subDivision -> mapper.map(subDivision, SubDivisionResponse.class)).toList();
     }
 
     // Get Active SubDivision By DivisionCode
     @Override
-    public List<SubDivisionDTO> getActiveSubDivisionByDivisionCode(int divisionCode, boolean active) {
+    public List<SubDivisionResponse> getActiveSubDivisionByDivisionCode(int divisionCode, boolean active) {
         List<SubDivision> subDivisionList = subDivisionRepository
                 .findByDivision_DivisionCodeAndSubDivisionActive(divisionCode, active);
-        List<SubDivisionDTO> subDivisionDTOList = subDivisionList.stream()
-                .map(subdivision -> mapper.map(subdivision, SubDivisionDTO.class))
+        List<SubDivisionResponse> subDivisionDTOList = subDivisionList.stream()
+                .map(subdivision -> mapper.map(subdivision, SubDivisionResponse.class))
                 .toList();
         return subDivisionDTOList;
     }

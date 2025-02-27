@@ -41,16 +41,12 @@ public class DiscomController {
     // Create Discom
 
     @PostMapping
-    public ResponseEntity<DiscomDTO> createDiscom(@Valid @RequestBody DiscomDTO discomDTO) {
+    public ResponseEntity<?> createDiscom(@Valid @RequestBody DiscomDTO discomDTO) {
         try {
-            // LocalDateTime currentTime = LocalDateTime.now();
-            // discomDTO.setCreatedAt(currentTime);
-
-            DiscomDTO discom = discomService.createDiscom(discomDTO);
-            return ResponseEntity.ok(discom);
+            String discom = discomService.createDiscom(discomDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(discom);
         } catch (Exception e) {
-            logger.error("Error while creating Discom", e);
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -82,14 +78,14 @@ public class DiscomController {
     // Update Discom
 
     @PutMapping("/{discomCode}")
-    public ResponseEntity<DiscomDTO> updateDiscom(@Valid @RequestBody DiscomUpdateDTO discomUpdateDTO,
+    public ResponseEntity<?> updateDiscom(@Valid @RequestBody DiscomUpdateDTO discomUpdateDTO,
             @PathVariable int discomCode) {
         try {
-            DiscomDTO discom = discomService.updateDiscom(discomCode, discomUpdateDTO);
+            String discom = discomService.updateDiscom(discomCode, discomUpdateDTO);
             return ResponseEntity.ok(discom);
         } catch (Exception e) {
             logger.error("Error while updating Discom", e);
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

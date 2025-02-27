@@ -9,19 +9,19 @@ import com.sm.vidyut_nigam.dto.ResponseDTO.SectionResponse;
 import com.sm.vidyut_nigam.dto.TreeStructureResponse.SectionTreeDTO;
 
 public interface SectionService {
-    SectionDTO createSection(SectionDTO sectionDTO);
+    String createSection(SectionDTO sectionDTO);
 
     SectionResponse getSectionBySectionCode(int sectionCode);
 
-    List<SectionDTO> getAllSection();
+    List<SectionResponse> getAllSection();
 
-    SectionDTO updateSection(SectionUpdateDTO sectionUpdateDTO, int sectionCode);
+    String updateSection(SectionUpdateDTO sectionUpdateDTO, int sectionCode);
 
     String deactivateSection(int sectionCode);
 
-    List<SectionDTO> getSectionByActive(boolean active);
+    List<SectionResponse> getSectionByActive(boolean active);
 
-    List<SectionDTO> getActiveSectionBySubDivisionCode(int subDivisionCode, boolean active);
+    List<SectionResponse> getActiveSectionBySubDivisionCode(int subDivisionCode, boolean active);
 
     List<SectionCardDTO> getActiveSectionCardBySubDivisionCode(int subDivisionCode, boolean active);
 

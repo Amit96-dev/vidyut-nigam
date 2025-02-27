@@ -9,19 +9,19 @@ import com.sm.vidyut_nigam.dto.ResponseDTO.SubDivisionResponse;
 import com.sm.vidyut_nigam.dto.TreeStructureResponse.SubDivisionTreeDTO;
 
 public interface SubDivisionService {
-    SubDivisionDTO createSubDivision(SubDivisionDTO subDivisionDTO);
+    String createSubDivision(SubDivisionDTO subDivisionDTO);
 
     SubDivisionResponse getSubDivisionBySubDivisionCode(int subDivisionCode);
 
-    List<SubDivisionDTO> getAllSubDivisions();
+    List<SubDivisionResponse> getAllSubDivisions();
 
-    SubDivisionDTO updateSubDivision(SubDivisionUpdateDTO subDivisionUpdateDTO, int subDivisionCode);
+    String updateSubDivision(SubDivisionUpdateDTO subDivisionUpdateDTO, int subDivisionCode);
 
     String deactivateSubDivision(int subDivisionCode);
 
-    List<SubDivisionDTO> getSubDivisionByActive(boolean active);
+    List<SubDivisionResponse> getSubDivisionByActive(boolean active);
 
-    List<SubDivisionDTO> getActiveSubDivisionByDivisionCode(int divisionCode, boolean active);
+    List<SubDivisionResponse> getActiveSubDivisionByDivisionCode(int divisionCode, boolean active);
 
     List<SubDivisionCardDTO> getActiveSubDivisionCardByDivisionCode(int divisionCode, boolean active);
 

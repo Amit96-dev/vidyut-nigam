@@ -41,16 +41,12 @@ public class CircleConroller {
 
     // Create circle
     @PostMapping
-    public ResponseEntity<CircleDTO> createCircle(@Valid @RequestBody CircleDTO circleDTO) {
+    public ResponseEntity<?> createCircle(@Valid @RequestBody CircleDTO circleDTO) {
         try {
-            // LocalDateTime currentTime = LocalDateTime.now();
-            // circleDTO.setCreatedAt(currentTime);
-            logger.info("********Controller************* {}", circleDTO);
-            CircleDTO circle = circleService.createCircle(circleDTO);
-            return ResponseEntity.ok(circle);
+            String circle = circleService.createCircle(circleDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(circle);
         } catch (Exception e) {
-            logger.error("Error while creating Circle", e);
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -80,37 +76,35 @@ public class CircleConroller {
     // update circle
 
     @PutMapping("/{circleCode}")
-    public ResponseEntity<CircleDTO> updateCircle(@Valid @RequestBody CircleUpdateDTO circleUpdateDTO,
+    public ResponseEntity<?> updateCircle(@Valid @RequestBody CircleUpdateDTO circleUpdateDTO,
             @PathVariable int circleCode) {
         try {
-            CircleDTO circle = circleService.updateCircle(circleCode,
+            String circle = circleService.updateCircle(circleCode,
                     circleUpdateDTO);
             return ResponseEntity.ok(circle);
         } catch (Exception e) {
-            logger.error("Error while updating circle", e);
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     // Get Circle by Active
 
     @GetMapping("/active")
-    public ResponseEntity<List<CircleDTO>> getCircleByActive(@RequestParam boolean active) {
+    public ResponseEntity<List<CircleResponse>> getCircleByActive(@RequestParam boolean active) {
         try {
-            List<CircleDTO> circles = circleService.getCircleByActive(active);
+            List<CircleResponse> circles = circleService.getCircleByActive(active);
             return ResponseEntity.ok(circles);
         } catch (Exception e) {
-            logger.error("Error while getting Discom by active", e);
             return ResponseEntity.badRequest().build();
         }
     }
 
     // Get all active circle by discom code
     @GetMapping("/active/{discomCode}")
-    public ResponseEntity<List<CircleDTO>> getCircleByDiscomCode(@PathVariable int discomCode,
+    public ResponseEntity<List<CircleResponse>> getCircleByDiscomCode(@PathVariable int discomCode,
             @RequestParam boolean active) {
         try {
-            List<CircleDTO> circles = circleService.getActiveCircleByDiscomCode(discomCode, active);
+            List<CircleResponse> circles = circleService.getActiveCircleByDiscomCode(discomCode, active);
             return ResponseEntity.ok(circles);
         } catch (Exception e) {
             logger.error("Error while getting Discom by active", e);

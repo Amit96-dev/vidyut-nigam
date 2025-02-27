@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +26,17 @@ public class DiscomServiceImpl implements DiscomService {
 
     private final ModelMapper mapper;
 
-    private Logger logger = LoggerFactory.getLogger(DiscomServiceImpl.class);
 
     // Create Discom
 
     @Override
-    public DiscomDTO createDiscom(DiscomDTO discomDTO) {
-        Discom discom = discomRepository.save(mapper.map(discomDTO, Discom.class));
-        return mapper.map(discom, DiscomDTO.class);
+    public String createDiscom(DiscomDTO discomDTO) {
+        try {
+        discomRepository.save(mapper.map(discomDTO, Discom.class));
+        return "Discom Created Successfully";
+        } catch (Exception e) {
+            return "Error in Creating Discom\n"+e.getMessage();
+        }
     }
 
     // Get all Discom
@@ -61,17 +62,20 @@ public class DiscomServiceImpl implements DiscomService {
     // Update Discom
 
     @Override
-    public DiscomDTO updateDiscom(int discomCode, DiscomUpdateDTO discomDTO) {
-        Discom existingDiscom = discomRepository.findById(discomCode)
+    public String updateDiscom(int discomCode, DiscomUpdateDTO discomDTO) {
+        try {
+            Discom existingDiscom = discomRepository.findById(discomCode)
                 .orElseThrow(() -> new RuntimeException("Discom not found with given ID."));
 
-        logger.info("existing Discom:{}", existingDiscom);
         BeanUtils.copyProperties(discomDTO, existingDiscom);
 
         existingDiscom.setDiscomUpdatedAt(LocalDateTime.now());
-        Discom discom1 = discomRepository.save(existingDiscom);
+        discomRepository.save(existingDiscom);
 
-        return mapper.map(discom1, DiscomDTO.class);
+        return "Discom Updated Successfully";
+        } catch (Exception e) {
+            return "Error in Updating Discom\n"+e.getMessage();
+        }
     }
 
     // Delete Discom

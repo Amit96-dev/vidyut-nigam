@@ -9,17 +9,17 @@ import com.sm.vidyut_nigam.dto.ResponseDTO.DivisionResponse;
 import com.sm.vidyut_nigam.dto.TreeStructureResponse.DivisionTreeDTO;
 
 public interface DivisionService {
-    DivisionDTO createDivision(DivisionDTO divisionDTO);
+    String createDivision(DivisionDTO divisionDTO);
 
     // List<DivisionDTO> getAllDivisions();
 
     DivisionResponse getDivisionByDivisionCode(int divisionCode);
 
-    DivisionDTO updateDivision(DivisionUpdateDTO divisionUpdateDTO, int divisionCode);
+    String updateDivision(DivisionUpdateDTO divisionUpdateDTO, int divisionCode);
 
-    List<DivisionDTO> findDivisionByActive(boolean active);
+    List<DivisionResponse> findDivisionByActive(boolean active);
 
-    List<DivisionDTO> findActiveDivisionByCircleCode(int circleCode, boolean active);
+    List<DivisionResponse> findActiveDivisionByCircleCode(int circleCode, boolean active);
 
     List<DivisionCardDTO> findActiveDivisionCardByCircleCode(int circleCode, boolean active);
 

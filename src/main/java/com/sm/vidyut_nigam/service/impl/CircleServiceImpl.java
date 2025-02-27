@@ -33,19 +33,17 @@ public class CircleServiceImpl implements CircleService {
     // create circle
 
     @Override
-    public CircleDTO createCircle(CircleDTO circleDTO) {
-        // logger.info("*********************** {}", circleDTO);
-        int code = circleRepository.countByDiscom_DiscomCode(circleDTO.getDiscomCode());
-        logger.info("*******code:{}", code);
+    public String createCircle(CircleDTO circleDTO) {
+        try {
+            int code = circleRepository.countByDiscom_DiscomCode(circleDTO.getDiscomCode());
         String circleCode = Integer.toString(circleDTO.getDiscomCode()) +
                 Integer.toString(code + 1);
-        logger.info("circleCode************** {}", circleCode);
-
         circleDTO.setCircleCode(Integer.parseInt(circleCode));
-        // logger.info("*******circleDTO:{}", circleDTO);
-        Circle circle = circleRepository.save(mapper.map(circleDTO, Circle.class));
-
-        return mapper.map(circle, CircleDTO.class);
+        circleRepository.save(mapper.map(circleDTO, Circle.class));
+        return "Circle Created Successfully";
+        } catch (Exception e) {
+            return "Error in Creating Circle/n" + e.getMessage();
+        }
     }
 
     // Get all circles by discom code
@@ -67,18 +65,18 @@ public class CircleServiceImpl implements CircleService {
     }
 
     @Override
-    public List<CircleDTO> getCircleByActive(boolean active) {
+    public List<CircleResponse> getCircleByActive(boolean active) {
         List<Circle> byActive = circleRepository.findByCircleActive(active);
-        List<CircleDTO> circleDTOList = byActive.stream().map(a -> mapper.map(a,
-                CircleDTO.class)).toList();
+        List<CircleResponse> circleDTOList = byActive.stream().map(a -> mapper.map(a,
+        CircleResponse.class)).toList();
         return circleDTOList;
     }
 
     @Override
-    public List<CircleDTO> getActiveCircleByDiscomCode(int discomCode, boolean active) {
+    public List<CircleResponse> getActiveCircleByDiscomCode(int discomCode, boolean active) {
         List<Circle> byActive = circleRepository.findByDiscom_DiscomCodeAndCircleActive(discomCode, active);
-        List<CircleDTO> circleDTOList = byActive.stream().map(a -> mapper.map(a,
-                CircleDTO.class)).toList();
+        List<CircleResponse> circleDTOList = byActive.stream().map(a -> mapper.map(a,
+        CircleResponse.class)).toList();
         return circleDTOList;
     }
 
@@ -99,18 +97,17 @@ public class CircleServiceImpl implements CircleService {
     }
 
     @Override
-    public CircleDTO updateCircle(int circleCode, CircleUpdateDTO circleDTO) {
-
-        Circle existingCircle = circleRepository.findById(circleCode)
+    public String updateCircle(int circleCode, CircleUpdateDTO circleDTO) {
+        try {
+            Circle existingCircle = circleRepository.findById(circleCode)
                 .orElseThrow(() -> new RuntimeException("Circle not found with given ID."));
-
-        logger.info("existing Circle:{}", existingCircle);
         BeanUtils.copyProperties(circleDTO, existingCircle);
-
         existingCircle.setCircleUpdatedAt(LocalDateTime.now());
-        Circle circle1 = circleRepository.save(existingCircle);
-
-        return mapper.map(circle1, CircleDTO.class);
+        circleRepository.save(existingCircle);
+        return "Circle Updated Successfully";
+        } catch (Exception e) {
+            return "Error while updating Circle" + e.getMessage();
+        }
     }
 
     @Override

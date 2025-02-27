@@ -39,8 +39,8 @@ public class DivisionController {
     @PostMapping
     public ResponseEntity<?> createDivision(@Valid @RequestBody DivisionDTO divisionDTO) {
         try {
-            DivisionDTO divisionDto2 = divisionService.createDivision(divisionDTO);
-            return ResponseEntity.ok(divisionDto2);
+            String divisionDto2 = divisionService.createDivision(divisionDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(divisionDto2);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -70,9 +70,9 @@ public class DivisionController {
 
     // Get all active division
     @GetMapping("/active")
-    public ResponseEntity<List<DivisionDTO>> getCircleByActive(@RequestParam boolean active) {
+    public ResponseEntity<List<DivisionResponse>> getCircleByActive(@RequestParam boolean active) {
         try {
-            List<DivisionDTO> division = divisionService.findDivisionByActive(active);
+            List<DivisionResponse> division = divisionService.findDivisionByActive(active);
             return ResponseEntity.ok(division);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -82,10 +82,10 @@ public class DivisionController {
     // Get all active division by circle code
 
     @GetMapping("/active/{circleCode}")
-    public ResponseEntity<List<DivisionDTO>> getDivisionByCircleCode(@PathVariable int circleCode,
+    public ResponseEntity<List<DivisionResponse>> getDivisionByCircleCode(@PathVariable int circleCode,
             @RequestParam boolean active) {
         try {
-            List<DivisionDTO> divisions = divisionService.findActiveDivisionByCircleCode(circleCode, active);
+            List<DivisionResponse> divisions = divisionService.findActiveDivisionByCircleCode(circleCode, active);
             return ResponseEntity.ok(divisions);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -117,14 +117,14 @@ public class DivisionController {
     // Update Division
 
     @PutMapping("updateDivision/{divisionCode}")
-    public ResponseEntity<DivisionDTO> updateDivision(@Valid @RequestBody DivisionUpdateDTO divisionUpdateDTO,
+    public ResponseEntity<?> updateDivision(@Valid @RequestBody DivisionUpdateDTO divisionUpdateDTO,
             @PathVariable int divisionCode) {
         try {
-            DivisionDTO divisionDto2 = divisionService.updateDivision(divisionUpdateDTO,
+            String divisionDto2 = divisionService.updateDivision(divisionUpdateDTO,
                     divisionCode);
             return ResponseEntity.ok(divisionDto2);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

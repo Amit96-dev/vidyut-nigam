@@ -30,12 +30,16 @@ public class DivisionServiceImpl implements DivisionService {
     Logger logger = LoggerFactory.getLogger(DivisionServiceImpl.class);
 
     @Override
-    public DivisionDTO createDivision(DivisionDTO divisionDTO) {
-        int code = divisionRepository.countByCircle_CircleCode(divisionDTO.getCircleCode());
+    public String createDivision(DivisionDTO divisionDTO) {
+        try {
+            int code = divisionRepository.countByCircle_CircleCode(divisionDTO.getCircleCode());
         String divisionCode = Integer.toString(divisionDTO.getCircleCode()) + Integer.toString(code + 1);
         divisionDTO.setDivisionCode(Integer.parseInt(divisionCode));
-        Division division = divisionRepository.save(mapper.map(divisionDTO, Division.class));
-        return mapper.map(division, DivisionDTO.class);
+        divisionRepository.save(mapper.map(divisionDTO, Division.class));
+        return "Division Created Successfully";
+        } catch (Exception e) {
+            return "Error in Creating Division\n"+ e.getMessage();
+        }
     }
 
     // @Override
@@ -53,19 +57,23 @@ public class DivisionServiceImpl implements DivisionService {
     }
 
     @Override
-    public DivisionDTO updateDivision(DivisionUpdateDTO divisionUpdateDTO, int divisionCode) {
-        Division division = divisionRepository.findById(divisionCode)
+    public String updateDivision(DivisionUpdateDTO divisionUpdateDTO, int divisionCode) {
+        try {
+            Division division = divisionRepository.findById(divisionCode)
                 .orElseThrow(() -> new RuntimeException("Division not found by given division code"));
         BeanUtils.copyProperties(divisionUpdateDTO, division);
         division.setDivisionUpdatedAt(LocalDateTime.now());
-        return mapper.map(divisionRepository.save(division), DivisionDTO.class);
+        return "Division Updated Successfully";
+        } catch (Exception e) {
+            return "Error in Updating Division\n"+ e.getMessage();
+        }
     }
 
     @Override
-    public List<DivisionDTO> findDivisionByActive(boolean active) {
+    public List<DivisionResponse> findDivisionByActive(boolean active) {
         List<Division> divisions = divisionRepository.findByDivisionActive(active);
         return divisions.stream().map(division -> mapper.map(division,
-                DivisionDTO.class)).toList();
+        DivisionResponse.class)).toList();
     }
 
     @Override
@@ -78,10 +86,10 @@ public class DivisionServiceImpl implements DivisionService {
     }
 
     @Override
-    public List<DivisionDTO> findActiveDivisionByCircleCode(int circleCode, boolean active) {
+    public List<DivisionResponse> findActiveDivisionByCircleCode(int circleCode, boolean active) {
         List<Division> byActive = divisionRepository.findByCircle_CircleCodeAndDivisionActive(circleCode, active);
-        List<DivisionDTO> divisionDTOList = byActive.stream().map(a -> mapper.map(a,
-                DivisionDTO.class)).toList();
+        List<DivisionResponse> divisionDTOList = byActive.stream().map(a -> mapper.map(a,
+        DivisionResponse.class)).toList();
         return divisionDTOList;
     }
 

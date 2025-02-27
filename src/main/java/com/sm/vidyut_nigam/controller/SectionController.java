@@ -37,10 +37,9 @@ public class SectionController {
     @PostMapping
     public ResponseEntity<?> createSection(@Valid @RequestBody SectionDTO sectionDTO) {
         try {
-            SectionDTO section = sectionService.createSection(sectionDTO);
+            String section = sectionService.createSection(sectionDTO);
             return ResponseEntity.ok(section);
         } catch (Exception e) {
-            System.out.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -48,7 +47,7 @@ public class SectionController {
     @GetMapping
     public ResponseEntity<List<?>> getAllSection() {
         try {
-            List<SectionDTO> sections = sectionService.getAllSection();
+            List<SectionResponse> sections = sectionService.getAllSection();
             return ResponseEntity.ok(sections);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -66,15 +65,15 @@ public class SectionController {
     }
 
     @PutMapping("/update/{sectionCode}")
-    public ResponseEntity<SectionDTO> updateSection(@Valid @RequestBody SectionUpdateDTO sectionUpdateDTO,
+    public ResponseEntity<?> updateSection(@Valid @RequestBody SectionUpdateDTO sectionUpdateDTO,
             @PathVariable int sectionCode) {
         System.out.println(sectionCode);
         try {
-            SectionDTO section = sectionService.updateSection(sectionUpdateDTO, sectionCode);
+            String section = sectionService.updateSection(sectionUpdateDTO, sectionCode);
             return ResponseEntity.ok(section);
         } catch (Exception e) {
             System.out.println(e);
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -89,9 +88,9 @@ public class SectionController {
     }
 
     @GetMapping("/active")
-    public ResponseEntity<List<SectionDTO>> getSectionByActive(@RequestParam boolean active) {
+    public ResponseEntity<List<SectionResponse>> getSectionByActive(@RequestParam boolean active) {
         try {
-            List<SectionDTO> sections = sectionService.getSectionByActive(active);
+            List<SectionResponse> sections = sectionService.getSectionByActive(active);
             return ResponseEntity.ok(sections);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -102,7 +101,7 @@ public class SectionController {
     public ResponseEntity<List<?>> getActiveSectionBySubDivisionCode(@PathVariable int subDivisionCode,
             @RequestParam boolean active) {
         try {
-            List<SectionDTO> sections = sectionService.getActiveSectionBySubDivisionCode(subDivisionCode, active);
+            List<SectionResponse> sections = sectionService.getActiveSectionBySubDivisionCode(subDivisionCode, active);
             return ResponseEntity.ok(sections);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

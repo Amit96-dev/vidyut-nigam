@@ -9,17 +9,17 @@ import com.sm.vidyut_nigam.dto.ResponseDTO.CircleResponse;
 import com.sm.vidyut_nigam.dto.TreeStructureResponse.CircleTreeDTO;
 
 public interface CircleService {
-    CircleDTO createCircle(CircleDTO circleDTO);
+    String createCircle(CircleDTO circleDTO);
 
     List<CircleResponse> getAllCirclesByDiscomCode(int discomCode);
 
     CircleResponse getCircleByCode(int circleCode);
 
-    CircleDTO updateCircle(int circleCode, CircleUpdateDTO circleDTO);
+    String updateCircle(int circleCode, CircleUpdateDTO circleDTO);
 
-    List<CircleDTO> getCircleByActive(boolean active);
+    List<CircleResponse> getCircleByActive(boolean active);
 
-    List<CircleDTO> getActiveCircleByDiscomCode(int discomCode, boolean active);
+    List<CircleResponse> getActiveCircleByDiscomCode(int discomCode, boolean active);
 
     List<CircleCardDTO> getActiveCircleCardByDiscomCode(int discomCode, boolean active);
 

@@ -9,12 +9,12 @@ import com.sm.vidyut_nigam.dto.ResponseDTO.DiscomResponse;
 import com.sm.vidyut_nigam.dto.TreeStructureResponse.DiscomTreeDTO;
 
 public interface DiscomService {
-    DiscomDTO createDiscom(DiscomDTO discomDTO);
+    String createDiscom(DiscomDTO discomDTO);
 
     // List<DiscomDTO> getAllDiscom();
     DiscomResponse getDiscomByCode(int discomCode);
 
-    DiscomDTO updateDiscom(int discomCode, DiscomUpdateDTO discomDTO);
+    String updateDiscom(int discomCode, DiscomUpdateDTO discomDTO);
 
     String deleteDiscom(int discomCode);
 

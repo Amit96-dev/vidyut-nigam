@@ -38,19 +38,19 @@ public class SubDivisionController {
     @PostMapping
     public ResponseEntity<?> createSubDivision(@Valid @RequestBody SubDivisionDTO subdivisionDTO) {
         try {
-            SubDivisionDTO subDivision = subdivisionService.createSubDivision(subdivisionDTO);
+            String subDivision = subdivisionService.createSubDivision(subdivisionDTO);
             return ResponseEntity.ok(subDivision);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An unexpected error occurred: " + e.getMessage());
+                    .body(e.getMessage());
         }
     }
 
     // Get All SubDivisions
     @GetMapping
-    public ResponseEntity<List<SubDivisionDTO>> getAllSubDivisions() {
+    public ResponseEntity<List<SubDivisionResponse>> getAllSubDivisions() {
         try {
-            List<SubDivisionDTO> subDivisions = subdivisionService.getAllSubDivisions();
+            List<SubDivisionResponse> subDivisions = subdivisionService.getAllSubDivisions();
             return ResponseEntity.ok(subDivisions);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -59,13 +59,14 @@ public class SubDivisionController {
 
     // Update SubDivision
     @PutMapping("/{id}")
-    public ResponseEntity<SubDivisionDTO> updateSubDivision(
+    public ResponseEntity<?> updateSubDivision(
             @Valid @RequestBody SubDivisionUpdateDTO subDivisionUpdateDTO, @PathVariable int id) {
         try {
-            SubDivisionDTO subDivision = subdivisionService.updateSubDivision(subDivisionUpdateDTO, id);
+            String subDivision = subdivisionService.updateSubDivision(subDivisionUpdateDTO, id);
             return ResponseEntity.ok(subDivision);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(e.getMessage());
         }
     }
 
@@ -93,9 +94,9 @@ public class SubDivisionController {
 
     // Get Sub-division by active
     @GetMapping("/active")
-    public ResponseEntity<List<SubDivisionDTO>> getSubDivisionByActive(@RequestParam boolean active) {
+    public ResponseEntity<List<SubDivisionResponse>> getSubDivisionByActive(@RequestParam boolean active) {
         try {
-            List<SubDivisionDTO> subDivisions = subdivisionService.getSubDivisionByActive(active);
+            List<SubDivisionResponse> subDivisions = subdivisionService.getSubDivisionByActive(active);
             return ResponseEntity.ok(subDivisions);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -104,10 +105,10 @@ public class SubDivisionController {
 
     // Get SubDivision by Division code
     @GetMapping("/active/{divisionCode}")
-    public ResponseEntity<List<SubDivisionDTO>> getActiveSubDivisionByDivisionCode(@PathVariable int divisionCode,
+    public ResponseEntity<List<SubDivisionResponse>> getActiveSubDivisionByDivisionCode(@PathVariable int divisionCode,
             @RequestParam boolean active) {
         try {
-            List<SubDivisionDTO> subDivisions = subdivisionService.getActiveSubDivisionByDivisionCode(divisionCode,
+            List<SubDivisionResponse> subDivisions = subdivisionService.getActiveSubDivisionByDivisionCode(divisionCode,
                     active);
             return ResponseEntity.ok(subDivisions);
         } catch (Exception e) {

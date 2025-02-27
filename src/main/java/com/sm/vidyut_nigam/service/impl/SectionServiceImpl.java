@@ -34,7 +34,7 @@ public class SectionServiceImpl implements SectionService {
     private final ModelMapper mapper;
 
     @Override
-    public SectionDTO createSection(SectionDTO sectionDTO) {
+    public String createSection(SectionDTO sectionDTO) {
         SubDivision subDivision = subDivisionRepository.findById(sectionDTO.getSubDivisionCode())
                 .orElseThrow(() -> new RuntimeException("SubDivision not found"));
 
@@ -52,13 +52,9 @@ public class SectionServiceImpl implements SectionService {
             // Save Section
             section = sectionRepository.save(section);
 
-            // Convert Entity back to DTO
-            SectionDTO responseDTO = sectionMapper.toDTO(section);
-
-            return responseDTO;
+            return "Section Created Successfully";
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error creating section", e);
+            return "Error creating section"+ e.getMessage();
         }
     }
 
@@ -70,19 +66,23 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public List<SectionDTO> getAllSection() {
+    public List<SectionResponse> getAllSection() {
         List<Section> sections = sectionRepository.findAll();
-        return sections.stream().map(section -> mapper.map(section, SectionDTO.class)).toList();
+        return sections.stream().map(section -> mapper.map(section, SectionResponse.class)).toList();
     }
 
     @Override
-    public SectionDTO updateSection(SectionUpdateDTO sectionUpdateDTO, int sectionCode) {
-        Section section = sectionRepository.findById(sectionCode)
+    public String updateSection(SectionUpdateDTO sectionUpdateDTO, int sectionCode) {
+        try {
+            Section section = sectionRepository.findById(sectionCode)
                 .orElseThrow(() -> new RuntimeException("Section not found with given section code"));
         BeanUtils.copyProperties(sectionUpdateDTO, section);
         section.setSectionUpdatedAt(LocalDateTime.now());
-        Section section1 = sectionRepository.save(section);
-        return mapper.map(section1, SectionDTO.class);
+        sectionRepository.save(section);
+        return "Section Updated Successfully";
+        } catch (Exception e) {
+            return "Error updating section"+ e.getMessage();
+        }
     }
 
     @Override
@@ -95,16 +95,16 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public List<SectionDTO> getSectionByActive(boolean active) {
+    public List<SectionResponse> getSectionByActive(boolean active) {
         List<Section> sections = sectionRepository.findBySectionActive(active);
-        return sections.stream().map(section -> mapper.map(section, SectionDTO.class)).toList();
+        return sections.stream().map(section -> mapper.map(section, SectionResponse.class)).toList();
     }
 
     @Override
-    public List<SectionDTO> getActiveSectionBySubDivisionCode(int subDivisionCode, boolean active) {
+    public List<SectionResponse> getActiveSectionBySubDivisionCode(int subDivisionCode, boolean active) {
         List<Section> sections = sectionRepository
                 .findBySubDivision_subDivisionCodeAndSectionActive(subDivisionCode, active);
-        return sections.stream().map(section -> mapper.map(section, SectionDTO.class)).toList();
+        return sections.stream().map(section -> mapper.map(section, SectionResponse.class)).toList();
     }
 
     @Override
