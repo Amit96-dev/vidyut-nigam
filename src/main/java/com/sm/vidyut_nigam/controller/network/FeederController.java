@@ -32,10 +32,10 @@ public class FeederController {
     @PostMapping
     public ResponseEntity<?> createFeeder(@Valid @RequestBody FeederRequestDTO feederRequestDTO) {
         try {
-            FeederRequestDTO feederResponseDTO = feederService.createFeeder(feederRequestDTO);
+            String feederResponseDTO = feederService.createFeeder(feederRequestDTO);
             return ResponseEntity.ok(feederResponseDTO);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error creating feeder");
+            return ResponseEntity.badRequest().body("Error creating feeder/n" + e.getMessage());
         }
     }
 
@@ -49,7 +49,7 @@ public class FeederController {
         }
     }
 
-    @GetMapping("/{code}")
+    @GetMapping("/feedercode/{code}")
     public ResponseEntity<?> getFeederById(@PathVariable int code) {
         try {
             FeederResponseDTO feederResponseDTO = feederService.getSingleFeederByCode(code);
@@ -89,20 +89,21 @@ public class FeederController {
         }
     }
 
-    @GetMapping("/get-active/{subStationCode}")
-    public ResponseEntity<?> getFeederBySubStationCode(@PathVariable int subStationCode) {
+    @GetMapping("/active/{subStationCode}")
+    public ResponseEntity<?> getFeederBySubStationCode(@PathVariable int subStationCode, @RequestParam boolean active) {
         try {
-            List<FeederResponseDTO> allFeeders = feederService.getActiveFeederBySubStationCode(subStationCode);
+            List<FeederResponseDTO> allFeeders = feederService.getActiveFeederBySubStationCode(subStationCode, active);
             return ResponseEntity.ok(allFeeders);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error fetching feeders by sub station code");
         }
     }
 
-    @GetMapping("/card/get-active/{subStationCode}")
-    public ResponseEntity<?> getFeederCardBySubStationCode(@PathVariable int subStationCode) {
+    @GetMapping("/card/active/{subStationCode}")
+    public ResponseEntity<?> getFeederCardBySubStationCode(@PathVariable int subStationCode,
+            @RequestParam boolean active) {
         try {
-            List<FeederCardDTO> allFeeders = feederService.getActiveFeederCardBySubStationCode(subStationCode);
+            List<FeederCardDTO> allFeeders = feederService.getActiveFeederCardBySubStationCode(subStationCode, active);
             return ResponseEntity.ok(allFeeders);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error fetching feeders by sub station code");

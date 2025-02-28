@@ -8,15 +8,15 @@ import com.sm.vidyut_nigam.dto.network.FeederUpdateDTO;
 import com.sm.vidyut_nigam.dto.network.CardStructureResponse.FeederCardDTO;
 
 public interface FeederService {
-    FeederRequestDTO createFeeder(FeederRequestDTO feederRequestDTO);
+    String createFeeder(FeederRequestDTO feederRequestDTO);
 
     List<FeederResponseDTO> getAllFeeders();
 
     List<FeederResponseDTO> getFeederByActive(boolean active);
 
-    List<FeederResponseDTO> getActiveFeederBySubStationCode(int subStationCode);
+    List<FeederResponseDTO> getActiveFeederBySubStationCode(int subStationCode, boolean active);
 
-    List<FeederCardDTO> getActiveFeederCardBySubStationCode(int subStationCode);
+    List<FeederCardDTO> getActiveFeederCardBySubStationCode(int subStationCode, boolean active);
 
     String updateFeeder(FeederUpdateDTO feederUpdateDTO, int feederCode);
 

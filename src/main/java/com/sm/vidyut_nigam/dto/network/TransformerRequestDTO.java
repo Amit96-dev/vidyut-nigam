@@ -8,9 +8,7 @@ import lombok.Data;
 
 @Data
 public class TransformerRequestDTO {
-    
-    @NotNull(message = "Transformer code cannot be null")
-    @Min(value = 1, message = "Transformer code must be a positive number")
+
     private int transformerCode;
 
     @NotBlank(message = "Transformer name cannot be blank")
@@ -18,20 +16,19 @@ public class TransformerRequestDTO {
     private String transformerName;
 
     @NotNull(message = "Longitude is required")
-    @DecimalMin(value = "-180.0", message = "Longitude must be between -180 and 180")
-    @DecimalMax(value = "180.0", message = "Longitude must be between -180 and 180")
-    private float transferLongitude;
+    private Float transformerLongitude;
 
     @NotNull(message = "Latitude is required")
-    @DecimalMin(value = "-90.0", message = "Latitude must be between -90 and 90")
-    @DecimalMax(value = "90.0", message = "Latitude must be between -90 and 90")
-    private float transferLatitude;
+    private Float transformerLatitude;
 
     private String transformerPicture;
 
     @NotNull(message = "Transformer capacity cannot be null")
     @Positive(message = "Transformer capacity must be a positive number")
-    private int transformerCapacity;
+    private Integer transformerCapacity;
+
+    @NotNull(message = "Created at timestamp cannot be null")
+    private LocalDateTime transformerCreatedAt;
 
     @NotBlank(message = "Created by field cannot be blank")
     @Size(max = 50, message = "Created by field must not exceed 50 characters")
@@ -42,7 +39,8 @@ public class TransformerRequestDTO {
 
     private LocalDateTime transformerApplicableTo;
 
-    private boolean transformerActive;
+    @NotNull(message = "Active status is required")
+    private Boolean transformerActive;
 
     @NotNull(message = "Manufacture date is required")
     private LocalDate transformerManufactureDate;
@@ -54,9 +52,8 @@ public class TransformerRequestDTO {
 
     @NotNull(message = "Oil capacity is required")
     @Positive(message = "Oil capacity must be a positive number")
-    private float transformerOilCapacity;
+    private Float transformerOilCapacity;
 
-    @NotNull(message = "Feeder ID is required")
-    @Min(value = 1, message = "Feeder ID must be a positive number")
-    private int feeder;
+    @NotNull(message = "Feeder is required")
+    private Integer feederCode;
 }

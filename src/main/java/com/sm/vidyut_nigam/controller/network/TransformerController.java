@@ -1,5 +1,7 @@
 package com.sm.vidyut_nigam.controller.network;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sm.vidyut_nigam.dto.network.TransformerRequestDTO;
+import com.sm.vidyut_nigam.dto.network.CardStructureResponse.TransformerCardDTO;
 import com.sm.vidyut_nigam.service.network.TransformerService;
 
 import jakarta.validation.Valid;
@@ -31,7 +34,7 @@ public class TransformerController {
             transformerService.createTransformer(transformerRequestDTO);
             return ResponseEntity.ok("Transformer created successfully");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error creating transformer");
+            return ResponseEntity.badRequest().body("Error creating transformer/n" + e.getMessage());
         }
     }
 
@@ -72,6 +75,20 @@ public class TransformerController {
     public ResponseEntity<?> getTransformerByActive(@RequestParam boolean active) {
         try {
             return ResponseEntity.ok(transformerService.getAllTransformerByActive(active));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error fetching transformer");
+        }
+    }
+
+    // Get All Active Transformer by Feeder Code
+    @GetMapping("/card/active/{feederCode}")
+    public ResponseEntity<?> getAllActiveTransformerByFeederCode(@PathVariable int feederCode,
+            @RequestParam boolean active) {
+        try {
+            List<TransformerCardDTO> transformer = transformerService.getAllActiveTransformerCardByFeederCode(
+                    feederCode,
+                    active);
+            return ResponseEntity.ok(transformer);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error fetching transformer");
         }

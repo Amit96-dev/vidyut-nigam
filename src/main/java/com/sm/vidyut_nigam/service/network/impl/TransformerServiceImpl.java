@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.sm.vidyut_nigam.dto.network.TransformerRequestDTO;
 import com.sm.vidyut_nigam.dto.network.TransformerResponseDTO;
+import com.sm.vidyut_nigam.dto.network.CardStructureResponse.TransformerCardDTO;
 import com.sm.vidyut_nigam.entity.network.Transformer;
 import com.sm.vidyut_nigam.repository.network.TransformerRepository;
 import com.sm.vidyut_nigam.service.network.TransformerService;
@@ -23,12 +24,17 @@ public class TransformerServiceImpl implements TransformerService {
     private final ModelMapper mapper;
 
     @Override
-    public TransformerResponseDTO createTransformer(TransformerRequestDTO transformerRequestDTO) {
-        int code = transformerRepository.countByFeeder_FeederCode(transformerRequestDTO.getTransformerCode());
-        String transformerCode = Integer.toString(transformerRequestDTO.getFeeder()) + Integer.toString(code + 1);
-        transformerRequestDTO.setFeeder(Integer.parseInt(transformerCode));
-        Transformer transformer = transformerRepository.save(mapper.map(transformerRequestDTO, Transformer.class));
-        return mapper.map(transformer, TransformerResponseDTO.class);
+    public String createTransformer(TransformerRequestDTO transformerRequestDTO) {
+        try {
+            int code = transformerRepository.countByFeeder_FeederCode(transformerRequestDTO.getFeederCode());
+            String transformerCode = Integer.toString(transformerRequestDTO.getFeederCode())
+                    + Integer.toString(code + 1);
+            transformerRequestDTO.setTransformerCode(Integer.parseInt(transformerCode));
+            Transformer transformer = transformerRepository.save(mapper.map(transformerRequestDTO, Transformer.class));
+            return "Transformer created successfully";
+        } catch (Exception e) {
+            return "Error creating transformer/n" + e.getMessage();
+        }
     }
 
     @Override
@@ -66,6 +72,13 @@ public class TransformerServiceImpl implements TransformerService {
         List<Transformer> transformerList = transformerRepository.findByTransformerActive(active);
         return transformerList.stream().map(transformer -> mapper.map(transformer, TransformerResponseDTO.class))
                 .toList();
+    }
+
+    @Override
+    public List<TransformerCardDTO> getAllActiveTransformerCardByFeederCode(int feederCode, boolean active) {
+        List<Transformer> transformerList = transformerRepository
+                .findByFeeder_FeederCodeAndTransformerActive(feederCode, active);
+        return transformerList.stream().map(transformer -> mapper.map(transformer, TransformerCardDTO.class)).toList();
     }
 
     @Override

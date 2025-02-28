@@ -26,16 +26,20 @@ public class DiscomServiceImpl implements DiscomService {
 
     private final ModelMapper mapper;
 
-
     // Create Discom
 
     @Override
     public String createDiscom(DiscomDTO discomDTO) {
+        long count = discomRepository.count();
+        if (count > 9) {
+            throw new RuntimeException("AAU DISCOM CREATE KARIPARI BANI");
+        }
         try {
-        discomRepository.save(mapper.map(discomDTO, Discom.class));
-        return "Discom Created Successfully";
+            discomDTO.setDiscomCode((int) count + 1);
+            discomRepository.save(mapper.map(discomDTO, Discom.class));
+            return "Discom Created Successfully";
         } catch (Exception e) {
-            return "Error in Creating Discom\n"+e.getMessage();
+            return e.getMessage();
         }
     }
 
@@ -65,16 +69,16 @@ public class DiscomServiceImpl implements DiscomService {
     public String updateDiscom(int discomCode, DiscomUpdateDTO discomDTO) {
         try {
             Discom existingDiscom = discomRepository.findById(discomCode)
-                .orElseThrow(() -> new RuntimeException("Discom not found with given ID."));
+                    .orElseThrow(() -> new RuntimeException("Discom not found with given ID."));
 
-        BeanUtils.copyProperties(discomDTO, existingDiscom);
+            BeanUtils.copyProperties(discomDTO, existingDiscom);
 
-        existingDiscom.setDiscomUpdatedAt(LocalDateTime.now());
-        discomRepository.save(existingDiscom);
+            existingDiscom.setDiscomUpdatedAt(LocalDateTime.now());
+            discomRepository.save(existingDiscom);
 
-        return "Discom Updated Successfully";
+            return "Discom Updated Successfully";
         } catch (Exception e) {
-            return "Error in Updating Discom\n"+e.getMessage();
+            return "Error in Updating Discom\n" + e.getMessage();
         }
     }
 
