@@ -3,6 +3,8 @@ package com.sm.vidyut_nigam.entity.network;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -39,6 +41,7 @@ public class Transformer {
     @Column(name = "transformer_capacity", nullable = false)
     private int transformerCapacity;
     
+    @CreationTimestamp
     @Column(name = "transformer_created_at", nullable = false, updatable = false)
     private LocalDateTime transformerCreatedAt;
     
