@@ -148,8 +148,8 @@ public class ConsumerRequestDTO {
     private String consumerRemarks;
 
     @NotBlank(message = "Section ID is required")
-    private String consumerSectionId;
+    private int consumerSectionId;
 
     @NotBlank(message = "Transformer ID is required")
-    private String consumerTransformerId;
+    private int consumerTransformerId;
 }

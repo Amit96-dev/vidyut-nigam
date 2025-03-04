@@ -205,10 +205,10 @@ public class Consumer {
     // Relationship with Section (Attach to Organisation)
     @ManyToOne
     @JoinColumn(name = "consumer_section_id", referencedColumnName = "sectionCode")
-    private Section consumerSection;
+    private Section section;
 
     // Relationship with Transformer (Attach to Network)
     @ManyToOne
     @JoinColumn(name = "consumer_transformer_id", referencedColumnName = "transformerCode")
-    private Transformer consumerTransformer;
+    private Transformer transformer;
 }
