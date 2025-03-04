@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/subdivision")
+@RequestMapping("/api/subDivision")
 public class SubDivisionController {
 
     private final SubDivisionService subdivisionService;
@@ -66,7 +66,7 @@ public class SubDivisionController {
             return ResponseEntity.ok(subDivision);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(e.getMessage());
+                    .body(e.getMessage());
         }
     }
 
