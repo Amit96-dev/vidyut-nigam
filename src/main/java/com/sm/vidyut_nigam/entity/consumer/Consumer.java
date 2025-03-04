@@ -1,17 +1,8 @@
 package com.sm.vidyut_nigam.entity.consumer;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-import org.hibernate.annotations.CreationTimestamp;
-
-import com.sm.vidyut_nigam.entity.Circle;
-import com.sm.vidyut_nigam.entity.Discom;
-import com.sm.vidyut_nigam.entity.Division;
 import com.sm.vidyut_nigam.entity.Section;
-import com.sm.vidyut_nigam.entity.SubDivision;
-import com.sm.vidyut_nigam.entity.network.Feeder;
-import com.sm.vidyut_nigam.entity.network.SubStation;
 import com.sm.vidyut_nigam.entity.network.Transformer;
 
 import jakarta.persistence.Entity;
@@ -20,133 +11,204 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "consumer")
 public class Consumer {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "consumer_id")
-    private String consumerId;
+    private String consumerId; // Provided manually, not auto-generated
 
-    @Column(name = "consumer_code")
-    private long consumerCode;
+    @Column(name = "type")
+    private String Type;
 
-    @Column(name = "consumer_number")
-    private String consumerNumber;
+    @Column(name = "consumer_connection_type")
+    private String consumerConnectionType;
 
-    @Column(name = "consumer_organization_id")
-    private String consumerOrganizationId;
+    @Column(name = "consumer_account_no")
+    private String consumerAccountNo;
 
-    @Column(name = "consumer_network_id")
-    private String consumerNetworkId;
+    @Column(name = "consumer_legacy_consumer_no")
+    private String consumerLegacyConsumerNo;
 
     @Column(name = "consumer_name")
     private String consumerName;
 
-    @Column(name = "consumer_whatsapp_number")
-    private String consumerWhatsappNumber;
+    @Column(name = "consumer_contact_no")
+    private String consumerContactNo;
 
-    @Column(name = "consumer_address")
-    private String consumerAddress;
+    @Column(name = "consumer_email")
+    private String consumerEmail;
 
-    @Column(name = "consumer_contact_phone")
-    private String consumerContactPhone;
+    @Column(name = "consumer_communication_preference")
+    private String consumerCommunicationPreference;
 
-    @Column(name = "consumer_contact_email")
-    private String consumerContactEmail;
+    @Column(name = "consumer_connection_phase")
+    private String consumerConnectionPhase;
 
-    @Column(name = "consumer_longitude")
-    private float consumerLongitude;
+    @Column(name = "consumer_industry_name")
+    private String consumerIndustryName;
 
-    @Column(name = "consumer_latitude")
-    private float consumerLatitude;
+    @Column(name = "consumer_payment_mode")
+    private String consumerPaymentMode;
 
-    @Column(name = "consumer_picture")
-    private String consumerPicture;
+    @Column(name = "consumer_type")
+    private String consumerType;
+
+    @Column(name = "consumer_category")
+    private String consumerCategory;
+
+    @Column(name = "consumer_purpose")
+    private String consumerPurpose;
 
     @Column(name = "consumer_tariff")
     private String consumerTariff;
 
-    @Column(name = "consumer_connected_load")
-    private double consumerConnectedLoad;
+    @Column(name = "consumer_metering")
+    private String consumerMetering;
 
-    @Column(name = "consumer_date_of_supply")
-    private LocalDateTime consumerDateOfSupply;
+    @Column(name = "consumer_contract_demand")
+    private Double consumerContractDemand;
 
-    @Column(name = "consumer_security_deposit_amount")
-    private Double consumerSecurityDepositAmount;
+    @Column(name = "consumer_contract_demand_uom")
+    private String consumerContractDemandUOM;
 
-    @Column(name = "consumer_security_deposit_date")
-    private LocalDateTime consumerSecurityDepositDate;
+    @Column(name = "consumer_sanction_load")
+    private Double consumerSanctionLoad;
 
-    @Column(name = "consumer_status")
-    private String consumerStatus;
+    @Column(name = "consumer_sanction_load_uom")
+    private String consumerSanctionLoadUOM;
 
-    @Column(name = "consumer_meter_number")
-    private String consumerMeterNumber;
+    @Column(name = "consumer_supply_voltage_kv")
+    private Double consumerSupplyVoltageKV;
 
-    @Column(name = "consumer_meter_status")
-    private String consumerMeterStatus;
+    @Column(name = "consumer_connection_date")
+    private LocalDate consumerConnectionDate;
 
-    @CreationTimestamp
-    @Column(name = "consumer_created_at", nullable = false, updatable = false)
-    private LocalDateTime consumerCreatedAt;
+    @Column(name = "consumer_connection_status")
+    private String consumerConnectionStatus;
 
-    @Column(name = "consumer_created_by")
-    private String consumerCreatedBy;
+    @Column(name = "consumer_last_disconnected_date")
+    private LocalDate consumerLastDisconnectedDate;
 
-    @Column(name = "consumer_updated_at")
-    private LocalDateTime consumerUpdatedAt;
+    @Column(name = "consumer_last_reconnected_date")
+    private LocalDate consumerLastReconnectedDate;
 
-    @Column(name = "consumer_updated_by")
-    private String consumerUpdatedBy;
+    @Column(name = "consumer_connection_closed_date")
+    private LocalDate consumerConnectionClosedDate;
 
-    @Column(name = "consumer_applicable_from")
-    private LocalDate consumerApplibleFrom;
+    @Column(name = "consumer_temporary")
+    private Boolean consumerTemporary;
 
-    @Column(name = "consumer_applicable_to")
-    private LocalDate consumerApplicableTo;
+    @Column(name = "consumer_min_bill_demand")
+    private Double consumerMinBillDemand;
 
-    @Column(name = "consumer_active")
-    private boolean consumerActive;
+    @Column(name = "consumer_billing_id")
+    private String consumerBillingId;
 
-    @Column(name = "consumer_arrear_amount")
-    private double consumerArrearAmount;
+    @Column(name = "consumer_meter_devices")
+    private String consumerMeterDevices;
 
+    @Column(name = "consumer_search_location")
+    private String consumerSearchLocation;
+
+    @Column(name = "consumer_longitude")
+    private Double consumerLongitude;
+
+    @Column(name = "consumer_latitude")
+    private Double consumerLatitude;
+
+    @Column(name = "consumer_site_address")
+    private String consumerSiteAddress;
+
+    @Column(name = "consumer_site_state")
+    private String consumerSiteState;
+
+    @Column(name = "consumer_site_city")
+    private String consumerSiteCity;
+
+    @Column(name = "consumer_site_pincode")
+    private String consumerSitePinCode;
+
+    @Column(name = "consumer_site_email")
+    private String consumerSiteEmail;
+
+    @Column(name = "consumer_site_contact_no")
+    private String consumerSiteContactNo;
+
+    @Column(name = "consumer_bill_address")
+    private String consumerBillAddress;
+
+    @Column(name = "consumer_bill_state")
+    private String consumerBillState;
+
+    @Column(name = "consumer_bill_city")
+    private String consumerBillCity;
+
+    @Column(name = "consumer_bill_pincode")
+    private String consumerBillPinCode;
+
+    @Column(name = "consumer_bill_email")
+    private String consumerBillEmail;
+
+    @Column(name = "consumer_bill_contact_no")
+    private String consumerBillContactNo;
+
+    @Column(name = "consumer_existing_meter_no")
+    private String consumerExistingMeterNo;
+
+    @Column(name = "consumer_existing_meter_type")
+    private String consumerExistingMeterType;
+
+    @Column(name = "consumer_existing_meter_mf")
+    private Double consumerExistingMeterMF;
+
+    @Column(name = "consumer_existing_meter_seal_status")
+    private String consumerExistingMeterSealStatus;
+
+    @Column(name = "consumer_existing_consumer_load")
+    private Double consumerExistingConsumerLoad;
+
+    @Column(name = "consumer_last_meter_reading")
+    private Double consumerLastMeterReading;
+
+    @Column(name = "consumer_line_lt_ct_ratio")
+    private String consumerLineLTCTRatio;
+
+    @Column(name = "consumer_existing_meter_location")
+    private String consumerExistingMeterLocation;
+
+    @Column(name = "consumer_change_of_meter_location_envisaged")
+    private Boolean consumerChangeOfMeterLocationEnvisaged;
+
+    @Column(name = "consumer_meter_box_dimensions")
+    private String consumerMeterBoxDimensions;
+
+    @Column(name = "consumer_no_of_meters_at_single_location")
+    private Integer consumerNoOfMetersAtSingleLocation;
+
+    @Column(name = "consumer_meter_legal_status")
+    private String consumerMeterLegalStatus;
+
+    @Column(name = "consumer_clubbing_of_meters")
+    private Boolean consumerClubbingOfMeters;
+
+    @Column(name = "consumer_date_of_connection")
+    private LocalDate consumerDateOfConnection;
+
+    @Column(name = "consumer_remarks")
+    private String consumerRemarks;
+
+    // Relationship with Section (Attach to Organisation)
     @ManyToOne
-    @JoinColumn(name = "discom_id", referencedColumnName = "discomCode")
-    private Discom discomId;
+    @JoinColumn(name = "consumer_section_id", referencedColumnName = "sectionCode")
+    private Section consumerSection;
 
+    // Relationship with Transformer (Attach to Network)
     @ManyToOne
-    @JoinColumn(name = "circle_id", referencedColumnName = "circleCode")
-    private Circle circleId;
-
-    @ManyToOne
-    @JoinColumn(name = "division_id", referencedColumnName = "divisionCode")
-    private Division divisionId;
-
-    @ManyToOne
-    @JoinColumn(name = "sub_division_id", referencedColumnName = "subDivisionCode")
-    private SubDivision subDivisionId;
-
-    @ManyToOne
-    @JoinColumn(name = "section_id", referencedColumnName = "sectionCode")
-    private Section sectionId;
-
-    @ManyToOne
-    @JoinColumn(name = "substation_code", referencedColumnName = "substation_code")
-    private SubStation subStationId;
-
-    @ManyToOne
-    @JoinColumn(name = "feeder_id", referencedColumnName = "feederCode")
-    private Feeder feederId;
-
-    @ManyToOne
-    @JoinColumn(name = "transformer_id", referencedColumnName = "transformerCode")
-    private Transformer transformerId;
+    @JoinColumn(name = "consumer_transformer_id", referencedColumnName = "transformerCode")
+    private Transformer consumerTransformer;
 }

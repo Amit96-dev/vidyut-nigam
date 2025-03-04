@@ -22,15 +22,19 @@ import lombok.RequiredArgsConstructor;
 public class FeederServiceImpl implements FeederService {
 
     private final FeederRepository feederRepository;
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
 
     @Override
-    public FeederRequestDTO createFeeder(FeederRequestDTO feederRequestDTO) {
-        int code = feederRepository.countBySubStation_SubStationCode(feederRequestDTO.getFeederCode());
-        String feederCode = Integer.toString(feederRequestDTO.getSubStationCode()) + Integer.toString(code + 1);
-        feederRequestDTO.setFeederCode(Integer.parseInt(feederCode));
-        Feeder feeder = feederRepository.save(mapper.map(feederRequestDTO, Feeder.class));
-        return mapper.map(feeder, FeederRequestDTO.class);
+    public String createFeeder(FeederRequestDTO feederRequestDTO) {
+        try {
+            int code = feederRepository.countBySubStation_SubStationCode(feederRequestDTO.getSubStationCode());
+            String feederCode = Integer.toString(feederRequestDTO.getSubStationCode()) + Integer.toString(code + 1);
+            feederRequestDTO.setFeederCode(Integer.parseInt(feederCode));
+            feederRepository.save(mapper.map(feederRequestDTO, Feeder.class));
+            return "Feeder Created Successfully";
+        } catch (Exception e) {
+            return " Error While Creating Feeder/n" + e.getMessage();
+        }
     }
 
     @Override
@@ -48,14 +52,16 @@ public class FeederServiceImpl implements FeederService {
     }
 
     @Override
-    public List<FeederResponseDTO> getActiveFeederBySubStationCode(int subStationCode) {
-        List<Feeder> FeederList = feederRepository.findBySubStation_SubStationCode(subStationCode);
+    public List<FeederResponseDTO> getActiveFeederBySubStationCode(int subStationCode, boolean active) {
+        List<Feeder> FeederList = feederRepository.findBySubStation_SubStationCodeAndFeederActive(subStationCode,
+                active);
         return FeederList.stream().map(feeder -> mapper.map(feeder, FeederResponseDTO.class)).toList();
     }
 
     @Override
-    public List<FeederCardDTO> getActiveFeederCardBySubStationCode(int subStationCode) {
-        List<Feeder> FeederList = feederRepository.findBySubStation_SubStationCode(subStationCode);
+    public List<FeederCardDTO> getActiveFeederCardBySubStationCode(int subStationCode, boolean active) {
+        List<Feeder> FeederList = feederRepository.findBySubStation_SubStationCodeAndFeederActive(subStationCode,
+                active);
         return FeederList.stream().map(feeder -> mapper.map(feeder, FeederCardDTO.class)).toList();
     }
 
@@ -74,6 +80,7 @@ public class FeederServiceImpl implements FeederService {
         Feeder feeder = feederRepository.findById(feederCode)
                 .orElseThrow(() -> new RuntimeException("Feeder not found with given code"));
         feeder.setFeederActive(false);
+        feederRepository.save(feeder);
         return "Feeder Deleted Successfully";
     }
 

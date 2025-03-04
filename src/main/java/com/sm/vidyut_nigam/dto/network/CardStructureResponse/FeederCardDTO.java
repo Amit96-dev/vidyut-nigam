@@ -17,4 +17,6 @@ public class FeederCardDTO {
     @Size(max = 255, message = "Feeder address must not exceed 255 characters")
     private String feederAddress;
 
+    private int feederCapacity;
+
 }
