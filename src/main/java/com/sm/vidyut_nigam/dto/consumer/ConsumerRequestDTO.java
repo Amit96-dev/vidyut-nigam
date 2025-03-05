@@ -1,6 +1,6 @@
 package com.sm.vidyut_nigam.dto.consumer;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -8,8 +8,9 @@ import lombok.Data;
 @Data
 public class ConsumerRequestDTO {
 
-    @NotBlank(message = "Consumer ID is required")
     private String consumerId;
+
+    private String consumerAccountNo;
 
     @NotBlank(message = "Type is required")
     private String type;
@@ -17,10 +18,7 @@ public class ConsumerRequestDTO {
     @NotBlank(message = "Connection type is required")
     private String consumerConnectionType;
 
-    @NotBlank(message = "Account number is required")
-    private String consumerAccountNo;
-
-    private String consumerLegacyConsumerNo;
+    private String legacyConsumerNo;
 
     @NotBlank(message = "Consumer name is required")
     private String consumerName;
@@ -63,15 +61,15 @@ public class ConsumerRequestDTO {
 
     private Double consumerSupplyVoltageKV;
 
-    private LocalDate consumerConnectionDate;
+    private LocalDateTime consumerConnectionDate;
 
     private String consumerConnectionStatus;
 
-    private LocalDate consumerLastDisconnectedDate;
+    private LocalDateTime consumerLastDisconnectedDate;
 
-    private LocalDate consumerLastReconnectedDate;
+    private LocalDateTime consumerLastReconnectedDate;
 
-    private LocalDate consumerConnectionClosedDate;
+    private LocalDateTime consumerConnectionClosedDate;
 
     private Boolean consumerTemporary;
 
@@ -125,7 +123,7 @@ public class ConsumerRequestDTO {
 
     private String consumerExistingMeterSealStatus;
 
-    private Double consumerExistingConsumerLoad;
+    private Double consumerExistingLoad;
 
     private Double consumerLastMeterReading;
 
@@ -143,13 +141,13 @@ public class ConsumerRequestDTO {
 
     private Boolean consumerClubbingOfMeters;
 
-    private LocalDate consumerDateOfConnection;
+    private LocalDateTime consumerDateOfConnection;
 
     private String consumerRemarks;
 
     @NotBlank(message = "Section ID is required")
-    private int consumerSectionId;
+    private Integer section;
 
     @NotBlank(message = "Transformer ID is required")
-    private int consumerTransformerId;
+    private Integer transformer;
 }

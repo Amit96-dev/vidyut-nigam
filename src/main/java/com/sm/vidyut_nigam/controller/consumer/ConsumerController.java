@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sm.vidyut_nigam.dto.consumer.ConsumerRequestDTO;
 import com.sm.vidyut_nigam.dto.consumer.ConsumerResponseDTO;
@@ -35,22 +37,21 @@ public class ConsumerController {
     }
 
     @GetMapping("/section/{sectionCode}")
-    public ResponseEntity<List<ConsumerResponseDTO>> getConsumerBySectionCode(@PathVariable int sectionCode) {
+    public ResponseEntity<?> getConsumerBySectionCode(@PathVariable int sectionCode) {
         try {
             System.out.println("***********sectionCode: " + sectionCode);
             List<ConsumerResponseDTO> consumerList = consumerService.getConsumerBySectionCode(sectionCode);
             System.out.println(consumerList);
             return ResponseEntity.ok(consumerList);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @GetMapping("/transformer/{transformerCode}")
     public ResponseEntity<List<ConsumerResponseDTO>> getConsumerByTransformerCode(@PathVariable int transformerCode) {
         try {
-            System.out.println("***********transformerCode: " + transformerCode);
-            List<ConsumerResponseDTO> consumerList = consumerService.getConsumerBySectionCode(transformerCode);
+            List<ConsumerResponseDTO> consumerList = consumerService.getConsumerByTransformerCode(transformerCode);
             System.out.println(consumerList);
             return ResponseEntity.ok(consumerList);
         } catch (Exception e) {
@@ -58,4 +59,13 @@ public class ConsumerController {
         }
     }
 
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadConsumers(@RequestParam("file") MultipartFile file) {
+        try {
+            String message = consumerService.uploadConsumers(file);
+            return ResponseEntity.ok(message);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to upload data: " + e.getMessage());
+        }
+    }
 }

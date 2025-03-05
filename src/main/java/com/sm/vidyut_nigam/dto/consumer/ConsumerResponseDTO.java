@@ -70,6 +70,6 @@ public class ConsumerResponseDTO {
     private String consumerRemarks;
 
     // IDs of related entities instead of full objects to avoid unnecessary nesting
-    private int sectionId;
-    private int transformerId;
+    private int section;
+    private int transformer;
 }

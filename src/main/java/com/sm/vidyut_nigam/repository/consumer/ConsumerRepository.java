@@ -13,4 +13,5 @@ public interface ConsumerRepository extends JpaRepository<Consumer, String> {
     List<Consumer> findBySection_SectionCode(int sectionCode);
 
     List<Consumer> findByTransformer_TransformerCode(int transformerCode);
+
 }

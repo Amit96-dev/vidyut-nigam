@@ -1,6 +1,6 @@
 package com.sm.vidyut_nigam.entity.consumer;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.sm.vidyut_nigam.entity.Section;
 import com.sm.vidyut_nigam.entity.network.Transformer;
@@ -23,7 +23,7 @@ public class Consumer {
     private String consumerId; // Provided manually, not auto-generated
 
     @Column(name = "type")
-    private String Type;
+    private String type;
 
     @Column(name = "consumer_connection_type")
     private String consumerConnectionType;
@@ -86,19 +86,19 @@ public class Consumer {
     private Double consumerSupplyVoltageKV;
 
     @Column(name = "consumer_connection_date")
-    private LocalDate consumerConnectionDate;
+    private LocalDateTime consumerConnectionDate;
 
     @Column(name = "consumer_connection_status")
     private String consumerConnectionStatus;
 
     @Column(name = "consumer_last_disconnected_date")
-    private LocalDate consumerLastDisconnectedDate;
+    private LocalDateTime consumerLastDisconnectedDate;
 
     @Column(name = "consumer_last_reconnected_date")
-    private LocalDate consumerLastReconnectedDate;
+    private LocalDateTime consumerLastReconnectedDate;
 
     @Column(name = "consumer_connection_closed_date")
-    private LocalDate consumerConnectionClosedDate;
+    private LocalDateTime consumerConnectionClosedDate;
 
     @Column(name = "consumer_temporary")
     private Boolean consumerTemporary;
@@ -197,18 +197,18 @@ public class Consumer {
     private Boolean consumerClubbingOfMeters;
 
     @Column(name = "consumer_date_of_connection")
-    private LocalDate consumerDateOfConnection;
+    private LocalDateTime consumerDateOfConnection;
 
     @Column(name = "consumer_remarks")
     private String consumerRemarks;
 
     // Relationship with Section (Attach to Organisation)
     @ManyToOne
-    @JoinColumn(name = "consumer_section_id", referencedColumnName = "sectionCode")
+    @JoinColumn(name = "section", referencedColumnName = "sectionCode")
     private Section section;
 
     // Relationship with Transformer (Attach to Network)
     @ManyToOne
-    @JoinColumn(name = "consumer_transformer_id", referencedColumnName = "transformerCode")
+    @JoinColumn(name = "transformer", referencedColumnName = "transformerCode")
     private Transformer transformer;
 }

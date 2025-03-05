@@ -27,11 +27,11 @@ public class Meter {
     private Boolean meterSubscriptionMode;
     private String meterState;
     private String meterProtocol;
-    
+
     private LocalDateTime meterInstallationDate;
-    
+
     private LocalDateTime meterTestingDate;
-    
+
     private String meterManufacturer;
     private String meterType;
     private String meterCommunicationType;
@@ -51,9 +51,9 @@ public class Meter {
     private String meterModemNumber;
     private String meterModemManufacturer;
     private String meterModemIMEINumber;
-    
+
     private LocalDateTime meterModemInstallationDate;
-    
+
     private Double meterMctr;
     private Double meterMptr;
     private Double meterLctr;
@@ -65,6 +65,6 @@ public class Meter {
     private Integer meterNumberOfDigits;
     private Double meterImportReadingKwh;
     private Double meterImportReadingKvah;
-    
-    private Consumer meterConsumerId;
+
+    // private Consumer meterConsumerId;
 }
