@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 
 import com.sm.vidyut_nigam.entity.consumer.Consumer;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -65,6 +68,7 @@ public class Meter {
     private Integer meterNumberOfDigits;
     private Double meterImportReadingKwh;
     private Double meterImportReadingKvah;
-
-    // private Consumer meterConsumerId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "meter_import_reading_unit_id", referencedColumnName = "consumerId", updatable = false)
+    private Consumer meterConsumerId;
 }

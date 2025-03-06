@@ -19,7 +19,7 @@ import lombok.Data;
 public class Consumer {
 
     @Id
-    @Column(name = "consumer_id")
+    @Column(unique = true, nullable = false)
     private String consumerId; // Provided manually, not auto-generated
 
     @Column(name = "type")
