@@ -32,7 +32,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 
     private final TransformerRepository transformerRepository;
 
-    Random random = new Random();
+    private final Random random = new Random();
 
     @Override
     public String createConsumer(ConsumerRequestDTO consumerRequestDTO) {
@@ -41,7 +41,7 @@ public class ConsumerServiceImpl implements ConsumerService {
             String code = String.format("%07d", cod);
             String consumerCode = Integer.toString(consumerRequestDTO.getSection()) + code
                     + (char) ('A' + random.nextInt(26));
-            consumerRequestDTO.setConsumerId(consumerCode);
+            consumerRequestDTO.setConsumerId(generateConsumerId());
             consumerRequestDTO.setConsumerAccountNo(consumerCode);
             Consumer consumer = mapper.map(consumerRequestDTO, Consumer.class);
             Section section = sectionRepository.findById(consumerRequestDTO.getSection())
@@ -114,7 +114,7 @@ public class ConsumerServiceImpl implements ConsumerService {
                 int cod = consumerRepository.countBySection_SectionCode(dto.getSection()) + 1;
                 String code = String.format("%07d", cod);
                 String consumerCode = dto.getSection() + code + (char) ('A' + random.nextInt(26));
-                dto.setConsumerId(consumerCode);
+                dto.setConsumerId(generateConsumerId());
                 dto.setConsumerAccountNo(consumerCode);
 
                 Consumer consumer = mapper.map(dto, Consumer.class);
@@ -137,6 +137,14 @@ public class ConsumerServiceImpl implements ConsumerService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to upload data: " + e.getMessage());
         }
+    }
+
+    private String generateConsumerId() {
+        String id;
+        do {
+            id = String.valueOf(1000000000L + (long) (random.nextDouble() * 9000000000L));
+        } while (consumerRepository.existsById(id));
+        return id;
     }
 
 }
