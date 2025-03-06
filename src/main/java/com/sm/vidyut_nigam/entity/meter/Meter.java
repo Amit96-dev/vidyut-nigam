@@ -8,6 +8,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -27,11 +31,11 @@ public class Meter {
     private Boolean meterSubscriptionMode;
     private String meterState;
     private String meterProtocol;
-    
+
     private LocalDateTime meterInstallationDate;
-    
+
     private LocalDateTime meterTestingDate;
-    
+
     private String meterManufacturer;
     private String meterType;
     private String meterCommunicationType;
@@ -51,9 +55,9 @@ public class Meter {
     private String meterModemNumber;
     private String meterModemManufacturer;
     private String meterModemIMEINumber;
-    
+
     private LocalDateTime meterModemInstallationDate;
-    
+
     private Double meterMctr;
     private Double meterMptr;
     private Double meterLctr;
@@ -65,6 +69,7 @@ public class Meter {
     private Integer meterNumberOfDigits;
     private Double meterImportReadingKwh;
     private Double meterImportReadingKvah;
-    
+    @OneToOne
+    @JoinColumn(name = "meter_import_reading_unit_id", insertable = false, updatable = false)
     private Consumer meterConsumerId;
 }
