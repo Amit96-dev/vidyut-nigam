@@ -97,8 +97,6 @@ public class ConsumerServiceImpl implements ConsumerService {
         try {
             List<ConsumerRequestDTO> consumerDTOs = ConsumerExcelHelper.excelToConsumers(file.getInputStream());
 
-            System.out.println("Consumers: " + consumerDTOs);
-
             for (ConsumerRequestDTO dto : consumerDTOs) {
                 // Validate Section
                 if (dto.getSection() == null || dto.getSection() <= 0) {
