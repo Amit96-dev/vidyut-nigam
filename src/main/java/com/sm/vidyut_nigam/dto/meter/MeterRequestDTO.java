@@ -12,8 +12,7 @@ import lombok.Data;
 
 @Data
 public class MeterRequestDTO {
-    @NotNull(message = "Meter ID cannot be null")
-    private Long meterId;
+    private Long meterId; // Removed @NotNull because it's auto-generated
 
     @NotBlank(message = "Meter name is required")
     private String meterName;
@@ -72,10 +71,7 @@ public class MeterRequestDTO {
 
     private String meterNetworkProvider;
 
-    @Pattern(
-        regexp = "^((25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$",
-        message = "Invalid IP address format"
-    )
+    @Pattern(regexp = "^((25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$", message = "Invalid IP address format")
     private String meterIpAddress;
 
     private String meterModemNumber;
@@ -119,6 +115,6 @@ public class MeterRequestDTO {
     @DecimalMin(value = "0.0", message = "Import Reading KVAH must be at least 0.0")
     private Double meterImportReadingKvah;
 
-    @NotNull(message = "Consumer ID is required")
-    private Long meterConsumerId;
+    @NotBlank(message = "Consumer ID is required") // Changed to String
+    private String meterConsumerId;
 }

@@ -6,8 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sm.vidyut_nigam.dto.consumer.ConsumerRequestDTO;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
-
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
