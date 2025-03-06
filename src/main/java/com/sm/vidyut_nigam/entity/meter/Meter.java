@@ -32,9 +32,12 @@ public class Meter {
     private String meterState;
     private String meterProtocol;
 
+
     private LocalDateTime meterInstallationDate;
 
+
     private LocalDateTime meterTestingDate;
+
 
     private String meterManufacturer;
     private String meterType;
@@ -56,7 +59,9 @@ public class Meter {
     private String meterModemManufacturer;
     private String meterModemIMEINumber;
 
+
     private LocalDateTime meterModemInstallationDate;
+
 
     private Double meterMctr;
     private Double meterMptr;

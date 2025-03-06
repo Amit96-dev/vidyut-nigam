@@ -30,7 +30,7 @@ public class TransformerServiceImpl implements TransformerService {
             String transformerCode = Integer.toString(transformerRequestDTO.getFeederCode())
                     + Integer.toString(code + 1);
             transformerRequestDTO.setTransformerCode(Integer.parseInt(transformerCode));
-            Transformer transformer = transformerRepository.save(mapper.map(transformerRequestDTO, Transformer.class));
+            transformerRepository.save(mapper.map(transformerRequestDTO, Transformer.class));
             return "Transformer created successfully";
         } catch (Exception e) {
             return "Error creating transformer/n" + e.getMessage();
