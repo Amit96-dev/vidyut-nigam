@@ -202,6 +202,8 @@ public class Consumer {
     @Column(name = "consumer_remarks")
     private String consumerRemarks;
 
+    private boolean consumerDisconnection;
+
     // Relationship with Section (Attach to Organisation)
     @ManyToOne
     @JoinColumn(name = "section", referencedColumnName = "sectionCode")

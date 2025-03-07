@@ -75,7 +75,6 @@ public class ConsumerServiceImpl implements ConsumerService {
 
     @Override
     public ConsumerResponseDTO getConsumerByConsumerCode(String consumerCode) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getConsumerByConsumerCode'");
     }
 
