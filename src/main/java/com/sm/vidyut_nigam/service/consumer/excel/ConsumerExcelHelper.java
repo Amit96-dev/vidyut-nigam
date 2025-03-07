@@ -40,8 +40,8 @@ public class ConsumerExcelHelper {
 
                 ConsumerRequestDTO consumer = new ConsumerRequestDTO();
 
-                consumer.setConsumerId(getStringCellValue(currentRow, 0));
-                consumer.setConsumerAccountNo(getStringCellValue(currentRow, 1));
+                // consumer.setConsumerId(getStringCellValue(currentRow, 0));
+                // consumer.setConsumerAccountNo(getStringCellValue(currentRow, 1));
                 consumer.setType(getStringCellValue(currentRow, 2));
                 consumer.setConsumerConnectionType(getStringCellValue(currentRow, 3));
                 consumer.setLegacyConsumerNo(getStringCellValue(currentRow, 4));
@@ -109,8 +109,26 @@ public class ConsumerExcelHelper {
                 consumer.setConsumerDateOfConnection(getDateCellValue(currentRow, 59));
                 consumer.setConsumerRemarks(getStringCellValue(currentRow, 60));
 
-                consumer.setSection((int) getNumericCellValue(currentRow, 61));
-                consumer.setTransformer((int) getNumericCellValue(currentRow, 62));
+                Cell cell = currentRow.getCell(61);
+
+                if (cell.getCellType() == CellType.STRING) {
+                    String sectionValue = getStringCellValue(currentRow, 61);
+                    consumer.setSection(Integer.parseInt(sectionValue));
+                } else {
+                    double sectionValue = getNumericCellValue(currentRow, 61);
+                    consumer.setSection((int) sectionValue);
+                }
+
+                Cell cell1 = currentRow.getCell(62);
+
+                if (cell1.getCellType() == CellType.STRING) {
+                    String transformerValue = getStringCellValue(currentRow, 62);
+                    consumer.setTransformer(Integer.parseInt(transformerValue));
+                } else {
+                    double transformerValue = getNumericCellValue(currentRow, 62);
+                    consumer.setTransformer((int) transformerValue);
+
+                }
 
                 consumers.add(consumer);
             }

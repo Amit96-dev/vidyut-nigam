@@ -145,9 +145,9 @@ public class ConsumerRequestDTO {
 
     private String consumerRemarks;
 
-    @NotBlank(message = "Section ID is required")
+    @NotNull(message = "Section ID is required")
     private Integer section;
 
-    @NotBlank(message = "Transformer ID is required")
+    @NotNull(message = "Transformer ID is required")
     private Integer transformer;
 }
