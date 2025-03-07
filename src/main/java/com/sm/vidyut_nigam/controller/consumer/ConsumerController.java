@@ -2,6 +2,7 @@ package com.sm.vidyut_nigam.controller.consumer;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,10 +38,13 @@ public class ConsumerController {
     }
 
     @GetMapping("/section/{sectionCode}")
-    public ResponseEntity<?> getConsumerBySectionCode(@PathVariable int sectionCode) {
+    public ResponseEntity<?> getConsumerBySectionCode(@PathVariable int sectionCode,@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+    @RequestParam(name = "size", required = false, defaultValue = "500") int size,
+    @RequestParam(name = "sortBy", required = false, defaultValue = "sectionCode") String sortBy,
+    @RequestParam(name = "sortDirection", required = false, defaultValue = "ASC") String sortDirection) {
         try {
             System.out.println("***********sectionCode: " + sectionCode);
-            List<ConsumerResponseDTO> consumerList = consumerService.getConsumerBySectionCode(sectionCode);
+            Page<ConsumerResponseDTO> consumerList = consumerService.getConsumerBySectionCode(sectionCode,page, size, sortBy, sortDirection);
             System.out.println(consumerList);
             return ResponseEntity.ok(consumerList);
         } catch (Exception e) {

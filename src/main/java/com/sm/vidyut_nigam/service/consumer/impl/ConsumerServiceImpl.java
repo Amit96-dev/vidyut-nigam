@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,15 +63,12 @@ public class ConsumerServiceImpl implements ConsumerService {
     }
 
     @Override
-    public List<ConsumerResponseDTO> getConsumerBySectionCode(int sectionCode) {
+    public Page<ConsumerResponseDTO> getConsumerBySectionCode(int sectionCode,int page, int size, String sortBy, String sortDirection) {
         try {
-            List<Consumer> consumerList = consumerRepository.findBySection_SectionCode(sectionCode);
-            System.out.println("Fetched Consumers: " + consumerList.size());
-
-            return consumerList.stream()
-                    .map(consumer -> mapper.map(consumer, ConsumerResponseDTO.class))
-                    .toList();
-
+            Sort sort = sortDirection.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Consumer> consumers = consumerRepository.findBySection_SectionCode(pageable, sectionCode);
+        return consumers.map(consumer -> mapper.map(consumer, ConsumerResponseDTO.class));
         } catch (Exception e) {
             throw new RuntimeException("Error fetching consumers for sectionCode: " + e.getMessage());
         }
