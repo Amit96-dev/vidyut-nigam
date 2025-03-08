@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import com.sm.vidyut_nigam.entity.consumer.Consumer;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +26,7 @@ public class Meter {
     private String meterAssetId;
     private String meterSerialNumber;
     private String meterSystemTitle;
-    private Boolean meterSubscriptionMode;
+    private String meterSubscriptionMode;
     private String meterState;
     private String meterProtocol;
 
@@ -57,18 +56,18 @@ public class Meter {
 
     private LocalDateTime meterModemInstallationDate;
 
-    private Double meterMctr;
-    private Double meterMptr;
-    private Double meterLctr;
-    private Double meterLptr;
+    private Double meterMCTR;
+    private Double meterMPTR;
+    private Double meterLCTR;
+    private Double meterLPTR;
     private Double meterMultiplicationFactor;
     private Integer meterPulseRate;
     private Double meterLoad;
     private String meterAccuracyClass;
     private Integer meterNumberOfDigits;
-    private Double meterImportReadingKwh;
-    private Double meterImportReadingKvah;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "meter_import_reading_unit_id", referencedColumnName = "consumerId", updatable = false)
+    private Double meterImportReadingKWH;
+    private Double meterImportReadingKVAH;
+    @OneToOne
+    @JoinColumn(name = "meter_consumer_id", referencedColumnName = "consumerId", updatable = false)
     private Consumer meterConsumerId;
 }
