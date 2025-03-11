@@ -1,7 +1,5 @@
 package com.sm.vidyut_nigam.controller.consumer;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,13 +53,19 @@ public class ConsumerController {
     }
 
     @GetMapping("/transformer/{transformerCode}")
-    public ResponseEntity<List<ConsumerResponseDTO>> getConsumerByTransformerCode(@PathVariable int transformerCode) {
+    public ResponseEntity<?> getConsumerByTransformerCode(@PathVariable int transformerCode,
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "2") int size,
+            @RequestParam(name = "sortBy", required = false, defaultValue = "consumerAccountNo") String sortBy,
+            @RequestParam(name = "sortDirection", required = false, defaultValue = "ASC") String sortDirection) {
         try {
-            List<ConsumerResponseDTO> consumerList = consumerService.getConsumerByTransformerCode(transformerCode);
+            Page<ConsumerResponseDTO> consumerList = consumerService.getConsumerByTransformerCode(transformerCode, page,
+                    size,
+                    sortBy, sortDirection);
             System.out.println(consumerList);
             return ResponseEntity.ok(consumerList);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

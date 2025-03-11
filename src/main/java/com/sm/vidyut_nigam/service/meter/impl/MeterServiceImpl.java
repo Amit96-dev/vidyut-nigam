@@ -2,6 +2,7 @@ package com.sm.vidyut_nigam.service.meter.impl;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sm.vidyut_nigam.dto.meter.MeterRequestDTO;
+import com.sm.vidyut_nigam.dto.meter.MeterResponseDTO;
 import com.sm.vidyut_nigam.entity.consumer.Consumer;
 import com.sm.vidyut_nigam.entity.meter.Meter;
 import com.sm.vidyut_nigam.repository.consumer.ConsumerRepository;
@@ -70,12 +72,16 @@ public class MeterServiceImpl implements MeterService {
             for (MeterRequestDTO dto : meterDTOs) {
                 Meter meter = new Meter();
                 BeanUtils.copyProperties(dto, meter);
-                if (dto.getMeterConsumerId() != null) {
-                    Consumer consumer = consumerRepository.findById((dto.getMeterConsumerId()))
-                            .orElse(null);
-                    meter.setMeterConsumerId(consumer);
+
+                if (dto.getMeterConsumerId() != null && !dto.getMeterConsumerId().trim().isEmpty()) {
+                    Optional<Consumer> consumer = consumerRepository.findById(dto.getMeterConsumerId());
+
+                    if (consumer.isPresent()) {
+                        meter.setMeterConsumerId(consumer.get());
+                    }
                 }
 
+                // Allow meters without a consumer
                 meterRepository.save(meter);
             }
             return "Meter data uploaded successfully.";
@@ -83,8 +89,32 @@ public class MeterServiceImpl implements MeterService {
         } catch (IOException e) {
             throw new RuntimeException("Error reading the Excel file: " + e.getMessage(), e);
         } catch (Exception e) {
-            e.printStackTrace(); // Log the error properly
+            e.printStackTrace();
             throw new RuntimeException("Failed to upload meter data: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<MeterResponseDTO> showAllMeters() {
+        try {
+            List<Meter> meters = meterRepository.findAll();
+
+            // Convert List<Meter> to List<MeterResponseDTO>
+            return meters.stream().map(meter -> {
+                MeterResponseDTO meterResponseDTO = new MeterResponseDTO();
+                BeanUtils.copyProperties(meter, meterResponseDTO);
+
+                // Convert Consumer ID to String (if needed)
+                if (meter.getMeterConsumerId() != null) {
+                    meterResponseDTO.setMeterConsumerId(meter.getMeterConsumerId().getConsumerAccountNo());
+                }
+
+                return meterResponseDTO;
+            }).collect(Collectors.toList());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to fetch meters: " + e.getMessage(), e);
         }
     }
 

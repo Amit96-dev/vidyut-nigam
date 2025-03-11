@@ -63,30 +63,32 @@ public class ConsumerServiceImpl implements ConsumerService {
     }
 
     @Override
-    public Page<ConsumerResponseDTO> getConsumerBySectionCode(int sectionCode,int page, int size, String sortBy, String sortDirection) {
+    public Page<ConsumerResponseDTO> getConsumerBySectionCode(int sectionCode, int page, int size, String sortBy,
+            String sortDirection) {
         try {
-            Sort sort = sortDirection.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Consumer> consumers = consumerRepository.findBySection_SectionCode(pageable, sectionCode);
-        return consumers.map(consumer -> mapper.map(consumer, ConsumerResponseDTO.class));
+            Sort sort = sortDirection.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending()
+                    : Sort.by(sortBy).descending();
+            Pageable pageable = PageRequest.of(page, size, sort);
+            Page<Consumer> consumers = consumerRepository.findBySection_SectionCode(pageable, sectionCode);
+            return consumers.map(consumer -> mapper.map(consumer, ConsumerResponseDTO.class));
         } catch (Exception e) {
             throw new RuntimeException("Error fetching consumers for sectionCode: " + e.getMessage());
         }
     }
 
     @Override
-    public ConsumerResponseDTO getConsumerByConsumerCode(String consumerCode) {
-        throw new UnsupportedOperationException("Unimplemented method 'getConsumerByConsumerCode'");
-    }
-
-    @Override
-    public List<ConsumerResponseDTO> getConsumerByTransformerCode(int transformerCode) {
-        List<Consumer> consumerList = consumerRepository.findByTransformer_TransformerCode(transformerCode);
-        System.out.println(consumerList);
-        List<ConsumerResponseDTO> consumerDTOList = consumerList.stream()
-                .map(consumer -> mapper.map(consumer, ConsumerResponseDTO.class))
-                .toList();
-        return consumerDTOList;
+    public Page<ConsumerResponseDTO> getConsumerByTransformerCode(int transformerCode, int page, int size,
+            String sortBy,
+            String sortDirection) {
+        try {
+            Sort sort = sortDirection.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending()
+                    : Sort.by(sortBy).descending();
+            Pageable pageable = PageRequest.of(page, size, sort);
+            Page<Consumer> consumers = consumerRepository.findByTransformer_TransformerCode(pageable, transformerCode);
+            return consumers.map(consumer -> mapper.map(consumer, ConsumerResponseDTO.class));
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching consumers for sectionCode: " + e.getMessage());
+        }
     }
 
     public String uploadConsumers(MultipartFile file) {
@@ -135,6 +137,11 @@ public class ConsumerServiceImpl implements ConsumerService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to upload data: " + e.getMessage());
         }
+    }
+
+    @Override
+    public ConsumerResponseDTO getConsumerByConsumerCode(String consumerCode) {
+        throw new UnsupportedOperationException("Unimplemented method 'getConsumerByConsumerCode'");
     }
 
     private String generateConsumerId() {

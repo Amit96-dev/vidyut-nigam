@@ -6,4 +6,6 @@ import com.sm.vidyut_nigam.entity.meter.Meter;
 
 public interface MeterRepository extends JpaRepository<Meter, Long> {
 
+    boolean existsByMeterConsumerId_ConsumerId(String consumerId);
+
 }

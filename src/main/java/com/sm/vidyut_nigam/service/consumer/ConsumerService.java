@@ -1,7 +1,5 @@
 package com.sm.vidyut_nigam.service.consumer;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,11 +10,13 @@ public interface ConsumerService {
 
     String createConsumer(ConsumerRequestDTO consumerRequestDTO);
 
-    Page<ConsumerResponseDTO> getConsumerBySectionCode(int sectionCode, int page, int size, String sortBy, String sortDirection);
+    Page<ConsumerResponseDTO> getConsumerBySectionCode(int sectionCode, int page, int size, String sortBy,
+            String sortDirection);
 
     ConsumerResponseDTO getConsumerByConsumerCode(String consumerCode);
 
-    List<ConsumerResponseDTO> getConsumerByTransformerCode(int transformerCode);
+    Page<ConsumerResponseDTO> getConsumerByTransformerCode(int transformerCode, int page, int size, String sortBy,
+            String sortDirection);
 
     String uploadConsumers(MultipartFile file);
 }

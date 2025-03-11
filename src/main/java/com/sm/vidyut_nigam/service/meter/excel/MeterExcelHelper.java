@@ -79,7 +79,8 @@ public class MeterExcelHelper {
                 meter.setMeterNumberOfDigits((int) getNumericCellValue(currentRow, 37));
                 meter.setMeterImportReadingKWH(getNumericCellValue(currentRow, 38));
                 meter.setMeterImportReadingKVAH(getNumericCellValue(currentRow, 39));
-                meter.setMeterConsumerId(getStringCellValue(currentRow, 40));
+                String consumerId = getStringCellValue(currentRow, 40);
+                meter.setMeterConsumerId(consumerId != null && !consumerId.trim().isEmpty() ? consumerId : null);
 
                 meters.add(meter);
             }
