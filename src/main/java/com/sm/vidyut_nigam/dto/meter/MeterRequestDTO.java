@@ -26,7 +26,7 @@ public class MeterRequestDTO {
     private String meterSystemTitle;
 
     @NotNull(message = "Subscription mode is required")
-    private Boolean meterSubscriptionMode;
+    private String meterSubscriptionMode;
 
     @NotBlank(message = "Meter state is required")
     private String meterState;
@@ -84,16 +84,16 @@ public class MeterRequestDTO {
     private LocalDateTime meterModemInstallationDate;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "MCTR must be greater than zero")
-    private Double meterMctr;
+    private Double meterMCTR;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "MPTR must be greater than zero")
-    private Double meterMptr;
+    private Double meterMPTR;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "LCTR must be greater than zero")
-    private Double meterLctr;
+    private Double meterLCTR;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "LPTR must be greater than zero")
-    private Double meterLptr;
+    private Double meterLPTR;
 
     @DecimalMin(value = "0.1", message = "Multiplication factor must be at least 0.1")
     private Double meterMultiplicationFactor;
@@ -110,11 +110,11 @@ public class MeterRequestDTO {
     private Integer meterNumberOfDigits;
 
     @DecimalMin(value = "0.0", message = "Import Reading KWH must be at least 0.0")
-    private Double meterImportReadingKwh;
+    private Double meterImportReadingKWH;
 
     @DecimalMin(value = "0.0", message = "Import Reading KVAH must be at least 0.0")
-    private Double meterImportReadingKvah;
+    private Double meterImportReadingKVAH;
 
-    @NotBlank(message = "Consumer ID is required") // Changed to String
+    // @NotBlank(message = "Consumer ID is required") // Changed to String
     private String meterConsumerId;
 }
