@@ -1,5 +1,7 @@
 package com.sm.vidyut_nigam.entity.tariff;
 
+import java.time.LocalDateTime;
+
 import org.hibernate.envers.Audited;
 
 import jakarta.persistence.Column;
@@ -35,8 +37,15 @@ public class Tariff {
     @Column(nullable = false)
     private Double sanctionLoadTo;
 
+    @Column(nullable = false)
+    private Double minRechargeAmount;
+
+    private LocalDateTime applicableFrom;
+
     @Column(nullable = false, length = 5)
     private String uom; // kW, kVA
+
+    private Boolean status;
 
     private Boolean alertLastRecharge = false;
     private Boolean alertEmergencyCredit = false;
@@ -46,5 +55,8 @@ public class Tariff {
 
     @Column(columnDefinition = "TEXT")
     private String remarks;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
 }
