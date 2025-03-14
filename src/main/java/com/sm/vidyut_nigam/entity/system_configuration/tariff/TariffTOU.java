@@ -1,6 +1,8 @@
-package com.sm.vidyut_nigam.entity.tariff;
+package com.sm.vidyut_nigam.entity.system_configuration.tariff;
 
+import lombok.Data;
 import java.math.BigDecimal;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,14 +12,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
-@Table(name = "tariff_slabs")
-public class TariffSlab {
+@Data
+@Table(name = "tariff_tou")
+public class TariffTOU {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +25,12 @@ public class TariffSlab {
     @ManyToOne
     @JoinColumn(name = "tariff_id", nullable = false)
     private Tariff tariff; // Foreign key reference
+
+    @Column(nullable = false)
+    private LocalTime touFrom;
+
+    @Column(nullable = false)
+    private LocalTime touTo;
 
     @Column(nullable = false)
     private Double fromUnit;

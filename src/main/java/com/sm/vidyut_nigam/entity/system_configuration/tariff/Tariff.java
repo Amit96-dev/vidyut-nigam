@@ -1,4 +1,4 @@
-package com.sm.vidyut_nigam.entity.tariff;
+package com.sm.vidyut_nigam.entity.system_configuration.tariff;
 
 import java.time.LocalDateTime;
 

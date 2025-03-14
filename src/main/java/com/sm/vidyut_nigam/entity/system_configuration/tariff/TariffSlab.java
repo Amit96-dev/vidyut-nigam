@@ -1,4 +1,4 @@
-package com.sm.vidyut_nigam.entity.tariff;
+package com.sm.vidyut_nigam.entity.system_configuration.tariff;
 
 import java.math.BigDecimal;
 
@@ -16,8 +16,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "tariff_flat")
-public class TariffFlat {
+@Table(name = "tariff_slabs")
+public class TariffSlab {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,12 @@ public class TariffFlat {
     @ManyToOne
     @JoinColumn(name = "tariff_id", nullable = false)
     private Tariff tariff; // Foreign key reference
+
+    @Column(nullable = false)
+    private Double fromUnit;
+
+    @Column(nullable = false)
+    private Double toUnit;
 
     @Column(precision = 10, scale = 2)
     private BigDecimal unitRate;
